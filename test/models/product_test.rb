@@ -1,0 +1,25 @@
+# == Schema Information
+#
+# Table name: products
+#
+#  id            :integer          not null, primary key
+#  store_id      :integer          not null
+#  name          :string(255)      not null
+#  logo_filename :string(255)      not null
+#  brief         :string(255)      not null
+#  min_price     :string(255)      not null
+#  max_price     :string(255)      not null
+#  category      :string(255)      not null
+#  status        :integer          default("1"), not null
+#  pinyin        :string(255)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
+require 'test_helper'
+
+class ProductTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
+end

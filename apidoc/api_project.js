@@ -1,0 +1,1 @@
+define({  "name": "Gudu-V1",  "version": "1.0.0",  "description": "基础功能",  "title": "Custom apiDoc browser title",  "url": "https://api.github.com/v1",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2015-10-15T06:54:29.698Z",    "url": "http://apidocjs.com",    "version": "0.13.1"  }});

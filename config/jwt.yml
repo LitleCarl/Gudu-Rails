@@ -1,0 +1,13 @@
+
+defaults: &defaults
+  secret: cjx7758
+
+development:
+  <<: *defaults
+
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

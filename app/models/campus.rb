@@ -14,13 +14,14 @@
 
 class Campus < ActiveRecord::Base
   self.table_name = 'campuses'
-  has_many :stores
+  has_many :stores_campuses
+  has_many :stores, through: :stores_campuses
   belongs_to :city
 
   def self.get_campus_detail(params)
     response_status = ResponseStatus.default_success
     begin
-      data = self.find(params[:id])
+      data = self.find(params[:campus_id])
     rescue ActiveRecord::RecordNotFound
       response_status = ResponseStatus.no_data_found
     end

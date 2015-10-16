@@ -5,14 +5,16 @@ class ApplicationController < ActionController::Base
   #protect_from_forgery with: :exception
   before_filter :user_about
 
+  include Shared::Concerns::ApplicationControllerConcern
+
   # 用户不存在的错误
   class UserNotFoundError < StandardError
 
   end
-
+  @images_site = 'http://gudu-sails.tunnel.mobi/'
   def user_about
     token = request.headers['x-access-token']
-    Rails.logger.error('headers'+token)
+    Rails.logger.error('headers' + token) if token.present?
 
     message= nil
     begin
@@ -21,7 +23,7 @@ class ApplicationController < ActionController::Base
       else
         phone = TsaoUtil.decode_jwt_user_session(token)
         if phone.present?
-          user = User.find({phone: phone}).first
+          user = User.where({phone: phone}).first
           if user.present?
             @user = user
             params[:user] = @user

@@ -16,7 +16,7 @@
 class Payment < ActiveRecord::Base
   belongs_to :order
   after_create :set_order_paid_and_update_product_specification
-  validates :check_field_ok
+  validate :check_field_ok
 
 
   # 检查字段合法

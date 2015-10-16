@@ -21,7 +21,8 @@ class Order < ActiveRecord::Base
   belongs_to :user
   has_one :payment
   has_many :order_items
-  validates :check_order_fields
+
+  validate :check_order_fields
   module Status
     Dead = 0          # 取消的订单
     Not_Paid = 1      # 未支付

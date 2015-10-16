@@ -44,6 +44,11 @@ gem 'hanzi_to_pinyin', require: 'hanzi_to_pinyin'
 # PingPP
 gem 'pingpp'
 
+gem "spring", group: :development
+
+# https://github.com/amatsuda/kaminari
+gem 'kaminari', '0.16.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

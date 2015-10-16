@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
 @apiGroup Order
 
 @apiParam {Number} [page=1]     Optional page with default 1.
-@apiParam {Number} [limit=8]     Optional limit with default 8.
+@apiParam {Number} [limit=12]     Optional limit with default 12.
 
 @apiSuccess {Array}  orders 订单列表
 @apiSuccess {Number} page  页数
@@ -14,7 +14,7 @@ class OrdersController < ApplicationController
 =end
 
   def index
-    @response_status, @orders, @page, @limit= Order.get_orders_of_user(params)
+    @response_status, @orders = Order.get_orders_of_user(params)
   end
 
 =begin

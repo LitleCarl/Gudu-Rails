@@ -16,7 +16,9 @@
 
 class Store < ActiveRecord::Base
   belongs_to :owner
-  has_many :campuses
+
+  has_many :stores_campuses
+  has_many :campuses, through: :stores_campuses
   has_one :contract
   has_many :products
   before_save :set_store_pinyin
@@ -27,6 +29,21 @@ class Store < ActiveRecord::Base
     Suspend = 3 # 停止(合同到期)
   end
 
+  def self.get_stores_in_campus(params)
+    response_status = ResponseStatus.default
+    data = nil
+    begin
+      puts "params",params
+      raise RestError::MissParameterError if params[:campus_id].blank?
+      data = Campus.find(params[:campus_id]).stores.order('created_at desc').page(params[:page]).per(params[:limit])
+      response_status = ResponseStatus.default_success
+    rescue Exception => ex
+      Rails.logger.error(ex.message)
+      response_status.message = ex.message
+    end
+
+    return response_status, data
+  end
 
   # 设置拼音
   def set_store_pinyin

@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014031302) do
+ActiveRecord::Schema.define(version: 20151016055951) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.string   "addresses",    limit: 255
+    t.string   "address",    limit: 255
     t.string   "phone",      limit: 255
     t.integer  "user_id",    limit: 4
     t.datetime "created_at",             null: false
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20151014031302) do
 
   create_table "campuses", force: :cascade do |t|
     t.string   "name",          limit: 255, null: false
-    t.string   "addresses",       limit: 255, null: false
+    t.string   "address",       limit: 255, null: false
     t.string   "logo_filename", limit: 255
     t.integer  "city_id",       limit: 4
     t.string   "location",      limit: 255
@@ -125,17 +125,17 @@ ActiveRecord::Schema.define(version: 20151014031302) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.integer  "store_id",      limit: 4,               null: false
-    t.string   "name",          limit: 255,             null: false
-    t.string   "logo_filename", limit: 255,             null: false
-    t.string   "brief",         limit: 255,             null: false
-    t.string   "min_price",     limit: 255,             null: false
-    t.string   "max_price",     limit: 255,             null: false
-    t.string   "category",      limit: 255,             null: false
-    t.integer  "status",        limit: 4,   default: 1, null: false
+    t.integer  "store_id",      limit: 4,                    null: false
+    t.string   "name",          limit: 255,                  null: false
+    t.string   "logo_filename", limit: 255,                  null: false
+    t.string   "brief",         limit: 255, default: "暂无简介"
+    t.string   "min_price",     limit: 255, default: "0.0"
+    t.string   "max_price",     limit: 255, default: "0.0"
+    t.string   "category",      limit: 255,                  null: false
+    t.integer  "status",        limit: 4,   default: 1,      null: false
     t.string   "pinyin",        limit: 255
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
   create_table "specifications", force: :cascade do |t|
@@ -152,13 +152,20 @@ ActiveRecord::Schema.define(version: 20151014031302) do
   create_table "stores", force: :cascade do |t|
     t.string   "name",          limit: 255,                  null: false
     t.string   "brief",         limit: 255, default: "暂无简介", null: false
-    t.string   "addresses",       limit: 255,                  null: false
+    t.string   "address",       limit: 255,                  null: false
     t.string   "logo_filename", limit: 255,                  null: false
     t.string   "location",      limit: 255
     t.string   "pinyin",        limit: 255
     t.integer  "status",        limit: 4,   default: 1
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
+  end
+
+  create_table "stores_campuses", force: :cascade do |t|
+    t.integer  "store_id",   limit: 4
+    t.integer  "campus_id",  limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "sub_orders", force: :cascade do |t|

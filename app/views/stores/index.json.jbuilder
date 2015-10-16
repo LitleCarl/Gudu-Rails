@@ -1,8 +1,8 @@
 json.partial! 'api/status', response_status: @response_status
 
 json.data do | json |
-  json.orders do | json |
-    json.array! @orders, partial: 'orders/order', as: :order
+  json.stores do
+    json.array! @stores, partial: 'stores/store', as: :store
   end
   json.partial! 'api/paginator'
 end

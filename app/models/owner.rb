@@ -14,4 +14,12 @@
 class Owner < ActiveRecord::Base
   has_one :store
   has_many :sub_orders
+
+  before_save :set_password_encrypted
+
+  def set_password_encrypted
+    if self.changed.include?('password')
+      self.password = Digest::MD5.hexdigest(self.password)
+    end
+  end
 end

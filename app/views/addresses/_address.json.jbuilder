@@ -1,4 +1,1 @@
-address ||= @address
-json.name address.name
-json.phone address.phone
-json.address address.address
+json.(address, :id, :name, :address, :phone, :user_id)

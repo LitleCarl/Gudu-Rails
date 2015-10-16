@@ -1,0 +1,1 @@
+json.(payment, :id, :payment_method, :time_paid, :amount, :transaction_no, :charge_id, :order_id)

@@ -6,7 +6,7 @@ class CreatePayments < ActiveRecord::Migration
       t.decimal :amount, null: false, default: 0.00, precision: 10, scale: 2, comment: "支付总金额"
       t.string :transaction_no, null: false, comment: '交易号'
       t.string :charge_id, null: false, comment: 'charge id'
-      t.references :order, null: false, comment: '关联订单'
+      t.references :orders, null: false, comment: '关联订单'
       t.timestamps null: false
     end
   end

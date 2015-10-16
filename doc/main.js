@@ -98,7 +98,7 @@ require([
     });
 
     //
-    // sort api within a group by title ASC and custom order
+    // sort api within a group by title ASC and custom orders
     //
     var newList = [];
     var umlauts = { 'ä': 'ae', 'ü': 'ue', 'ö': 'oe', 'ß': 'ss' }; // TODO: remove in version 1.0
@@ -115,7 +115,7 @@ require([
         // sort by name ASC
         titles.sort();
 
-        // custom order
+        // custom orders
         if (apiProject.order)
             titles = sortByOrder(titles, apiProject.order, '#~#');
 
@@ -149,7 +149,7 @@ require([
     apiGroups = Object.keys(apiGroups);
     apiGroups.sort();
 
-    // custom order
+    // custom orders
     if (apiProject.order)
         apiGroups = sortByOrder(apiGroups, apiProject.order);
 
@@ -658,7 +658,7 @@ require([
     }
 
     /**
-     * Return ordered entries by custom order and append not defined entries to the end.
+     * Return ordered entries by custom orders and append not defined entries to the end.
      * @param  {String[]} elements
      * @param  {String[]} order
      * @param  {String}   splitBy
@@ -680,7 +680,7 @@ require([
                         results.push(name);
                 });
         });
-        // Append all other entries that ar not defined in order
+        // Append all other entries that ar not defined in orders
         elements.forEach(function(element) {
             if (results.indexOf(element) === -1)
                 results.push(element);

@@ -15,8 +15,28 @@
 
 class Specification < ActiveRecord::Base
   belongs_to :product
+  before_save :ensure_stock_not_negative
   module Status
     Normal = 1  # 上架
     Pending = 2 # 下架
+  end
+
+  # 确保库存非负
+  def ensure_stock_not_negative
+
+    # 确保库存非负
+    if self.stock < 0
+      self.stock = 0
+    end
+
+    # 更新商品最高最低价格
+    if self.changed.include?('price')
+      max_price = Specification.where({product_id: self.product.id}).maximum(:price)
+      min_price = Specification.where({product_id: self.product.id}).maximum(:price)
+      self.product.max_price = max_price
+      self.product.min_price = min_price
+      self.product.save
+    end
+
   end
 end

@@ -15,4 +15,31 @@
 
 class Payment < ActiveRecord::Base
   belongs_to :order
+  after_create :set_order_paid_and_update_product_specification
+  validates :check_field_ok
+
+
+  # 检查字段合法
+  def check_field_ok
+    unless PayMethod.include?(self.payment_method)
+      errors.add(:payment_method, '不合法')
+    end
+    if Order.find(self.order_id).blank?
+      errors.add(:order_id, '对应订单不存在')
+    end
+  end
+
+  # 创建Payment后关联订单
+  def set_order_paid_and_update_product_specification
+    if self.order.status == Order::Status::Not_Paid
+      self.order.status = Order::Status::Not_Delivered
+      self.order.save
+      Rails.logger.debug '第三方支付回调并且关联订单成功'
+      # 开始更新商品状态
+      self.order.order_items.each do | order_item |
+        order_item.specification.stock -= order_item.quantity
+        order_item.specification.save
+      end
+    end
+  end
 end

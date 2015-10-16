@@ -136,6 +136,17 @@ class Order < ActiveRecord::Base
             }
           )
           order.save!
+          # 创建Order_Item
+          cart_items.each do | item |
+            cart_item = CartItem.new
+            cart_item.product_id = item[:product_id]
+            cart_item.quantity = item[:quantity]
+            cart_item.order = order
+            cart_item.specification_id = item[:specification_id]
+            cart_item.price_snapshot = Specification.find(cart_item.specification_id).price
+            cart_item.save!
+          end
+          response_status = ResponseStatus.default_success
         end
       end
     rescue Exception => ex

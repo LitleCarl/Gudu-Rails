@@ -1,4 +1,4 @@
-class OrderController < ApplicationController
+class OrdersController < ApplicationController
 
 =begin
 @api {get} /orders 获取用户订单列表
@@ -14,11 +14,11 @@ class OrderController < ApplicationController
 =end
 
   def index
-    @response_status, @data = Order.get_orders_of_user(params)
+    @response_status, @orders, @page, @limit= Order.get_orders_of_user(params)
   end
 
 =begin
-@api {get} /order/charge_for_order 获得未付款订单的charge
+@api {get} /orders/charge_for_order 获得未付款订单的charge
 @apiName GetOrderCharge
 @apiGroup Order
 

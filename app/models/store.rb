@@ -33,9 +33,23 @@ class Store < ActiveRecord::Base
     response_status = ResponseStatus.default
     data = nil
     begin
-      puts "params",params
       raise RestError::MissParameterError if params[:campus_id].blank?
       data = Campus.find(params[:campus_id]).stores.order('created_at desc').page(params[:page]).per(params[:limit])
+      response_status = ResponseStatus.default_success
+    rescue Exception => ex
+      Rails.logger.error(ex.message)
+      response_status.message = ex.message
+    end
+
+    return response_status, data
+  end
+
+  def self.get_store_by_id(params)
+    response_status = ResponseStatus.default
+    data = nil
+    begin
+      raise RestError::MissParameterError if params[:store_id].blank?
+      data = Store.find(params[:store_id])
       response_status = ResponseStatus.default_success
     rescue Exception => ex
       Rails.logger.error(ex.message)

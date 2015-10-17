@@ -46,6 +46,9 @@ class Order < ActiveRecord::Base
       user = params[:user]
       if user.present?
         data = Order.where({user_id: user.id}).order('created_at desc').page(params[:page]).per(params[:limit])
+        if Order.where({user_id: user.id}).count <= params[:page] * params[:limit]
+          params[:last_page] = true
+        end
         response_status.code = ResponseStatus::Code::SUCCESS
       end
     rescue Exception => ex

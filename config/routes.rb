@@ -25,5 +25,6 @@ Rails.application.routes.draw do
       post :send_login_sms_code
     end
   end
+  resources :stores, param: :store_id, only: [:show]
 
 end

@@ -38,7 +38,7 @@ class Order < ActiveRecord::Base
     ALL = [WEIXIN, ALIPAY]
   end
 
-  def self.get_orders_of_user( params )
+  def self.get_orders_of_user(params)
     response_status = ResponseStatus.default
     data = nil
     begin

@@ -23,8 +23,9 @@ Rails.application.routes.draw do
   resources :services ,except: ALL_REST_ACTION do
     collection do
       post :send_login_sms_code
+      get :basic_config
     end
   end
   resources :stores, param: :store_id, only: [:show]
-
+  resources :products, param: :product_id, only: [:show]
 end

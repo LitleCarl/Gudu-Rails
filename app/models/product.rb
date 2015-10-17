@@ -23,11 +23,27 @@ class Product < ActiveRecord::Base
   has_many :product_images
 
   # 拼音
-  before_save :set_pinyin
+  before_save :set_pinyin, :set_default_brief
 
   module Status
     Normal = 1  # 上架
     Pending = 2 # 下架
+  end
+
+  # 根据id获取商品详情
+  def self.get_product_detail_by_id(params)
+    response_status = ResponseStatus.default
+    data = nil
+    begin
+      raise RestError::MissParameterError if params[:product_id].blank?
+      data = Product.where(:id => params[:product_id]).includes(:specifications).references(:specifications).where('specifications.status = ?', Specification::Status::Normal)
+      response_status = ResponseStatus.default_success
+    rescue Exception => ex
+      Rails.logger.error(ex.message)
+      response_status.message = ex.message
+    end
+
+    return response_status, data
   end
 
   # 设置拼音
@@ -35,6 +51,10 @@ class Product < ActiveRecord::Base
     if self.changed.include?('name')
       self.pinyin = HanziToPinyin.hanzi_to_pinyin(self.name).upcase
     end
-
   end
+
+  def set_default_brief
+    self.brief ||= '暂无简介'
+  end
+
 end

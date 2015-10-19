@@ -11,15 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016055951) do
+ActiveRecord::Schema.define(version: 20151019060000) do
 
   create_table "addresses", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "address",    limit: 255
-    t.string   "phone",      limit: 255
-    t.integer  "user_id",    limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "name",            limit: 255
+    t.string   "address",         limit: 255
+    t.string   "phone",           limit: 255
+    t.integer  "user_id",         limit: 4
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.boolean  "default_address",             default: false
   end
 
   create_table "campuses", force: :cascade do |t|
@@ -106,14 +107,15 @@ ActiveRecord::Schema.define(version: 20151016055951) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.string   "payment_method", limit: 255,                                        null: false
-    t.datetime "time_paid",                                                         null: false
-    t.decimal  "amount",                     precision: 10, scale: 2, default: 0.0, null: false
-    t.string   "transaction_no", limit: 255,                                        null: false
-    t.string   "charge_id",      limit: 255,                                        null: false
-    t.integer  "order_id",       limit: 4,                                          null: false
-    t.datetime "created_at",                                                        null: false
-    t.datetime "updated_at",                                                        null: false
+    t.string   "payment_method", limit: 255,                                          null: false
+    t.datetime "time_paid",                                                           null: false
+    t.decimal  "amount",                       precision: 10, scale: 2, default: 0.0, null: false
+    t.string   "transaction_no", limit: 255,                                          null: false
+    t.string   "charge_id",      limit: 255,                                          null: false
+    t.integer  "order_id",       limit: 4,                                            null: false
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
+    t.text     "pingpp_info",    limit: 65535
   end
 
   create_table "product_images", force: :cascade do |t|

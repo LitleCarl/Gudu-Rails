@@ -14,17 +14,18 @@
 class Address < ActiveRecord::Base
   belongs_to :user
   #validates_uniqueness_of
-  validates :name, :address, :phone, presence: true
+  validates :name, :address, :phone, :user_id, presence: true
 
   def self.add_address(params)
     response_status = ResponseStatus.default
     data = nil
     begin
-      raise RestError::MissParameterError if params[:name].blank? || params[:phone].blank? || params[:addresses].blank?
+      raise RestError::MissParameterError if params[:name].blank? || params[:phone].blank? || params[:address].blank?
       address = Address.new
       address.name = params[:name]
       address.phone = params[:phone]
-      address.address = params[:addresses]
+      address.address = params[:address]
+      address.user = params[:user]
       address.save!()
       response_status = ResponseStatus.default_success
       data = address
@@ -62,15 +63,16 @@ class Address < ActiveRecord::Base
     response_status = ResponseStatus.default
     data = nil
     begin
-      address_param = params[:address].blank?
-      raise RestError::MissParameterError if address_param.blank? || address_param[:id].blank? || address_param[:name].blank? || address_param[:phone].blank? || address_param[:address].blank?
+      address_param = params[:address]
+      raise RestError::MissParameterError if address_param.blank? || address_param[:name].blank? || address_param[:phone].blank? || address_param[:address].blank?
       user = params[:user]
       if user.present?
-        address = Address.find(params[:address_id]).where({user_id: user.id}).first
+        address = Address.where({user_id: user.id, id: params[:address_id]}).first
         if address.present?
-          address.merge({
-            name: address_param[:name], phone: address_param[:phone], address: address_param[:address]
-          })
+          address.name = address_param[:name]
+          address.phone = address_param[:phone]
+          address.address = address_param[:address]
+
           address.save!()
           response_status = ResponseStatus.default_success
           data = address

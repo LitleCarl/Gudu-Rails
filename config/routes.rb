@@ -11,8 +11,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :orders, param: :order_id, only: [:show, :index] do
-
+  resources :orders, param: :order_id, only: [:show, :index, :create] do
+    member do
+      get :get_charge_for_unpaid_order
+    end
   end
 
   resources :users, only: [:index] do
@@ -24,7 +26,9 @@ Rails.application.routes.draw do
     collection do
       post :send_login_sms_code
       get :basic_config
+      post :pingpp_pay_done
     end
+
   end
   resources :stores, param: :store_id, only: [:show]
   resources :products, param: :product_id, only: [:show]

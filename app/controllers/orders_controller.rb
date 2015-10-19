@@ -5,6 +5,7 @@ class OrdersController < ApplicationController
 @apiName GetOrders
 @apiGroup Order
 
+@apiParam {Number} [status]     可选订单状态
 @apiParam {Number} [page=1]     Optional page with default 1.
 @apiParam {Number} [limit=12]     Optional limit with default 12.
 
@@ -28,5 +29,15 @@ class OrdersController < ApplicationController
 =end
   def get_charge_for_unpaid_order
     @response_status, @charge = Order.get_charge_for_unpaid_order(params)
+  end
+
+  def create
+    @response_status, @order= Order.create_new_order(params)
+    if @order.present?
+      puts "创建的id为:#{@order.id}"
+     nothing, @charge = Order.get_charge_for_unpaid_order({user: params[:user], order_id: @order.id})
+    else
+      @charge = nil
+    end
   end
 end

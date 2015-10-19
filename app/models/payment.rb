@@ -11,8 +11,8 @@
 #  order_id       :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  pingpp_info    :string(255)
 #
-
 class Payment < ActiveRecord::Base
   belongs_to :order
   after_create :set_order_paid_and_update_product_specification
@@ -21,11 +21,8 @@ class Payment < ActiveRecord::Base
 
   # 检查字段合法
   def check_field_ok
-    unless PayMethod.include?(self.payment_method)
+    unless Order::PayMethod::ALL.include?(self.payment_method)
       errors.add(:payment_method, '不合法')
-    end
-    if Order.find(self.order_id).blank?
-      errors.add(:order_id, '对应订单不存在')
     end
   end
 

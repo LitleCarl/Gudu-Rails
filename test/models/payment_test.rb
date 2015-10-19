@@ -11,6 +11,7 @@
 #  order_id       :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  pingpp_info    :string(255)
 #
 
 require 'test_helper'

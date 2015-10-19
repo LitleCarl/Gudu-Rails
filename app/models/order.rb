@@ -33,7 +33,7 @@ class Order < ActiveRecord::Base
   end
 
   module PayMethod
-    WEIXIN = 'WX'
+    WEIXIN = 'wx'
     ALIPAY = 'alipay'
     ALL = [WEIXIN, ALIPAY]
   end
@@ -45,7 +45,9 @@ class Order < ActiveRecord::Base
       #raise RestError::MissParameterError if params[:user].blank?
       user = params[:user]
       if user.present?
-        data = Order.where({user_id: user.id}).order('created_at desc').page(params[:page]).per(params[:limit])
+        query = {user_id: user.id}
+        query[:status] = params[:status] if params[:status].present?
+        data = Order.where(query).order('created_at desc').page(params[:page]).per(params[:limit])
         if Order.where({user_id: user.id}).count <= params[:page] * params[:limit]
           params[:last_page] = true
         end
@@ -65,18 +67,19 @@ class Order < ActiveRecord::Base
       raise RestError::MissParameterError if params[:order_id].blank?
       user = params[:user]
       if user.present?
-        order = Order.where({user_id: user.id, status: Order.Status::Not_Paid}).first
+        order = Order.where({user_id: user.id, id: params[:order_id], status: Order::Status::Not_Paid}).first
         if order.present?
           charge = Pingpp::Charge.create(
               :order_no  => order.id,
               :app       => {id: 'app_Kmv5a5z1aLy5Tavn'},
               :channel   => order.pay_method,
-              :amount    => order.price * 100,
+              :amount    => (order.price * 100).to_i,
               :client_ip => '127.0.0.1',
               :currency  => 'cny',
               :subject   => '咕嘟早餐',
               :body      => '开启全新一天'
           )
+          puts "charge的大小为#{(order.price * 100).to_i}"
           response_status.code = ResponseStatus::Code::SUCCESS
         else
           response_status.message = '订单不存在或已经支付'
@@ -98,59 +101,74 @@ class Order < ActiveRecord::Base
         user = params[:user]
         cart_items = params[:cart_items]
         campus = params[:campus]
+
+
         if user.present?
           total_price = 0.0
           # 1.检测商店正常,商品和规格的状态正常并且规格stock > 0
           cart_items.each do | cart_item |
             # 注意cart_item是Hash类型
-            product = Product.includes(:specifications)
+            product = Product.where(
+                {
+                    id: cart_item[:product_id],
+                }).includes(:specifications)
                           .references(:specifications)
                           .where(
-                              {product_id: cart_item[:product_id],
-                               status: Product.Status::Normal,
-                               specifications: {id: cart_item[:specification_id],
-                                                status: Specification.Status::Normal,
-                                                stock: (cart_item[:quantity]..Float::INFINITY)
-                               }
-                              }
+                              'specifications.id = ? and specifications.status = ?',
+                              cart_item[:specification_id],
+                              Specification::Status::Normal,
                           )
                           .first
 
-            product_valid = product.present? && product.specifications.count > 0
+            product_available = product.present?
+            specification_available =  product.specifications.count > 0
+            stock_available = product.specifications[0].stock >= cart_item[:quantity]
+            product_valid = product.present? && product_available  && specification_available && stock_available
             if product_valid
               total_price += product.specifications[0].price * cart_item[:quantity]
+            else
+              raise StandardError.new('商品不存在') unless   product.present?
+              raise StandardError.new('商品已下架') if  product.status != Product::Status::Normal
+              raise StandardError.new('此规格不可用') unless   specification_available
+              raise StandardError.new('购买数超过库存') unless   stock_available
             end
-            unless product_valid
-              raise StandardError.new('商品不可购买')
-            end
-            if product.store.status != Store.Status::Normal
+            if product.store.status != Store::Status::Normal
               raise StandardError.new('店铺已关闭')
             end
+
+
           end
-          order = Order.new(
-              {
-              pay_method: params[:pay_method],
-              user: params[:user],
-              price: total_price,
-              campus: params[:campus],
-              delivery_time: params[:delivery_time],
-              receiver_name: params[:receiver_name],
-              receiver_phone: params[:receiver_phone],
-              receiver_address: params[:receiver_address]
-            }
-          )
+
+          order = Order.new
+
+          order.pay_method = params[:pay_method]
+          order.user = params[:user]
+          order.price = total_price
+          order.campus_id = campus
+          order.delivery_time = params[:delivery_time]
+          order.receiver_name = params[:receiver_name]
+          order.receiver_phone = params[:receiver_phone]
+          order.receiver_address = params[:receiver_address]
+          order.status = Order::Status::Not_Paid
+
+          puts 'order:',order
+
           order.save!
+          puts 'step 22'
+
           # 创建Order_Item
           cart_items.each do | item |
-            cart_item = CartItem.new
-            cart_item.product_id = item[:product_id]
-            cart_item.quantity = item[:quantity]
-            cart_item.order = order
-            cart_item.specification_id = item[:specification_id]
-            cart_item.price_snapshot = Specification.find(cart_item.specification_id).price
-            cart_item.save!
+            order_item = OrderItem.new
+            order_item.product_id = item[:product_id]
+            order_item.quantity = item[:quantity]
+            order_item.order = order
+            order_item.specification_id = item[:specification_id]
+            order_item.price_snapshot = Specification.find(order_item.specification_id).price
+            order_item.save!
+
           end
           response_status = ResponseStatus.default_success
+          data = order
         end
       end
     rescue Exception => ex
@@ -162,7 +180,7 @@ class Order < ActiveRecord::Base
 
 
   def check_order_fields
-    unless PayMethod.include?(self.pay_method)
+    unless PayMethod::ALL.include?(self.pay_method)
       errors.add(:pay_method, '不合法')
     end
   end

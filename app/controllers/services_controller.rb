@@ -1,0 +1,59 @@
+require 'date'
+
+class ServicesController < ApplicationController
+  skip_before_filter :user_about
+
+  def pingpp_pay_done
+    status = 400
+    begin
+      event = JSON.parse(request.body.read)
+      if event['type'].nil?
+      elsif event['type'] == 'charge.succeeded'
+        # 开发者在此处加入对支付异步通知的处理代码
+        charge = event['data']['object']
+        status = 200
+        payment = Payment.new
+        payment.payment_method = charge['channel'] #支付渠道
+        payment.time_paid = Time.at(charge['time_paid']).to_datetime
+        payment.order_id = charge['order_no']
+        payment.amount = charge['amount']
+        payment.transaction_no = charge['transaction_no']
+        payment.charge_id = charge['id']
+        payment.pingpp_info = event.to_s
+        payment.save!
+
+      else
+      end
+    rescue JSON::ParserError
+      render :status => status
+    end
+  end
+
+  def basic_config
+    @response_status = ResponseStatus.default_success
+    @config = {
+        availableDeliveryTime: ["6:29", "7:00", "7:30" , "8:30", "9:00"],
+        availablePayMethod: [{
+                                 name: "支付宝",
+                                 code: "alipay"
+                             },
+                             {
+                                 name: "微信",
+                                 code: "wx"
+                             }]
+    }
+  end
+
+  def send_login_sms_code
+    @response_status = ResponseStatus.default
+    @token = nil
+    begin
+      raise RestError::MissParameterError if params[:phone].blank? || !RegularTest.is_phone_number(params[:phone])
+      @token = TsaoUtil.send_login_sms_code(params[:phone], '1234')
+      @response_status = ResponseStatus.default_success
+    rescue Exception => ex
+      Rails.logger.error(ex.message)
+      @response_status.message = ex.message
+    end
+  end
+end

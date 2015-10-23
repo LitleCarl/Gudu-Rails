@@ -15,7 +15,8 @@ class Address < ActiveRecord::Base
   belongs_to :user
   #validates_uniqueness_of
   validates :name, :address, :phone, :user_id, presence: true
-
+  validate :check_fields
+  after_save :detect_address_is_set_default
   def self.add_address(params)
     response_status = ResponseStatus.default
     data = nil
@@ -72,8 +73,8 @@ class Address < ActiveRecord::Base
           address.name = address_param[:name]
           address.phone = address_param[:phone]
           address.address = address_param[:address]
-
-          address.save!()
+          address.default_address = address_param[:default_address]
+          address.save!
           response_status = ResponseStatus.default_success
           data = address
         else
@@ -86,6 +87,19 @@ class Address < ActiveRecord::Base
       response_status.message = '地址修改失败'
     end
     return response_status, data
+  end
+
+  def check_fields
+    self.default_address ||= false
+  end
+  # 检测地址的默认地址属性是否修改过
+  def detect_address_is_set_default
+    if self.changed.include?('default_address') && self.default_address == true
+      Address.where({default_address: true, user_id: self.user_id}).where.not({id: self.id}).each do | address |
+        address.default_address = false
+        address.save
+      end
+    end
   end
 
 end

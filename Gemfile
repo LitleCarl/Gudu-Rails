@@ -49,7 +49,11 @@ gem "spring", group: :development
 # https://github.com/amatsuda/kaminari
 gem 'kaminari', '0.16.1'
 
+# 拼音
 gem 'chinese_pinyin'
+
+# Worker
+gem 'sidekiq', '~> 3.5', '>= 3.5.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

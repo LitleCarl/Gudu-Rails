@@ -4,6 +4,7 @@ class ServicesController < ApplicationController
   skip_before_filter :user_about
 
   def search_product_and_store_for_campus
+    sleep(1)
     response_status_for_product, @products = Product.search_product_for_api(params)
     response_status_for_store, @stores = Store.search_store_for_api(params)
     @response_status = ResponseStatus.merge_status(response_status_for_product, response_status_for_store)

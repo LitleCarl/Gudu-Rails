@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       post :send_login_sms_code
       get :basic_config
       post :pingpp_pay_done
+      get :search_product_and_store_for_campus
     end
 
   end

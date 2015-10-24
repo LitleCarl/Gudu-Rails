@@ -59,10 +59,31 @@ class Store < ActiveRecord::Base
     return response_status, data
   end
 
-  # 设置拼音
+  def self.search_store_for_api(params)
+    response_status = ResponseStatus.default
+    data = nil
+    begin
+      raise RestError::MissParameterError if params[:campus_id].blank? || params[:keyword].blank?
+      data = self.search_store_by_keyword(params[:campus_id], params[:keyword])
+      response_status = ResponseStatus.default_success
+    rescue Exception => ex
+      Rails.logger.error(ex.message)
+      response_status.message = ex.message
+    end
+
+    return response_status, data
+  end
+
+  # 根据关键字模糊搜索指定学校里的店铺
+  def self.search_store_by_keyword(campus_id, keyword)
+    keyword = "'%#{keyword.downcase}%'"
+    self.includes(:campuses).references(:campuses).where({campuses: {id: campus_id}}).where("stores.name like #{keyword} or stores.pinyin like #{keyword}")
+  end
+
+  # validate 设置拼音
   def set_store_pinyin
     if self.changed.include?('name')
-      self.pinyin = HanziToPinyin.hanzi_to_pinyin(self.name).upcase
+      self.pinyin = Pinyin.t(self.name, splitter: '').downcase
     end
   end
 end

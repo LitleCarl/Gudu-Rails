@@ -169,4 +169,15 @@ class ResponseStatus
 
     response_status
   end
+
+  def self.merge_status(status_one, status_two)
+    response_status = ResponseStatus.default
+    if status_one.code == Code::SUCCESS && status_two.code == Code::SUCCESS
+      response_status.code = ResponseStatus::Code::SUCCESS
+    else
+      response_status.message ||= status_one.message
+      response_status.message ||= status_two.message
+    end
+    response_status
+  end
 end

@@ -23,6 +23,7 @@ class Order < ActiveRecord::Base
   has_many :order_items
 
   validate :check_order_fields
+  after_save :check_order_status
   module Status
     Dead = 0          # 取消的订单
     Not_Paid = 1      # 未支付
@@ -178,6 +179,12 @@ class Order < ActiveRecord::Base
     return response_status, data
   end
 
+  def check_order_status
+    # 检查订单是否从未支付到支付
+    if self.status_changed? && self.status_was == Order::Status::Not_Paid && self.status == Order::Status::Not_Delivered
+      OrderDeliveredSmsWorker.perform_async(self.receiver_phone)
+    end
+  end
 
   def check_order_fields
     unless PayMethod::ALL.include?(self.pay_method)

@@ -4,7 +4,6 @@ class ServicesController < ApplicationController
   skip_before_filter :user_about
 
   def search_product_and_store_for_campus
-    sleep(1)
     response_status_for_product, @products = Product.search_product_for_api(params)
     response_status_for_store, @stores = Store.search_store_for_api(params)
     @response_status = ResponseStatus.merge_status(response_status_for_product, response_status_for_store)
@@ -56,7 +55,7 @@ class ServicesController < ApplicationController
     @token = nil
     begin
       raise RestError::MissParameterError if params[:phone].blank? || !RegularTest.is_phone_number(params[:phone])
-      @token = TsaoUtil.send_login_sms_code(params[:phone], '1234')
+      @token = TsaoUtil.send_login_sms_code(params[:phone])
       @response_status = ResponseStatus.default_success
     rescue Exception => ex
       Rails.logger.error(ex.message)

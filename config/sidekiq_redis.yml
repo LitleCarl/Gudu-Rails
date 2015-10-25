@@ -1,0 +1,20 @@
+# encoding: UTF-8
+
+defaults: &defaults
+  status: open
+  host: localhost
+  port: 6379
+  username: username
+  password: Fy958e5mmyb7Ta4H
+
+  namespace: gudu-dev-sidekiq
+
+development: &development
+  <<: *defaults
+
+test:
+  <<: *development
+
+production:
+  <<: *development
+

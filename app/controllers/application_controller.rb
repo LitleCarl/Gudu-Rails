@@ -1,4 +1,3 @@
-require 'TsaoUtil'
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -11,7 +10,6 @@ class ApplicationController < ActionController::Base
   class UserNotFoundError < StandardError
 
   end
-  @images_site = 'http://gudu-sails.tunnel.mobi/'
   def user_about
     token = request.headers['x-access-token']
     Rails.logger.error('headers' + token) if token.present?

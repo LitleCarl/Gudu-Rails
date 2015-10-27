@@ -5,4 +5,8 @@ end
 json.product_images do | json |
   json.array! product.product_images, partial: 'product_images/product_image', as: :product_image
 end
-json.logo_filename asset_url('products/' + product.logo_filename)#wrap_image_path_with_site(product.logo_filename, )
+if product.logo_filename.present?
+  json.logo_filename wrap_image_path_with_qiniu_site('/products/' + product.logo_filename)
+else
+  json.logo_filename nil
+end

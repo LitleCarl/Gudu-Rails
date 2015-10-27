@@ -72,7 +72,7 @@ class Order < ActiveRecord::Base
         if order.present?
           charge = Pingpp::Charge.create(
               :order_no  => order.id,
-              :app       => {id: 'app_Kmv5a5z1aLy5Tavn'},
+              :app       => {id: Rails.application.config.pingpp_app_id},
               :channel   => order.pay_method,
               :amount    => (order.price * 100).to_i,
               :client_ip => '127.0.0.1',

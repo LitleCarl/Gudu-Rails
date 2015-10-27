@@ -76,4 +76,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.pingpp_key = 'sk_live_OWXrTG50KajHHa9WDGHSmfP0'
+  config.pingpp_app_id = 'app_DmbjLCrDCCS8TGKe'
 end

@@ -1,5 +1,9 @@
 json.(store, :id, :name, :brief, :address, :logo_filename, :location, :pinyin, :status)
-json.logo_filename asset_url('stores/'+store.logo_filename)
+if store.logo_filename.present?
+  json.logo_filename wrap_image_path_with_qiniu_site('/stores/'+store.logo_filename)
+else
+  json.logo_filename nil
+end
 # has_many
 json.products do
   json.array! store.products, partial: 'products/product', as: :product

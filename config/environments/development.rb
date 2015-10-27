@@ -38,4 +38,9 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  #config.web_console.whitelisted_ips = '10.71.186.68'
+  config.pingpp_key = 'sk_test_arLyX1n900GOXHqDKKXb1uvL'
+  config.pingpp_app_id = 'app_DmbjLCrDCCS8TGKe'
+
 end

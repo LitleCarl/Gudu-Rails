@@ -10,7 +10,7 @@ class ServicesController < ApplicationController
   end
 
   def pingpp_pay_done
-    status = 400
+    status = 200
     begin
       event = JSON.parse(request.body.read)
       if event['type'].nil?

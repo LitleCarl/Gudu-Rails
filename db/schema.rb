@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20151022051914) do
     t.integer  "quantity",         limit: 4,                          default: 1,   null: false
     t.decimal  "price_snapshot",             precision: 10, scale: 2, default: 0.0, null: false
     t.integer  "product_id",       limit: 4,                                        null: false
-    t.integer  "order_id",         limit: 4,                                        null: false
+    t.integer  "orders_id",        limit: 4,                                        null: false
     t.integer  "specification_id", limit: 4,                                        null: false
     t.datetime "created_at",                                                        null: false
     t.datetime "updated_at",                                                        null: false
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20151022051914) do
     t.string   "receiver_name",    limit: 255,                                        null: false
     t.string   "receiver_phone",   limit: 255,                                        null: false
     t.string   "receiver_address", limit: 255,                                        null: false
-    t.integer  "campus_id",        limit: 4
+    t.integer  "campuses_id",      limit: 4
     t.integer  "user_id",          limit: 4
     t.string   "pay_method",       limit: 255,                                        null: false
     t.datetime "created_at",                                                          null: false
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 20151022051914) do
     t.decimal  "amount",                       precision: 10, scale: 2, default: 0.0, null: false
     t.string   "transaction_no", limit: 255,                                          null: false
     t.string   "charge_id",      limit: 255,                                          null: false
-    t.integer  "order_id",       limit: 4,                                            null: false
+    t.integer  "orders_id",      limit: 4,                                            null: false
     t.datetime "created_at",                                                          null: false
     t.datetime "updated_at",                                                          null: false
     t.text     "pingpp_info",    limit: 65535
@@ -181,7 +181,7 @@ ActiveRecord::Schema.define(version: 20151022051914) do
 
   create_table "sub_orders", force: :cascade do |t|
     t.integer  "owner_id",    limit: 4,                                        null: false
-    t.integer  "order_id",    limit: 4,                                        null: false
+    t.integer  "orders_id",   limit: 4,                                        null: false
     t.decimal  "price",                 precision: 10, scale: 2, default: 0.0, null: false
     t.datetime "origin_date",                                                  null: false
     t.datetime "created_at",                                                   null: false

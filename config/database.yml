@@ -9,10 +9,12 @@
 default: &default
   adapter: mysql2
   pool: 50
-  port: 3306
+  port: 3646
   timeout: 5000
   username: root
-
+  #username: empty_room
+  #password: 58133240
+  #host: gudurails.mysql.rds.aliyuncs.com
 
 development:
   <<: *default

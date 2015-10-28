@@ -20,8 +20,8 @@ class TsaoUtil < Settingslogic
   def self.send_login_sms_code(phone)
     return if phone.blank?
     exp = Time.now.to_i + 120 #2分钟
-    code = '1234'#Random.rand(1000..9999).to_s
-    #SignUpSmsWorker.perform_async(phone, code)
+    code = Random.rand(1000..9999).to_s
+    SignUpSmsWorker.perform_async(phone, code)
     payload = {phone: phone, smsCode: code, exp: exp}
     token = JWT.encode payload, TsaoUtil[:secret], 'HS256'
     token

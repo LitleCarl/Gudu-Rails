@@ -1,4 +1,9 @@
+require 'json'
 class Sms
+  module TemplateID
+    LoginCode = 'RSETSESEKESE'
+    PayDone = 'ZL6IQABG7738'
+  end
   #
   # 短信网关发送短信
   # @example
@@ -21,47 +26,38 @@ def self.send_sms(receive_phone, content)
   end
 
 
-  # 巨匠一码通平台
-  # @example
-  #   Sms.send_sms_by_jujiang(13916373635)
-  #
-  # @param  mobile  [String, nil]  手机号码
-  #
-  # @param  content  [String, nil]  短信内容
-  #
-  # @return Symbol 发送结果 成功->:success, 失败->:fail
-  #
-  # jujiang:
-  #   site: 'http://218.207.176.76:9000/sendXSms.do'
-  #   username: 'imbox'
-  #   password: 'imbox123'
-  #   product_id: 669141
-  def self.sms_jujiang(mobile, content = "", msg_type = 0)
+  # 智验短信平台 http://www.zhiyan.net
+  def self.sms_zhiyan(mobile, use_for, template_params)
     result = :fail
-    url = 'http://218.207.176.76:9000/sendXSms.do'
+    url = 'http://sms.zhiyan.net/sms/template_send.json'
     return result if url.nil?
 
-    username = 'imbox'
-    password =  'imbox123'
-    product_id = '669141'
+    param = {
+        apiKey: 'e4d316a72e6d435ba14e0bdb533ed669',
+        appId: '03sz3t6922n7',
+        mobile: mobile.to_s,
+        templateId: use_for,
+        param: template_params
+    }
 
     begin
       # 针对不同的测试类型提供不同的post url
       res = nil
-      if msg_type == 0
-        res = Net::HTTP.post_form(URI.parse(url), username: username, password: password, mobile: mobile, content: content,productid: product_id)
-      elsif msg_type == 1
-        res = Net::HTTP.post_form(URI.parse(url),username: username, password: password,mobile: mobile, title: '', content: content,product_id: product_id)
-      elsif msg_type == 2
-        res = Net::HTTP.post_form(URI.parse(url),username: username, password: password, product_id: product_id)
-      end
-      return_code = res.body
-      return_msg = get_msg_by_code_for_jujiang(msg_type,return_code)
 
-      Rails.logger.info "返回参数: #{return_code}, 描述: #{return_msg}"
-      if return_msg == '成功'
+      url = URI.parse(url)
+      req = Net::HTTP::Post.new(url.path,{'Content-Type' => 'application/json;charset=utf-8', 'Accept' => 'application/json'})
+      req.body = param.to_json
+      res = Net::HTTP.new(url.host,url.port).start{|http| http.request(req)}
+
+      res_data = JSON.parse(res.body)
+      Rails.logger.info(res_data.class)
+      if res_data['result'] == 'SUCCESS'
         result = :success
+        Rails.logger.info('短信发送成功')
+      else
+        Rails.logger.info('短信发送失败:'+res_data['reason'])
       end
+
     rescue => e
       Rails.logger.error do
         ([e.message] + e.backtrace).join("\n")
@@ -70,33 +66,4 @@ def self.send_sms(receive_phone, content)
     return result
   end
 
-  # 服务端返回的信息
-  def self.get_msg_by_code_for_jujiang(test_type,code)
-    if test_type == 0 || test_type == 1
-      res_des = %w{失败 成功 余额不够 黑词审核中 出现异常人工处理中 提交频率太快 有效号码为空 短信内容为空 一级黑词 没有url提交权限 发送号码过多 产品ID异常 参数异常 用户名或者密码不正确}
-      if /^1,/ =~ code
-        code = '1'
-      elsif /^8,/ =~ code
-        code = '8'
-      end
-      code = code.to_i
-      res_des[code]
-
-    elsif test_type == 2
-      Rails.logger.info "in elsif : code : #{code}, code.class : #{code.class}"
-      case code
-        # !!! 这里有个问题，API上给出的参数是-2，但实际上返回值包含了很多其他空字符，所以用如下规则匹配
-        when /^-2/
-          '失败'
-        when '-1'
-          '用户名或者密码不正确'
-        when '-5'
-          '提交频率太快'
-        when '-9'
-          '没有url提交权限'
-        else
-          "剩余条数：#{code}"
-      end
-    end
-  end
 end

@@ -152,10 +152,7 @@ class Order < ActiveRecord::Base
           order.receiver_address = params[:receiver_address]
           order.status = Order::Status::Not_Paid
 
-          puts 'order:',order
-
           order.save!
-          puts 'step 22'
 
           # 创建Order_Item
           cart_items.each do | item |
@@ -172,9 +169,12 @@ class Order < ActiveRecord::Base
           data = order
         end
       end
-    rescue Exception => ex
-      Rails.logger.error(ex.message)
-      response_status.message = ex.message
+    rescue Exception => e
+      Rails.logger.error(e.message)
+      Rails.logger.error do
+        ([e.message] + e.backtrace).join("\n")
+      end unless e.blank?
+      response_status.message = e.message
     end
     return response_status, data
   end

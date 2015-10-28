@@ -182,7 +182,7 @@ class Order < ActiveRecord::Base
   def check_order_status
     # 检查订单是否从未支付到支付
     if self.status_changed? && self.status_was == Order::Status::Not_Paid && self.status == Order::Status::Not_Delivered
-      OrderDeliveredSmsWorker.perform_async(self.receiver_phone)
+      OrderPayDoneSmsWorker.perform_async(self.id)
     end
   end
 

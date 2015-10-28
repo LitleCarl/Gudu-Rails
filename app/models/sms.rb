@@ -4,27 +4,16 @@ class Sms
     LoginCode = 'RSETSESEKESE'
     PayDone = 'ZL6IQABG7738'
   end
-  #
-  # 短信网关发送短信
-  # @example
-  #   Sms.send_sms('13916373635', '测试')
-  #
-  # @param  receive_phone [String]  手机号码
-  #
-  # @param  content [String]  短信内容
-  #
-  # @param  source  [String]  来源
-  #
-  # @return Symbol 发送结果 成功->:success, 失败->:fail
-def self.send_sms(receive_phone, content)
-    result = :success
-    if receive_phone.blank? || content.blank?
-      return :fail
-    end
-    result = self.sms_jujiang(receive_phone, content)
-    return result
-  end
 
+  # 返回支付时间, 订单价格, 预计送达时间
+  def self.wrap_paydone_param(order_id)
+    order = Order.find(order_id)
+    if order.present? && order.payment.present?
+      return order.payment.time_paid.strftime('%m月%d日%H:%M'), order.price.to_s, "明日#{order.delivery_time}"
+    else
+      return nil, nil, nil
+    end
+  end
 
   # 智验短信平台 http://www.zhiyan.net
   def self.sms_zhiyan(mobile, use_for, template_params)

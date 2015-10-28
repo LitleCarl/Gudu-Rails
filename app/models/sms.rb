@@ -9,7 +9,7 @@ class Sms
   def self.wrap_pay_done_param(order_id)
     order = Order.find(order_id)
     if order.present? && order.payment.present?
-      return order.payment.time_paid.strftime('%m月%d日%H:%M'), order.price.to_s, "明日#{order.delivery_time}"
+      return order.payment.time_paid.in_time_zone('Beijing').strftime('%m月%d日%H:%M'), order.price.to_s, "明日#{order.delivery_time}"
     else
       return nil, nil, nil
     end

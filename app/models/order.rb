@@ -70,7 +70,7 @@ class Order < ActiveRecord::Base
       user = params[:user]
       if user.present?
         order = Order.where({user_id: user.id, id: params[:order_id], status: Order::Status::Not_Paid}).first
-        if order.present?
+        if order.present? && order.charge_json.blank?
           charge = Pingpp::Charge.create(
               :order_no  => order.id,
               :app       => {id: Rails.application.config.pingpp_app_id},
@@ -81,7 +81,11 @@ class Order < ActiveRecord::Base
               :subject   => '咕嘟早餐',
               :body      => '开启全新一天'
           )
-          puts "charge的大小为#{(order.price * 100).to_i}"
+          order.charge_json = charge
+          order.save!
+          response_status.code = ResponseStatus::Code::SUCCESS
+        elsif order.present? && order.charge_json.present?
+          charge = order.charge_json
           response_status.code = ResponseStatus::Code::SUCCESS
         else
           response_status.message = '订单不存在或已经支付'

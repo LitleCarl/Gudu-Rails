@@ -1,7 +1,7 @@
 require 'json'
 class Sms
   module TemplateID
-    LoginCode = 'RSETSESEKESE'
+    LoginCode = 'ASDFQIOSALWS'
     PayDone = 'ZL6IQABG7738'
   end
 

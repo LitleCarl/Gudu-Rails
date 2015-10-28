@@ -11,10 +11,10 @@ default: &default
   pool: 50
   port: 3646
   timeout: 5000
-  username: root
-  #username: empty_room
-  #password: 58133240
-  #host: gudurails.mysql.rds.aliyuncs.com
+ # username: root
+  username: empty_room
+  password: 58133240
+  host: gudurails.mysql.rds.aliyuncs.com
 
 development:
   <<: *default

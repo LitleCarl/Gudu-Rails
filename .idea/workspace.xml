@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eb4b51e4-cbba-42cd-ab6b-0019490e91bb" name="Default" comment="" />
+    <list default="true" id="eb4b51e4-cbba-42cd-ab6b-0019490e91bb" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/workers/order_pay_done_sms_worker.rb" afterPath="$PROJECT_DIR$/app/workers/order_pay_done_sms_worker.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/sms.rb" afterPath="$PROJECT_DIR$/app/models/sms.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="gudu-rails.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/components/" />
@@ -66,8 +70,8 @@
       <file leaf-file-name="sms.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/models/sms.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.044510387">
-              <caret line="2" column="19" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.17804155">
+              <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -77,7 +81,7 @@
         <entry file="file://$PROJECT_DIR$/app/workers/order_pay_done_sms_worker.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="60" selection-start-line="10" selection-start-column="60" selection-end-line="10" selection-end-column="60" />
+              <caret line="7" column="49" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -172,9 +176,9 @@
         <option value="$PROJECT_DIR$/db/migrate/20151028053619_change_order_id_for_paymentr.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20151028053657_change_order_id_for_order_item.rb" />
         <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/app/models/order.rb" />
         <option value="$PROJECT_DIR$/app/models/sms.rb" />
         <option value="$PROJECT_DIR$/app/workers/order_pay_done_sms_worker.rb" />
-        <option value="$PROJECT_DIR$/app/models/order.rb" />
       </list>
     </option>
   </component>
@@ -967,15 +971,15 @@
     <entry file="file://$PROJECT_DIR$/app/workers/order_pay_done_sms_worker.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="60" selection-start-line="10" selection-start-column="60" selection-end-line="10" selection-end-column="60" />
+          <caret line="7" column="49" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="63" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/sms.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.044510387">
-          <caret line="2" column="19" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.17804155">
+          <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
           <folding />
         </state>
       </provider>

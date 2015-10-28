@@ -6,7 +6,7 @@ class Sms
   end
 
   # 返回支付时间, 订单价格, 预计送达时间
-  def self.wrap_paydone_param(order_id)
+  def self.wrap_pay_done_param(order_id)
     order = Order.find(order_id)
     if order.present? && order.payment.present?
       return order.payment.time_paid.strftime('%m月%d日%H:%M'), order.price.to_s, "明日#{order.delivery_time}"

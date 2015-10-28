@@ -14,6 +14,7 @@
 #  pay_method       :string(255)      not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  charge_json      :text(65535)
 #
 
 class Order < ActiveRecord::Base

@@ -11,8 +11,9 @@
 #  order_id       :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  pingpp_info    :string(255)
+#  pingpp_info    :text(65535)
 #
+
 class Payment < ActiveRecord::Base
   belongs_to :order
   after_create :set_order_paid_and_update_product_specification

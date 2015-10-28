@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
         user = User.upsert_user_if_not_found(phone)
         token = TsaoUtil.sign_jwt_user_session(phone)
         response_status = ResponseStatus.default_success
+      else
+        response_status.message = '验证码不正确'
       end
     rescue Exception => ex
       Rails.logger.error(ex.message)

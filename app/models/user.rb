@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
       user.password = '123456'
       user.save
     end
+    user
   end
 
   def set_password_encrypted

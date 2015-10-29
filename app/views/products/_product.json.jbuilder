@@ -10,3 +10,9 @@ if product.logo_filename.present?
 else
   json.logo_filename nil
 end
+
+if product.nutrition.present?
+  json.nutrition product.nutrition
+else
+  json.nutrition nil
+end

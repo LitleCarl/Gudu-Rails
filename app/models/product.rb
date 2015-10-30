@@ -14,6 +14,7 @@
 #  pinyin        :string(255)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  month_sale    :integer          default("23")
 #
 
 class Product < ActiveRecord::Base

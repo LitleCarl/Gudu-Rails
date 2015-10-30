@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151028141344) do
+ActiveRecord::Schema.define(version: 20151030053249) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 20151028141344) do
     t.string   "pinyin",        limit: 255
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
+    t.integer  "month_sale",    limit: 4,   default: 23
   end
 
   create_table "specifications", force: :cascade do |t|

@@ -35,7 +35,7 @@ class Specification < ActiveRecord::Base
     # 更新商品最高最低价格
     if self.changed.include?('price')
     max_price = Specification.where({product_id: self.product.id}).maximum(:price)
-    min_price = Specification.where({product_id: self.product.id}).maximum(:price)
+    min_price = Specification.where({product_id: self.product.id}).minimum(:price)
     self.product.max_price = max_price
     self.product.min_price = min_price
     self.product.save

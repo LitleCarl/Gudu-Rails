@@ -9,6 +9,31 @@ class ServicesController < ApplicationController
     @response_status = ResponseStatus.merge_status(response_status_for_product, response_status_for_store)
   end
 
+  def pingpp_pay_done_for_alive
+    status = 200
+    begin
+      event = JSON.parse(request.body.read)
+      if event['type'].nil? && event['livemode'] == true
+      elsif event['type'] == 'charge.succeeded'
+        # 开发者在此处加入对支付异步通知的处理代码
+        charge = event['data']['object']
+        status = 200
+        payment = Payment.new
+        payment.payment_method = charge['channel'] #支付渠道
+        payment.time_paid = Time.at(charge['time_paid']).to_datetime
+        payment.order_id = charge['order_no']
+        payment.amount = charge['amount']
+        payment.transaction_no = charge['transaction_no']
+        payment.charge_id = charge['id']
+        payment.pingpp_info = event.to_s
+        payment.save!
+      else
+      end
+    rescue JSON::ParserError
+      render :status => status
+    end
+  end
+
   def pingpp_pay_done
     status = 200
     begin

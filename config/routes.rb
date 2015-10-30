@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       post :pingpp_pay_done
       get :pingpp_pay_done
 
+      post :pingpp_pay_done_for_alive
+      get :pingpp_pay_done_for_alive
       get :search_product_and_store_for_campus
     end
 

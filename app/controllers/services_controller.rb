@@ -83,7 +83,7 @@ class ServicesController < ApplicationController
     @response_status = ResponseStatus.default
     @token = nil
     begin
-      raise RestError::MissParameterError if params[:phone].blank? || !RegularTest.is_phone_number(params[:phone])
+      raise StandardError.new('手机号输入有误') if params[:phone].blank? || !RegularTest.is_phone_number(params[:phone])
       @token = TsaoUtil.send_login_sms_code(params[:phone])
       @response_status = ResponseStatus.default_success
     rescue Exception => ex

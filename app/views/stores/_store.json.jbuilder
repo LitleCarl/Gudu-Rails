@@ -1,4 +1,4 @@
-json.(store, :id, :name, :brief, :address, :logo_filename, :location, :pinyin, :status)
+json.(store, :id, :name, :brief, :address, :logo_filename, :location, :pinyin, :status, :month_sale, :signature, :back_ratio, :main_food_list)
 if store.logo_filename.present?
   json.logo_filename wrap_image_path_with_qiniu_site('/stores/'+store.logo_filename)
 else

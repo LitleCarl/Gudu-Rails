@@ -15,6 +15,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  charge_json      :text(65535)
+#  order_number     :string(255)
 #
 
 class Order < ActiveRecord::Base
@@ -23,6 +24,7 @@ class Order < ActiveRecord::Base
   has_one :payment
   has_many :order_items
 
+  before_create :generate_order_number
   validate :check_order_fields
   after_save :check_order_status
   module Status
@@ -194,6 +196,12 @@ class Order < ActiveRecord::Base
   def check_order_fields
     unless PayMethod::ALL.include?(self.pay_method)
       errors.add(:pay_method, '不合法')
+    end
+  end
+
+  def generate_order_number
+    if self.order_number.blank?
+      self.order_number = DateTime.now.strftime("%Y%m%d%H%M").to_s + (SecureRandom.random_number * 100000000000).to_i.to_s
     end
   end
 end

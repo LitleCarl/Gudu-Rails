@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151030053249) do
+ActiveRecord::Schema.define(version: 20151031044718) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20151030053249) do
     t.datetime "created_at",                                                            null: false
     t.datetime "updated_at",                                                            null: false
     t.text     "charge_json",      limit: 65535
+    t.string   "order_number",     limit: 255
   end
 
   create_table "owners", force: :cascade do |t|

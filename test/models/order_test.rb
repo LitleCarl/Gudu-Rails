@@ -15,6 +15,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  charge_json      :text(65535)
+#  order_number     :string(255)
 #
 
 require 'test_helper'

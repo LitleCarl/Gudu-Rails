@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151031044718) do
+ActiveRecord::Schema.define(version: 20151031135319) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -164,15 +164,19 @@ ActiveRecord::Schema.define(version: 20151031044718) do
   end
 
   create_table "stores", force: :cascade do |t|
-    t.string   "name",          limit: 255,                  null: false
-    t.string   "brief",         limit: 255, default: "暂无简介", null: false
-    t.string   "address",       limit: 255,                  null: false
-    t.string   "logo_filename", limit: 255,                  null: false
-    t.string   "location",      limit: 255
-    t.string   "pinyin",        limit: 255
-    t.integer  "status",        limit: 4,   default: 1
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.string   "name",           limit: 255,                    null: false
+    t.string   "brief",          limit: 255,   default: "暂无简介", null: false
+    t.string   "address",        limit: 255,                    null: false
+    t.string   "logo_filename",  limit: 255,                    null: false
+    t.string   "location",       limit: 255
+    t.string   "pinyin",         limit: 255
+    t.integer  "status",         limit: 4,     default: 1
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.text     "signature",      limit: 65535
+    t.integer  "month_sale",     limit: 4,     default: 0
+    t.float    "back_ratio",     limit: 24,    default: 0.0
+    t.text     "main_food_list", limit: 65535
   end
 
   create_table "stores_campuses", force: :cascade do |t|

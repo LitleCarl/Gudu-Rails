@@ -107,7 +107,7 @@ class Store < ActiveRecord::Base
     # 用户基数
     base_num = result.to_a.count
     # 回头客数
-    back_num = result.having('count > 1').to_a.count.to_sql
+    back_num = result.having('count > 1').to_a.count
     # 回头率
     back_ratio = 0.0
     if base_num == 0

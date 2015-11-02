@@ -84,6 +84,41 @@ class Store < ActiveRecord::Base
     self.includes(:campuses).references(:campuses).where({campuses: {id: campus_id}}).where("stores.name like #{keyword} or stores.pinyin like #{keyword}")
   end
 
+
+  ########################################################################
+  #
+  #
+  #                         实例方法区域
+  #
+  #                        Instance Method
+  #
+  #
+  ########################################################################
+
+
+  #
+  # 更新店铺回头率,计算方式:
+  # 查找所有关于本店铺的Order下的OrderItem的Product并属于本店铺的
+  #
+  def update_back_ratio
+    order_ids = Order.joins(order_items: :product).references(:products).where('products.store_id = ?', 1).distinct.map(&:id)
+    result = Order.where(:id => order_ids).select('count(*) as count, user_id').group(:user_id)
+
+    # 用户基数
+    base_num = result.to_a.count
+    # 回头客数
+    back_num = result.having('count > 1').to_a.count.to_sql
+    # 回头率
+    back_ratio = 0.0
+    if base_num == 0
+      back_ratio = 0.0
+    else
+      back_ratio = back_num / base_num.to_f
+    end
+    self.back_ratio = back_ratio
+    self.save
+  end
+
   # validate 设置拼音
   def set_store_pinyin
     if self.changed.include?('name')

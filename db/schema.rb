@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151031135319) do
+ActiveRecord::Schema.define(version: 20151103033954) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -177,6 +177,7 @@ ActiveRecord::Schema.define(version: 20151031135319) do
     t.integer  "month_sale",     limit: 4,     default: 0
     t.float    "back_ratio",     limit: 24,    default: 0.0
     t.text     "main_food_list", limit: 65535
+    t.integer  "owner_id",       limit: 4
   end
 
   create_table "stores_campuses", force: :cascade do |t|

@@ -28,6 +28,8 @@ Rails.application.routes.draw do
       get :basic_config
       post :pingpp_pay_done
       get :pingpp_pay_done
+      # 随机推荐店铺
+      get :random_recommend_store_in_campus
 
       post :pingpp_pay_done_for_alive
       get :pingpp_pay_done_for_alive

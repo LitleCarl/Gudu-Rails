@@ -60,14 +60,7 @@ class ServicesController < ApplicationController
     end
   end
 
-  # availablePayMethod: [{
-  #                          name: "支付宝",
-  #                          code: "alipay"
-  #                      },
-  #                      {
-  #                          name: "微信",
-  #                          code: "wx"
-  #                      }]
+
   def basic_config
     @response_status = ResponseStatus.default_success
     @config = {
@@ -75,6 +68,10 @@ class ServicesController < ApplicationController
         availablePayMethod: [{
                                  name: "支付宝",
                                  code: "alipay"
+                             },
+                             {
+                                 name: "微信",
+                                 code: "wx"
                              }]
     }
   end

@@ -9,6 +9,11 @@ class ServicesController < ApplicationController
     @response_status = ResponseStatus.merge_status(response_status_for_product, response_status_for_store)
   end
 
+  # app随机推荐某家店铺
+  def random_recommend_store_in_campus
+    @response_status, @store = Store.recommend_store_in_campus(params)
+  end
+
   def pingpp_pay_done_for_alive
     status = 200
     begin

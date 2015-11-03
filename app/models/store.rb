@@ -78,6 +78,28 @@ class Store < ActiveRecord::Base
     return response_status, data
   end
 
+  # 随机选择一家校区范围内的店铺
+  def self.recommend_store_in_campus(params)
+    response_status = ResponseStatus.default
+    data = nil
+    begin
+      raise RestError::MissParameterError if params[:campus_id].blank?
+      data = self.where(params[:campus_id])
+      count = data.count
+      index = 0
+      if count > 0
+        index = rand count
+        data = data[index]
+      end
+      response_status = ResponseStatus.default_success
+    rescue Exception => ex
+      Rails.logger.error(ex.message)
+      response_status.message = ex.message
+    end
+
+    return response_status, data
+  end
+
   # 根据关键字模糊搜索指定学校里的店铺
   def self.search_store_by_keyword(campus_id, keyword)
     keyword = "'%#{keyword.downcase}%'"

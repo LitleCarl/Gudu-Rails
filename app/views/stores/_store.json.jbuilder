@@ -4,6 +4,16 @@ if store.logo_filename.present?
 else
   json.logo_filename nil
 end
+
+if store.owner.present?
+  json.owner do
+    json.partial! 'owners/owner', owner: store.owner
+  end
+else
+  json.owner nil
+end
+
+
 # has_many
 json.products do
   json.array! store.products, partial: 'products/product', as: :product

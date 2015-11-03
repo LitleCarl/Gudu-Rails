@@ -1,0 +1,1 @@
+json.(owner, :id, :username, :contact_name, :contact_phone)

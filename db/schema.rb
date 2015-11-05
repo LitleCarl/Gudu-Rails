@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151105112627) do
+ActiveRecord::Schema.define(version: 20151105121730) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -166,14 +166,15 @@ ActiveRecord::Schema.define(version: 20151105112627) do
   end
 
   create_table "specifications", force: :cascade do |t|
-    t.string   "name",       limit: 255,                                        null: false
-    t.string   "value",      limit: 255,                                        null: false
-    t.decimal  "price",                  precision: 10, scale: 2, default: 0.0, null: false
-    t.integer  "product_id", limit: 4,                                          null: false
-    t.integer  "status",     limit: 4,                            default: 1,   null: false
-    t.integer  "stock",      limit: 4,                            default: 0
-    t.datetime "created_at",                                                    null: false
-    t.datetime "updated_at",                                                    null: false
+    t.string   "name",          limit: 255,                                        null: false
+    t.string   "value",         limit: 255,                                        null: false
+    t.decimal  "price",                     precision: 10, scale: 2, default: 0.0, null: false
+    t.integer  "product_id",    limit: 4,                                          null: false
+    t.integer  "status",        limit: 4,                            default: 1,   null: false
+    t.integer  "stock",         limit: 4,                            default: 0
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
+    t.integer  "stock_per_day", limit: 4,                            default: 10,  null: false
   end
 
   create_table "stores", force: :cascade do |t|

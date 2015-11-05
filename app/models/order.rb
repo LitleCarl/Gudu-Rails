@@ -23,6 +23,7 @@ class Order < ActiveRecord::Base
   belongs_to :user
   has_one :payment
   has_many :order_items
+  has_one :coupon
 
   before_create :generate_order_number
   validate :check_order_fields
@@ -77,7 +78,7 @@ class Order < ActiveRecord::Base
               :order_no  => order.id,
               :app       => {id: Rails.application.config.pingpp_app_id},
               :channel   => order.pay_method,
-              :amount    => (order.price * 100).to_i,
+              :amount    => (order.pay_price * 100).to_i,
               :client_ip => '127.0.0.1',
               :currency  => 'cny',
               :subject   => '咕嘟早餐',
@@ -100,6 +101,7 @@ class Order < ActiveRecord::Base
     return response_status, charge
   end
 
+
   def self.create_new_order(params)
     response_status = ResponseStatus.default
     data = nil
@@ -109,10 +111,16 @@ class Order < ActiveRecord::Base
         user = params[:user]
         cart_items = params[:cart_items]
         campus = params[:campus]
+        coupon_id = params[:coupon_id] # 优惠券(可选)
+        coupon = nil
 
+        if coupon_id.present?
+          coupon = Coupon.get_unused_activated_coupon_by_id_and_user(coupon_id, params[:user].id)
+        end
 
         if user.present?
           total_price = 0.0
+          pay_price = 0.0
           # 1.检测商店正常,商品和规格的状态正常并且规格stock > 0
           cart_items.each do | cart_item |
             # 注意cart_item是Hash类型
@@ -143,8 +151,17 @@ class Order < ActiveRecord::Base
             if product.store.status != Store::Status::Normal
               raise StandardError.new('店铺已关闭')
             end
+          end
 
-
+          if coupon.present?
+            # 判断优惠券是否达到最低消费额
+            if total_price < coupon.least_price # 判断是否满足最低订单价
+              raise StandardError.new("对不起,优惠券最低起用价格:#{coupon.least_price}")
+            else
+              pay_price = total_price - coupon.discount
+            end
+          else
+            pay_price = total_price - coupon.discount
           end
 
           order = Order.new
@@ -152,6 +169,8 @@ class Order < ActiveRecord::Base
           order.pay_method = params[:pay_method]
           order.user = params[:user]
           order.price = total_price
+          order.pay_price = pay_price
+
           order.campus_id = campus
           order.delivery_time = params[:delivery_time]
           order.receiver_name = params[:receiver_name]

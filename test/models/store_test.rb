@@ -16,6 +16,7 @@
 #  month_sale     :integer          default("0")
 #  back_ratio     :float(24)        default("0")
 #  main_food_list :text(65535)
+#  owner_id       :integer
 #
 
 require 'test_helper'

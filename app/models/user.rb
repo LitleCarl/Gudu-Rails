@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :orders
   has_many :addresses
   has_one :cart
+  has_many :coupons
   before_save :set_password_encrypted
 
   # 短信登录验证

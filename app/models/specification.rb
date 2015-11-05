@@ -22,6 +22,14 @@ class Specification < ActiveRecord::Base
     Pending = 2 # 下架
   end
 
+  # 规格更新每日库存
+  def self.update_daily_stock
+    Specification.all.each do | specification |
+      specification.stock = specification.stock_per_day
+      specification.save
+    end
+  end
+
   # 确保库存非负
   def ensure_stock_not_negative
 

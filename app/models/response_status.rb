@@ -180,4 +180,50 @@ class ResponseStatus
     end
     response_status
   end
+
+  #
+  # 接口请求方法
+  #
+  # @example 订单确认收货
+  #
+  #  response = ResponseStatus.__rescue__ do |res|
+  #     order = Order.where(xxx: 'xxx').first
+  #
+  #     res.__raise__(Response::Code::ERROR, '订单未找到') if order.blank?
+  #
+  #     order.status = Order::Status::Completed
+  #
+  #     order.save!
+  #  end
+  #
+  # @return [Response] 返回对象
+  #
+  def self.__rescue__
+    response = self.default_success
+    begin
+      yield(response)
+    rescue Exception => e
+      yloge(e, e.message) if response.code == Code::ERROR
+
+      response.code = response.code
+      response.message = e.message
+    end
+
+    response
+  end
+
+  #
+  # 抛出异常
+  #
+  # @example
+  #   ResponseStatus.new.__raise__(Response::Code::ERROR, 'some error message')
+  #
+  # @param code [Code] 编码
+  # @param message [String] 信息
+  #
+  def __raise__(code, message)
+    @code = code
+
+    raise Exception, message
+  end
 end

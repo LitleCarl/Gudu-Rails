@@ -17,9 +17,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, only: [:index] do
+  resources :users, param: :user_id, only: [:index] do
     collection do
       post :login_with_sms_code
+    end
+    member do
+      resources :coupons, only: [:index]
     end
   end
   resources :services ,except: ALL_REST_ACTION do
@@ -35,7 +38,6 @@ Rails.application.routes.draw do
       get :pingpp_pay_done_for_alive
       get :search_product_and_store_for_campus
     end
-
   end
   resources :stores, param: :store_id, only: [:show]
   resources :products, param: :product_id, only: [:show]

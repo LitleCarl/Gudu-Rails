@@ -161,7 +161,7 @@ class Order < ActiveRecord::Base
               pay_price = total_price - coupon.discount
             end
           else
-            pay_price = total_price - coupon.discount
+            pay_price = total_price
           end
 
           order = Order.new

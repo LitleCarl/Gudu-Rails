@@ -1,4 +1,4 @@
-json.(order, :id, :status, :price, :delivery_time, :receiver_name, :receiver_phone, :receiver_address, :pay_method, :order_number)
+json.(order, :id, :status, :price, :delivery_time, :receiver_name, :receiver_phone, :receiver_address, :pay_method, :order_number, :pay_price)
 json.order_items do | json |
   if order.order_items.present?
     json.array! order.order_items, partial: 'order_items/order_item', as: :order_item

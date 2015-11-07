@@ -28,6 +28,7 @@ class Order < ActiveRecord::Base
   before_create :generate_order_number
   validate :check_order_fields
   after_save :check_order_status
+  after_create :check_coupon
   module Status
     Dead = 0          # 取消的订单
     Not_Paid = 1      # 未支付
@@ -223,4 +224,13 @@ class Order < ActiveRecord::Base
       self.order_number = DateTime.now.strftime("%Y%m%d%H%M").to_s + (SecureRandom.random_number * 100000000000).to_i.to_s
     end
   end
+
+  def check_coupon
+    coupon = self.coupon
+    if coupon.present?
+      coupon.status = Coupon::Status::Used
+      coupon.save!
+    end
+  end
+
 end

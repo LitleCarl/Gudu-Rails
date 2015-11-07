@@ -16,6 +16,7 @@
 #  updated_at       :datetime         not null
 #  charge_json      :text(65535)
 #  order_number     :string(255)
+#  pay_price        :decimal(10, 2)   default("0.00")
 #
 
 class Order < ActiveRecord::Base
@@ -120,80 +121,81 @@ class Order < ActiveRecord::Base
         end
 
         if user.present?
-          total_price = 0.0
-          pay_price = 0.0
-          # 1.检测商店正常,商品和规格的状态正常并且规格stock > 0
-          cart_items.each do | cart_item |
-            # 注意cart_item是Hash类型
-            product = Product.where(
-                {
-                    id: cart_item[:product_id],
-                }).includes(:specifications)
-                          .references(:specifications)
-                          .where(
-                              'specifications.id = ? and specifications.status = ?',
-                              cart_item[:specification_id],
-                              Specification::Status::Normal,
-                          )
-                          .first
+            total_price = 0.0
+            pay_price = 0.0
+            # 1.检测商店正常,商品和规格的状态正常并且规格stock > 0
+            cart_items.each do | cart_item |
+              # 注意cart_item是Hash类型
+              product = Product.where(
+                  {
+                      id: cart_item[:product_id],
+                  }).includes(:specifications)
+                            .references(:specifications)
+                            .where(
+                                'specifications.id = ? and specifications.status = ?',
+                                cart_item[:specification_id],
+                                Specification::Status::Normal,
+                            )
+                            .first
 
-            product_available = product.present?
-            specification_available =  product.specifications.count > 0
-            stock_available = product.specifications[0].stock >= cart_item[:quantity]
-            product_valid = product.present? && product_available  && specification_available && stock_available
-            if product_valid
-              total_price += product.specifications[0].price * cart_item[:quantity]
+              product_available = product.present?
+              specification_available =  product.specifications.count > 0
+              stock_available = product.specifications[0].stock >= cart_item[:quantity]
+              product_valid = product.present? && product_available  && specification_available && stock_available
+              if product_valid
+                total_price += product.specifications[0].price * cart_item[:quantity]
+              else
+                raise StandardError.new('商品不存在') unless   product.present?
+                raise StandardError.new('商品已下架') if  product.status != Product::Status::Normal
+                raise StandardError.new('此规格不可用') unless   specification_available
+                raise StandardError.new('购买数超过库存') unless   stock_available
+              end
+              if product.store.status != Store::Status::Normal
+                raise StandardError.new('店铺已关闭')
+              end
+            end
+
+            if coupon.present?
+              # 判断优惠券是否达到最低消费额
+              if total_price < coupon.least_price # 判断是否满足最低订单价
+                raise StandardError.new("对不起,优惠券最低起用价格:#{coupon.least_price}")
+              else #更新优惠券状态为已使用
+                pay_price = total_price - coupon.discount
+                  coupon.status = Coupon::Status::Used
+                  coupon.save!
+              end
             else
-              raise StandardError.new('商品不存在') unless   product.present?
-              raise StandardError.new('商品已下架') if  product.status != Product::Status::Normal
-              raise StandardError.new('此规格不可用') unless   specification_available
-              raise StandardError.new('购买数超过库存') unless   stock_available
+              pay_price = total_price
             end
-            if product.store.status != Store::Status::Normal
-              raise StandardError.new('店铺已关闭')
+
+            order = Order.new
+
+            order.pay_method = params[:pay_method]
+            order.user = params[:user]
+            order.price = total_price
+            order.pay_price = pay_price
+            order.coupon = coupon
+            order.campus_id = campus
+            order.delivery_time = params[:delivery_time]
+            order.receiver_name = params[:receiver_name]
+            order.receiver_phone = params[:receiver_phone]
+            order.receiver_address = params[:receiver_address]
+            order.status = Order::Status::Not_Paid
+
+            order.save!
+            # 创建Order_Item
+            cart_items.each do | item |
+              order_item = OrderItem.new
+              order_item.product_id = item[:product_id]
+              order_item.quantity = item[:quantity]
+              order_item.order = order
+              order_item.specification_id = item[:specification_id]
+              order_item.price_snapshot = Specification.find(order_item.specification_id).price
+              order_item.save!
+
             end
-          end
-
-          if coupon.present?
-            # 判断优惠券是否达到最低消费额
-            if total_price < coupon.least_price # 判断是否满足最低订单价
-              raise StandardError.new("对不起,优惠券最低起用价格:#{coupon.least_price}")
-            else
-              pay_price = total_price - coupon.discount
-            end
-          else
-            pay_price = total_price
-          end
-
-          order = Order.new
-
-          order.pay_method = params[:pay_method]
-          order.user = params[:user]
-          order.price = total_price
-          order.pay_price = pay_price
-
-          order.campus_id = campus
-          order.delivery_time = params[:delivery_time]
-          order.receiver_name = params[:receiver_name]
-          order.receiver_phone = params[:receiver_phone]
-          order.receiver_address = params[:receiver_address]
-          order.status = Order::Status::Not_Paid
-
-          order.save!
-
-          # 创建Order_Item
-          cart_items.each do | item |
-            order_item = OrderItem.new
-            order_item.product_id = item[:product_id]
-            order_item.quantity = item[:quantity]
-            order_item.order = order
-            order_item.specification_id = item[:specification_id]
-            order_item.price_snapshot = Specification.find(order_item.specification_id).price
-            order_item.save!
-
-          end
-          response_status = ResponseStatus.default_success
-          data = order
+            response_status = ResponseStatus.default_success
+            data = order
         end
       end
     rescue Exception => e
@@ -226,11 +228,7 @@ class Order < ActiveRecord::Base
   end
 
   def check_coupon
-    coupon = self.coupon
-    if coupon.present?
-      coupon.status = Coupon::Status::Used
-      coupon.save!
-    end
+
   end
 
 end

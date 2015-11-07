@@ -11,10 +11,12 @@
 #  least_price    :decimal(10, 2)   default("0.00"), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  order_id       :integer
 #
 
 class Coupon < ActiveRecord::Base
   belongs_to :user
+  belongs_to :order
 
   module Status
     Unused = 1
@@ -40,7 +42,7 @@ class Coupon < ActiveRecord::Base
   # @return coupon [Coupon] 返回制定优惠券
   #
   def self.get_unused_activated_coupon_by_id_and_user(coupon_id, user_id)
-    return Coupon.where(id: coupon_id, user_id: user_id, status: Coupon::Status::Unused).where('activated_date <= ?', Time.now).where('expired_date >= ?', Time.now).first
+    return self.where(id: coupon_id, user_id: user_id, status: Coupon::Status::Unused).where('activated_date <= ?', Time.now).where('expired_date >= ?', Time.now).first
   end
 
   #

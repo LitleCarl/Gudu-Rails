@@ -16,6 +16,7 @@
 #  updated_at       :datetime         not null
 #  charge_json      :text(65535)
 #  order_number     :string(255)
+#  pay_price        :decimal(10, 2)   default("0.00")
 #
 
 require 'test_helper'

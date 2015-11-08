@@ -57,7 +57,7 @@ class Coupon < ActiveRecord::Base
     coupons = nil
     response = ResponseStatus.__rescue__ do |res|
        res.__raise__(ResponseStatus::Code::ERROR, '参数错误')
-        coupons = Coupon.where(user_id: user_id, status: Coupon::Status::Unused).where('activated_date <= ?', Time.now).where('expired_date >= ?', Time.now)
+        coupons = Coupon.where(user_id: params[:user_id], status: Coupon::Status::Unused).where('activated_date <= ?', Time.now).where('expired_date >= ?', Time.now)
     end
     return response, coupons
   end

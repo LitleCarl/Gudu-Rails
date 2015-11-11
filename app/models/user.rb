@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
     response_status = ResponseStatus.default
     user = nil
     token = nil
+
     begin
       raise RestError::MissParameterError if params[:phone].blank? || params[:smsCode].blank? || params[:smsToken].blank?
       phone, sms_code = TsaoUtil.decode_sms_code(params[:smsToken])
@@ -35,6 +36,7 @@ class User < ActiveRecord::Base
       Rails.logger.error(ex.message)
       response_status.message = ex.message
     end
+
     return response_status, user, token
   end
 

@@ -36,6 +36,8 @@ class Authorization < ActiveRecord::Base
   #
   def self.fetch_access_token_and_open_id(options)
 
+    auth = nil
+
     response = ResponseStatus.__rescue__ do |res|
       code = options[:code]
       res.__raise__(Response::Code::MISS_REQUEST_PARAMS, '缺失参数') if options[:code].blank?

@@ -42,15 +42,17 @@ class Authorization < ActiveRecord::Base
       code = options[:code]
       res.__raise__(Response::Code::MISS_REQUEST_PARAMS, '缺失参数') if options[:code].blank?
 
-      url = URI.parse(self.get_token_url(code))
+      uri = URI.parse(self.get_token_url(code))
 
-      req = Net::HTTP::Get.new(url.to_s)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
 
-      res = Net::HTTP.start(url.host, url.port) {|http|
-        http.request(req)
-      }
+      request = Net::HTTP::Get.new(uri.request_uri)
 
-      json = JSON.parse(res.body)
+      response = http.request(request)
+
+      body = response.body
+      json = JSON.parse(body)
 
       json[:provider] = 'weixin'
 
@@ -86,7 +88,7 @@ class Authorization < ActiveRecord::Base
       message = nil
 
       if options[:union_id].blank? || options[:open_id].blank? || options[:provider].blank? || options[:access_token].blank? || options[:refresh_token].blank?
-        res.__raise__(Response::Code::MISS_REQUEST_PARAMS, '缺失参数')
+        res.__raise__(ResponseStatus::Code::ERROR, '缺失参数')
       end
 
       auth = self.where(union_id: options[:union_id]).first
@@ -102,7 +104,6 @@ class Authorization < ActiveRecord::Base
       end
 
     end
-
     return response, auth
   end
 

@@ -8,6 +8,8 @@
 # @author blogbin <fengbin@atyun.net>
 #
 class ResponseStatus
+# 添加属性
+  attr_accessor :code, :message, :messages
 
   module Code
 
@@ -38,6 +40,12 @@ class ResponseStatus
     # 需要登录
     NEED_LOGIN = 800
 
+  end
+
+  def initialize(code = Code::SUCCESS, message = '', messages = [])
+    @code = code
+    @message = message
+    @messages = messages
   end
 
   def self.get_messages(messages)
@@ -94,7 +102,7 @@ class ResponseStatus
   # @return [ResponseStatus]  返回默认失败的 响应状态 ResponseStatus
   #
   def self.default
-    response_status = Hashie::Mash.new
+    response_status = self.new
 
     response_status.code = Code::ERROR
     response_status.message = ''
@@ -118,7 +126,7 @@ class ResponseStatus
   # @return [ResponseStatus]  返回默认成功的 响应状态 ResponseStatus
   #
   def self.default_success
-    response_status = Hashie::Mash.new
+    response_status = self.new
 
     response_status.code = Code::SUCCESS
 
@@ -153,7 +161,7 @@ class ResponseStatus
 
 
   def self.need_login
-    response_status = Hashie::Mash.new
+    response_status = self.new
 
     response_status.code = Code::NEED_LOGIN
     response_status.message = '请先登录'
@@ -162,7 +170,7 @@ class ResponseStatus
   end
 
   def self.no_data_found
-    response_status = Hashie::Mash.new
+    response_status = self.new
 
     response_status.code = Code::ERROR
     response_status.message = '没有指定数据'
@@ -171,12 +179,12 @@ class ResponseStatus
   end
 
   def self.merge_status(status_one, status_two)
-    response_status = ResponseStatus.default
+    response_status = status_one
     if status_one.code == Code::SUCCESS && status_two.code == Code::SUCCESS
       response_status.code = ResponseStatus::Code::SUCCESS
     else
-      response_status.message ||= status_one.message
-      response_status.message ||= status_two.message
+      response_status.code = status_two.code if status_two.code != Code::SUCCESS
+      response_status.message = "#{status_one.message},#{status_two.message}"
     end
     response_status
   end
@@ -199,7 +207,7 @@ class ResponseStatus
   # @return [Response] 返回对象
   #
   def self.__rescue__
-    response = self.default_success
+    response = self.new
     begin
       yield(response)
     rescue Exception => e
@@ -226,6 +234,6 @@ class ResponseStatus
     @code = code
     @message = message
 
-    raise Exception, message
+    raise StandardError, message
   end
 end

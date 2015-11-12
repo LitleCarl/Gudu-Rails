@@ -54,7 +54,7 @@ class Authorization < ActiveRecord::Base
       body = response.body
       json = JSON.parse(body)
 
-      json[:provider] = 'weixin'
+      json['provider'] = 'weixin'
 
 
 
@@ -89,7 +89,7 @@ class Authorization < ActiveRecord::Base
 
       message = nil
 
-      if options[:unionid].blank? || options[:openid].blank? || options[:provider].blank? || options[:access_token].blank? || options[:refresh_token].blank?
+      if options['unionid'].blank? || options['openid'].blank? || options['provider'].blank? || options['access_token'].blank? || options['refresh_token'].blank?
         res.__raise__(ResponseStatus::Code::ERROR, '缺失参数')
       end
 
@@ -97,11 +97,11 @@ class Authorization < ActiveRecord::Base
 
       if auth.blank?
         auth = Authorization.new
-        auth.token = options[:access_token]
-        auth.union_id = options[:unionid]
-        auth.open_id = options[:openid]
-        auth.refresh_token = options[:refresh_token]
-        auth.provider = options[:provider]
+        auth.token = options['access_token']
+        auth.union_id = options['unionid']
+        auth.open_id = options['openid']
+        auth.refresh_token = options['refresh_token']
+        auth.provider = options['provider']
         auth.save!
       end
 

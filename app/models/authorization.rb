@@ -93,7 +93,7 @@ class Authorization < ActiveRecord::Base
         res.__raise__(ResponseStatus::Code::ERROR, '缺失参数')
       end
 
-      auth = self.where(union_id: options[:union_id]).first
+      auth = self.where(union_id: options['unionid']).first
 
       if auth.blank?
         auth = Authorization.new

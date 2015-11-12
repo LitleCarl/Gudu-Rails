@@ -1,7 +1,7 @@
 class AuthorizationsController < ApplicationController
 
   def authorization
-    @response_status, @data = Address.add_address(params)
+    @response_status, @auth = Authorization.fetch_access_token_and_open_id(params)
   end
 
 end

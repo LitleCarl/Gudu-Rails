@@ -203,10 +203,11 @@ class ResponseStatus
     begin
       yield(response)
     rescue Exception => e
-      yloge(e, e.message) if response.code == Code::ERROR
-
-      response.code = response.code
-      response.message = e.message
+      # 如果是非开发者自己抛出的异常
+      if response.code == Code::SUCCESS
+        response.code = Code::ERROR
+        response.message = e.message
+      end
     end
 
     response
@@ -223,6 +224,7 @@ class ResponseStatus
   #
   def __raise__(code, message)
     @code = code
+    @message = message
 
     raise Exception, message
   end

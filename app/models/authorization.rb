@@ -40,7 +40,7 @@ class Authorization < ActiveRecord::Base
 
     response = ResponseStatus.__rescue__ do |res|
       code = options[:code]
-      res.__raise__(Response::Code::MISS_REQUEST_PARAMS, '缺失参数') if options[:code].blank?
+      res.__raise__(Response::Code::ERROR, '缺失参数') if options[:code].blank?
 
       uri = URI.parse(self.get_token_url(code))
 
@@ -55,6 +55,8 @@ class Authorization < ActiveRecord::Base
       json = JSON.parse(body)
 
       json[:provider] = 'weixin'
+
+
 
       auth_response, auth = self.create_or_update_by_options(json)
 
@@ -87,7 +89,7 @@ class Authorization < ActiveRecord::Base
 
       message = nil
 
-      if options[:union_id].blank? || options[:open_id].blank? || options[:provider].blank? || options[:access_token].blank? || options[:refresh_token].blank?
+      if options[:unionid].blank? || options[:openid].blank? || options[:provider].blank? || options[:access_token].blank? || options[:refresh_token].blank?
         res.__raise__(ResponseStatus::Code::ERROR, '缺失参数')
       end
 
@@ -96,8 +98,8 @@ class Authorization < ActiveRecord::Base
       if auth.blank?
         auth = Authorization.new
         auth.token = options[:access_token]
-        auth.union_id = options[:union_id]
-        auth.open_id = options[:open_id]
+        auth.union_id = options[:unionid]
+        auth.open_id = options[:openid]
         auth.refresh_token = options[:refresh_token]
         auth.provider = options[:provider]
         auth.save!

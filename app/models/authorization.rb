@@ -15,6 +15,8 @@ require 'net/http'
 
 class Authorization < ActiveRecord::Base
 
+  belongs_to :user
+
   def self.path_with_params(page, params)
     return page if params.empty?
     page + '?' + params.map {|k,v| CGI.escape(k.to_s)+'='+CGI.escape(v.to_s) }.join('&')
@@ -28,6 +30,24 @@ class Authorization < ActiveRecord::Base
   #
   def self.get_token_url(code, setting)
     self.path_with_params('https://api.weixin.qq.com/sns/oauth2/access_token', appid: setting.app_id, secret: setting.secret, grant_type: 'authorization_code', code: code)
+  end
+
+
+  def self.get_user_info(code, setting)
+    uri = URI.parse(self.get_token_url(code, setting))
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+    body = http.request(request).body
+
+    json = JSON.parse(body,  {:symbolize_names => true})
+
+    json[:provider] = 'weixin'
+
+    json
   end
 
   #
@@ -47,19 +67,7 @@ class Authorization < ActiveRecord::Base
       code = options[:code]
       res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank?
 
-      uri = URI.parse(self.get_token_url(code, WeixinOpenSetting))
-
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-
-      request = Net::HTTP::Get.new(uri.request_uri)
-
-      response = http.request(request)
-
-      body = response.body
-      json = JSON.parse(body,  {:symbolize_names => true})
-
-      json[:provider] = 'weixin'
+      json = self.get_user_info(code, WeixinOpenSetting)
 
       auth_response, auth = self.create_or_update_by_options(json)
 
@@ -83,31 +91,19 @@ class Authorization < ActiveRecord::Base
   #
   def self.fetch_access_token_and_open_id_by_weixin_client(options)
     auth = nil
-    response = ResponseStatus.__rescue__ do |res|
+
+    catch_proc = proc {
+      auth = nil
+    }
+
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
       code = options[:code]
 
       res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank?
 
-      uri = URI.parse(self.get_token_url(code, WeixinGongZhongSetting))
+      json = self.get_user_info(code, WeixinGongZhongSetting)
 
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-
-      request = Net::HTTP::Get.new(uri.request_uri)
-
-      response = http.request(request)
-
-      body = response.body
-      json = JSON.parse(body,  {:symbolize_names => true})
-
-      json[:provider] = 'weixin'
-
-      auth_response, auth = self.create_or_update_by_options(json)
-
-      temp_res = ResponseStatus.merge_status(res, auth_response)
-
-      res.code = temp_res.code
-      res.message = temp_res.message
+      response, auth = self.create_or_update_by_options(json)
     end
 
     return response, auth
@@ -127,6 +123,8 @@ class Authorization < ActiveRecord::Base
   #
   def self.create_or_update_by_options(options)
 
+    # TODO 公众号出炉后需要更新
+    options[:unionid] = 'o6TlUw19J7RhdPOtugs3UkWoTMBk' if options[:unionid].blank?
     auth = nil
 
     response = ResponseStatus.__rescue__ do |res|
@@ -149,6 +147,41 @@ class Authorization < ActiveRecord::Base
 
     end
     return response, auth
+  end
+
+  #
+  # 微信客户端获取红包的redirect_url
+  #
+  # @param options [Hash]
+  # @option options [String] :code 微信授权代码
+  # @option options [String] :red_pack_id 红包代码
+  #
+  # @return [ResponseStatus] 响应
+  #
+  def self.get_coupon_by_weixin_authorization(options)
+
+    red_pack = nil
+
+    catch_proc = proc {
+      red_pack = nil
+    }
+
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
+      code = options[:code]
+      red_pack_id = options[:red_pack_id]
+
+      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank? || red_pack_id.blank?
+
+      json = self.get_user_info(code, WeixinGongZhongSetting)
+
+      response, auth = self.create_or_update_by_options(json)
+
+
+
+    end
+
+    return response
+
   end
 
 end

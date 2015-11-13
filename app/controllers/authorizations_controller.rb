@@ -12,9 +12,14 @@ class AuthorizationsController < ApplicationController
     @response_status, @auth = Authorization.fetch_access_token_and_open_id_by_weixin_client(params)
   end
 
+  # 客户获取优惠券的action
+  def get_coupon
+    @response_status = Authorization.get_coupon_by_weixin_authorization(params)
+  end
+
+  # 公众号验证开发者
   def weixin
-    echostr = params[:echostr]
-    render text: echostr
+    render text: params[:echostr]
   end
 
 end

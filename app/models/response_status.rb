@@ -206,11 +206,14 @@ class ResponseStatus
   #
   # @return [Response] 返回对象
   #
-  def self.__rescue__
+  def self.__rescue__(catch_proc = nil)
     response = self.new
     begin
       yield(response)
     rescue Exception => e
+      # 执行catch块
+      catch_proc.call if catch_proc.present?
+
       # 如果是非开发者自己抛出的异常
       if response.code == Code::SUCCESS
         response.code = Code::ERROR

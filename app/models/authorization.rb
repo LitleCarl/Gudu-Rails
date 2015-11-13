@@ -45,7 +45,7 @@ class Authorization < ActiveRecord::Base
 
     response = ResponseStatus.__rescue__ do |res|
       code = options[:code]
-      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if options[:code].blank?
+      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank?
 
       uri = URI.parse(self.get_token_url(code, WeixinOpenSetting))
 
@@ -57,7 +57,7 @@ class Authorization < ActiveRecord::Base
       response = http.request(request)
 
       body = response.body
-      json = JSON.parse(body)
+      json = JSON.parse(body,  {:symbolize_names => true})
 
       json['provider'] = 'weixin'
 
@@ -86,10 +86,10 @@ class Authorization < ActiveRecord::Base
   def self.fetch_access_token_and_open_id_by_weixin_client(options)
 
     auth = nil
-
     response = ResponseStatus.__rescue__ do |res|
       code = options[:code]
-      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if options[:code].blank?
+
+      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank?
 
       uri = URI.parse(self.get_token_url(code, WeixinGongZhongSetting))
 
@@ -101,11 +101,9 @@ class Authorization < ActiveRecord::Base
       response = http.request(request)
 
       body = response.body
-      json = JSON.parse(body)
+      json = JSON.parse(body,  {:symbolize_names => true})
 
       json['provider'] = 'weixin'
-
-
 
       auth_response, auth = self.create_or_update_by_options(json)
 
@@ -136,21 +134,19 @@ class Authorization < ActiveRecord::Base
 
     response = ResponseStatus.__rescue__ do |res|
 
-      message = nil
-
-      if options['unionid'].blank? || options['openid'].blank? || options['provider'].blank? || options['access_token'].blank? || options['refresh_token'].blank?
+      if options[:unionid].blank? || options[:openid].blank? || options[:provider].blank? || options[:access_token].blank? || options[:refresh_token].blank?
         res.__raise__(ResponseStatus::Code::ERROR, '缺失参数')
       end
 
-      auth = self.where(union_id: options['unionid']).first
+      auth = self.where(union_id: options[:unionid]).first
 
       if auth.blank?
         auth = Authorization.new
-        auth.token = options['access_token']
-        auth.union_id = options['unionid']
-        auth.open_id = options['openid']
-        auth.refresh_token = options['refresh_token']
-        auth.provider = options['provider']
+        auth.token = options[:access_token]
+        auth.union_id = options[:unionid]
+        auth.open_id = options[:openid]
+        auth.refresh_token = options[:refresh_token]
+        auth.provider = options[:provider]
         auth.save!
       end
 

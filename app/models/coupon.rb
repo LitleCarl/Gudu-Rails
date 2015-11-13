@@ -60,7 +60,7 @@ class Coupon < ActiveRecord::Base
       coupon.activated_date = activated_date
       coupon.expired_date = expired_date
       coupon.least_price = least_price
-      coupon.user = authorization.user
+      coupon.user = user
       coupon.save!
     end
 

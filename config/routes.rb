@@ -54,6 +54,8 @@ Rails.application.routes.draw do
       get :weixin
 
       get :redirect_weixin
+
+      get :get_coupon
     end
   end
 end

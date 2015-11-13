@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113092837) do
+ActiveRecord::Schema.define(version: 20151113095329) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -92,6 +92,17 @@ ActiveRecord::Schema.define(version: 20151113092837) do
     t.datetime "created_at",                                                      null: false
     t.datetime "updated_at",                                                      null: false
     t.integer  "order_id",       limit: 4
+  end
+
+  create_table "frozen_coupons", force: :cascade do |t|
+    t.integer  "authorization_id", limit: 4
+    t.decimal  "discount",                   precision: 10, scale: 2, default: 0.0, null: false
+    t.datetime "activated_date",                                                    null: false
+    t.datetime "expired_date",                                                      null: false
+    t.decimal  "least_price",                precision: 10, scale: 2, default: 0.0, null: false
+    t.integer  "coupon_id",        limit: 4
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
   end
 
   create_table "nutritions", force: :cascade do |t|

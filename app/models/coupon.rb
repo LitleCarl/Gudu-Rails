@@ -33,6 +33,40 @@ class Coupon < ActiveRecord::Base
   #
   #####################################################################################
 
+  # 给用户发优惠券
+  #
+  # @param options [Hash] 约束
+  # @option options [Decimal] :discount 抵用
+  # @option options [Decimal] :least_price 最低消费
+  # @option options [Datetime] :activated_date 生效时间
+  # @option options [Datetime] :expired_date 过期时间
+  # @option options [User] :user 关联用户
+  #
+  # @return [Array] response, coupon
+  #
+  def self.generate_coupon(options)
+
+    coupon = nil
+    catch_proc = proc{ coupon = nil }
+
+    user, discount, least_price, activated_date, expired_date = options[:user], options[:discount], options[:least_price], options[:activated_date] || Time.now, options[:expired_date] || (Time.now + 7.days)
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
+
+      res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if user.blank? || discount.blank? || least_price.blank? || activated_date.blank? || expired_date.blank?
+
+      coupon = Coupon.new
+      coupon.status = Status::Unused
+      coupon.discount = discount
+      coupon.activated_date = activated_date
+      coupon.expired_date = expired_date
+      coupon.least_price = least_price
+      coupon.user = authorization.user
+      coupon.save!
+    end
+
+    return response, coupon
+  end
+
   #
   # 获取没使用的正在有效期内的制定用户下的指定优惠券
   #

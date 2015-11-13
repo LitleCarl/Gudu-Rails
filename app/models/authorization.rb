@@ -11,6 +11,7 @@ require 'net/http'
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  union_id      :string(255)
+#  user_id       :integer
 #
 
 class Authorization < ActiveRecord::Base
@@ -158,12 +159,12 @@ class Authorization < ActiveRecord::Base
   #
   # @return [ResponseStatus] 响应
   #
-  def self.get_coupon_by_weixin_authorization(options)
+  def self.get_frozen_coupon_by_weixin_authorization(options)
 
-    red_pack = nil
+    frozen_coupon = nil
 
     catch_proc = proc {
-      red_pack = nil
+      frozen_coupon = nil
     }
 
     response = ResponseStatus.__rescue__(catch_proc) do |res|
@@ -176,11 +177,12 @@ class Authorization < ActiveRecord::Base
 
       response, auth = self.create_or_update_by_options(json)
 
-
+      # 生成第三方用户暂存优惠券
+      response, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack_id, authorization: auth)
 
     end
 
-    return response
+    return response, frozen_coupon
 
   end
 

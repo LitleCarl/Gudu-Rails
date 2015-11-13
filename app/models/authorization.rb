@@ -61,8 +61,6 @@ class Authorization < ActiveRecord::Base
 
       json[:provider] = 'weixin'
 
-
-
       auth_response, auth = self.create_or_update_by_options(json)
 
       temp_res = ResponseStatus.merge_status(res, auth_response)
@@ -84,7 +82,6 @@ class Authorization < ActiveRecord::Base
   # @return [ResponseStatus] 响应
   #
   def self.fetch_access_token_and_open_id_by_weixin_client(options)
-
     auth = nil
     response = ResponseStatus.__rescue__ do |res|
       code = options[:code]
@@ -129,6 +126,7 @@ class Authorization < ActiveRecord::Base
   # @return [ResponseStatus] 响应
   #
   def self.create_or_update_by_options(options)
+    puts "options:#{options}"
 
     auth = nil
 

@@ -30,6 +30,7 @@ class Order < ActiveRecord::Base
   validate :check_order_fields
   after_save :check_order_status
   after_create :check_coupon
+
   module Status
     Dead = 0          # 取消的订单
     Not_Paid = 1      # 未支付

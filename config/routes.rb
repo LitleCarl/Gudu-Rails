@@ -49,6 +49,9 @@ Rails.application.routes.draw do
     collection do
       # 微信登录
       post :authorization
+
+      # 微信公众号开发验证
+      get :weixin
     end
   end
 end

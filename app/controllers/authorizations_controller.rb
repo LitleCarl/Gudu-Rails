@@ -6,4 +6,9 @@ class AuthorizationsController < ApplicationController
     @response_status, @auth = Authorization.fetch_access_token_and_open_id(params)
   end
 
+  def weixin
+    echostr = params[:echostr]
+    render text: echostr
+  end
+
 end

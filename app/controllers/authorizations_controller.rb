@@ -14,7 +14,7 @@ class AuthorizationsController < ApplicationController
 
   # 客户获取优惠券的action
   def get_coupon
-    @response_status = Authorization.get_frozen_coupon_by_weixin_authorization(params)
+    @response_status, @frozen_coupon = Authorization.get_frozen_coupon_by_weixin_authorization(params)
   end
 
   # 公众号验证开发者

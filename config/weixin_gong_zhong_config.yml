@@ -1,0 +1,15 @@
+# encoding: UTF-8
+
+defaults: &defaults
+  app_id: wxd019b6c19b7e6f9a
+  secret: 89cad3368ed6932ff1d7039f431d0718
+
+development: &development
+  <<: *defaults
+
+test:
+  <<: *development
+
+production:
+  <<: *development
+

@@ -52,6 +52,8 @@ Rails.application.routes.draw do
 
       # 微信公众号开发验证
       get :weixin
+
+      get :redirect_weixin
     end
   end
 end

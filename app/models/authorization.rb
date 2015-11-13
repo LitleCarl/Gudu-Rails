@@ -126,7 +126,6 @@ class Authorization < ActiveRecord::Base
   # @return [ResponseStatus] 响应
   #
   def self.create_or_update_by_options(options)
-    puts "options:#{options}"
 
     auth = nil
 

@@ -59,7 +59,7 @@ class Authorization < ActiveRecord::Base
       body = response.body
       json = JSON.parse(body,  {:symbolize_names => true})
 
-      json['provider'] = 'weixin'
+      json[:provider] = 'weixin'
 
 
 
@@ -103,7 +103,7 @@ class Authorization < ActiveRecord::Base
       body = response.body
       json = JSON.parse(body,  {:symbolize_names => true})
 
-      json['provider'] = 'weixin'
+      json[:provider] = 'weixin'
 
       auth_response, auth = self.create_or_update_by_options(json)
 

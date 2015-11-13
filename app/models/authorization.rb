@@ -45,7 +45,7 @@ class Authorization < ActiveRecord::Base
 
     response = ResponseStatus.__rescue__ do |res|
       code = options[:code]
-      res.__raise__(Response::Code::ERROR, '缺失参数') if options[:code].blank?
+      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if options[:code].blank?
 
       uri = URI.parse(self.get_token_url(code, WeixinOpenSetting))
 
@@ -89,9 +89,9 @@ class Authorization < ActiveRecord::Base
 
     response = ResponseStatus.__rescue__ do |res|
       code = options[:code]
-      res.__raise__(Response::Code::ERROR, '缺失参数') if options[:code].blank?
+      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if options[:code].blank?
 
-      uri = URI.parse(self.get_token_url(code, WeixinOpenSetting))
+      uri = URI.parse(self.get_token_url(code, WeixinGongZhongSetting))
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true

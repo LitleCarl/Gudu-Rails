@@ -90,7 +90,7 @@ class Coupon < ActiveRecord::Base
   def self.get_coupons_for_user_for_api(params)
     coupons = nil
     response = ResponseStatus.__rescue__ do |res|
-       res.__raise__(ResponseStatus::Code::ERROR, '参数错误')
+       res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if params[:user].blank?
         coupons = Coupon.where(user_id: params[:user_id], status: Coupon::Status::Unused).where('activated_date <= ?', Time.now).where('expired_date >= ?', Time.now)
     end
     return response, coupons

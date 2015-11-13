@@ -56,7 +56,6 @@ class FrozenCoupon < ActiveRecord::Base
                                             expired_date: expired_date,
                                             least_price: least_price
                                         })
-        puts "此时的coupon:#{coupon}"
         frozen_coupon.coupon = coupon
       end
 

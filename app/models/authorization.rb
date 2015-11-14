@@ -221,10 +221,10 @@ class Authorization < ActiveRecord::Base
 
       # 生成第三方用户暂存优惠券
       response, red_pack, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack_id, authorization: auth)
-      puts "当前状态:#{response.message}"
       res.__raise_response_if_essential__(response)
 
     end
+    puts "当前状态:#{response.message}"
 
     return response, red_pack, frozen_coupon
 

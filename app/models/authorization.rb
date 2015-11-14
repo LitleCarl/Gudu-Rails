@@ -215,13 +215,13 @@ class Authorization < ActiveRecord::Base
 
       json = self.get_user_token(code, WeixinGongZhongSetting)
 
-      response, auth = self.create_or_update_by_options(json)
+      temp, auth = self.create_or_update_by_options(json)
 
-      res.__raise_response_if_essential__(response)
+      res.__raise_response_if_essential__(temp)
 
       # 生成第三方用户暂存优惠券
-      response, red_pack, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack_id, authorization: auth)
-      res.__raise_response_if_essential__(response)
+      temp, red_pack, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack_id, authorization: auth)
+      res.__raise_response_if_essential__(temp)
 
     end
 

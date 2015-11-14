@@ -224,7 +224,7 @@ class Authorization < ActiveRecord::Base
       res.__raise_response_if_essential__(temp)
 
     end
-
+    puts "get_frozen_coupon_by_weixin_authorization:#{response.message}"
     return response, red_pack, frozen_coupon
 
   end

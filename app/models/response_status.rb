@@ -239,4 +239,21 @@ class ResponseStatus
 
     raise StandardError, message
   end
+
+  #
+  # 如果参数中的response有异常则抛出异常
+  #
+  # @example
+  #   ResponseStatus.new.__raise__(Response::Code::ERROR, 'some error message')
+  #
+  # @param code [ResponseStatus] 状态
+  #
+  def __raise_response_if_essential__(response_status)
+    if response_status.code != Code::SUCCESS
+      self.code = response_status.code
+      self.message = response_status.message
+
+      raise StandardError, self.message
+    end
+  end
 end

@@ -16,7 +16,7 @@ class AuthorizationsController < ApplicationController
   def get_coupon
     @response_status, @red_pack, @frozen_coupon = Authorization.get_frozen_coupon_by_weixin_authorization(params)
     @red_pack ||= RedPack.all.first
-    puts "我的@response_status:#{@response_status}"
+    puts "我的@response_status:#{@response_status.code},#{@response_status.message}"
   end
 
   # 公众号验证开发者

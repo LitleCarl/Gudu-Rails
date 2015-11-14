@@ -11,9 +11,12 @@
 #  coupon_id        :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  red_pack_id      :integer
 #
 
 class FrozenCoupon < ActiveRecord::Base
+
+  belongs_to :red_pack
 
   # 关联优惠券
   belongs_to :coupon
@@ -36,10 +39,10 @@ class FrozenCoupon < ActiveRecord::Base
 
     frozen_coupon = nil
     catch_proc = proc{ frozen_coupon = nil }
-    authorization, discount, least_price, activated_date, expired_date = options[:authorization], options[:discount], options[:least_price], options[:activated_date] || Time.now, options[:expired_date] || (Time.now + 7.days)
+    red_pack, authorization, discount, least_price, activated_date, expired_date = options[:red_pack], options[:authorization], options[:discount], options[:least_price], options[:activated_date] || Time.now, options[:expired_date] || (Time.now + 7.days)
     response = ResponseStatus.__rescue__(catch_proc) do |res|
 
-      res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if authorization.blank? || discount.blank? || least_price.blank? || activated_date.blank? || expired_date.blank?
+      res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if red_pack.blank? || authorization.blank? || discount.blank? || least_price.blank? || activated_date.blank? || expired_date.blank?
 
       frozen_coupon = FrozenCoupon.new
       frozen_coupon.authorization = authorization
@@ -47,7 +50,9 @@ class FrozenCoupon < ActiveRecord::Base
       frozen_coupon.activated_date = activated_date
       frozen_coupon.expired_date = expired_date
       frozen_coupon.least_price = least_price
+      frozen_coupon.red_pack = red_pack
 
+      # 如果微信用户已经绑定User,则直接派发红包
       if authorization.user.present?
         response, coupon = Coupon.generate_coupon({
                                             user: authorization.user,

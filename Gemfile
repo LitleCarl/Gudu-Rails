@@ -61,6 +61,8 @@ gem 'qiniu', '~> 6.5.1'
 # 定时任务
 gem 'whenever', :require => false
 
+gem 'slim', '~> 3.0', '>= 3.0.6'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

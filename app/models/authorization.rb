@@ -18,6 +18,38 @@ class Authorization < ActiveRecord::Base
 
   belongs_to :user
 
+  # provider
+  module Provider
+    # 微信开放平台
+    WEIXIN_OPEN = 'weixin_open'
+
+    # 微信公众号
+    WEIXIN_GZH = 'weixin_gzh'
+  end
+
+  # 更新用户信息
+  def update_profile
+    url = ''
+    if self.provider == Provider::WEIXIN_GZH
+      url = 'https://api.weixin.qq.com/cgi-bin/user/info'
+    else
+      url = 'https://api.weixin.qq.com/sns/userinfo'
+    end
+
+    url = Authorization.path_with_params(url, access_token: self.token, openid: self.open_id, lang: 'zh_CN')
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+    body = http.request(request).body
+
+    json = JSON.parse(body,  {:symbolize_names => true})
+    self.nick_name = json[:nickname] || '匿名'
+    self.save!
+  end
+
   def self.path_with_params(page, params)
     return page if params.empty?
     page + '?' + params.map {|k,v| CGI.escape(k.to_s)+'='+CGI.escape(v.to_s) }.join('&')
@@ -34,7 +66,7 @@ class Authorization < ActiveRecord::Base
   end
 
 
-  def self.get_user_info(code, setting)
+  def self.get_user_token(code, setting)
     uri = URI.parse(self.get_token_url(code, setting))
 
     http = Net::HTTP.new(uri.host, uri.port)
@@ -46,7 +78,11 @@ class Authorization < ActiveRecord::Base
 
     json = JSON.parse(body,  {:symbolize_names => true})
 
-    json[:provider] = 'weixin'
+    if setting == WeixinGongZhongSetting
+      json[:provider] = Provider::WEIXIN_GZH
+    else
+      json[:provider] = Provider::WEIXIN_OPEN
+    end
 
     json
   end
@@ -68,7 +104,7 @@ class Authorization < ActiveRecord::Base
       code = options[:code]
       res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank?
 
-      json = self.get_user_info(code, WeixinOpenSetting)
+      json = self.get_user_token(code, WeixinOpenSetting)
 
       auth_response, auth = self.create_or_update_by_options(json)
 
@@ -102,7 +138,7 @@ class Authorization < ActiveRecord::Base
 
       res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank?
 
-      json = self.get_user_info(code, WeixinGongZhongSetting)
+      json = self.get_user_token(code, WeixinGongZhongSetting)
 
       response, auth = self.create_or_update_by_options(json)
     end
@@ -144,6 +180,8 @@ class Authorization < ActiveRecord::Base
         auth.refresh_token = options[:refresh_token]
         auth.provider = options[:provider]
         auth.save!
+
+        auth.update_profile
       end
 
     end
@@ -173,7 +211,7 @@ class Authorization < ActiveRecord::Base
 
       res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank? || red_pack_id.blank?
 
-      json = self.get_user_info(code, WeixinGongZhongSetting)
+      json = self.get_user_token(code, WeixinGongZhongSetting)
 
       response, auth = self.create_or_update_by_options(json)
 

@@ -11,6 +11,9 @@
 
 class RedPack < ActiveRecord::Base
 
+  # 关联暂存红包
+  has_many :frozen_coupons
+
   #
   # 查询有效的红包
   #
@@ -27,12 +30,21 @@ class RedPack < ActiveRecord::Base
   # 从一个红包生成一个frozen coupon
   def self.generate_frozen_coupon_by_options(options)
     frozen_coupon = nil
-    catch_proc = proc{ frozen_coupon = nil }
+    red_pack = nil
+
+    catch_proc = proc{
+      frozen_coupon = nil
+      red_pack = nil
+    }
+
     response = ResponseStatus.__rescue__(catch_proc) do |res|
       red_pack, authorization = options[:red_pack_id], options[:authorization]
 
-      res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if red_pack.blank? || authorization.blank?
+      res.__raise__(ResponseStatus::Code::ERROR, '红包不存在错误') if red_pack.blank?
+      res.__raise__(ResponseStatus::Code::ERROR, '微信用户不存在错误') if authorization.blank?
+
       response, frozen_coupon = FrozenCoupon.generate_frozen_coupon({
+                                                              red_pack: red_pack,
                                                               discount: 0.2,
                                                               least_price: 1,
                                                               authorization: authorization
@@ -40,7 +52,7 @@ class RedPack < ActiveRecord::Base
 
     end
 
-    return response, frozen_coupon
+    return response, red_pack, frozen_coupon
   end
 
 end

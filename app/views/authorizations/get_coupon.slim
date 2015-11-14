@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title 早餐巴士-校园早餐新兴领导者
+    meta content="width=device-width, initial-scale=1" name="viewport" /
+    meta content=("text/html; charset=utf-8") http-equiv="Content-Type" /
+    meta content="早餐巴士-校园早餐新兴领导者" name="keywords" /
+    script src="/assets/jquery-1.11.1.min.js"
+
+  body style="background:#e84144"
+    .red_pack_header
+    .icon_area
+    .coupon_desc
+      |您获得了
+      .highlight 2元
+      |早餐券
+    .owner_list_banner 都有谁拿了红包?
+    ul.owner_list
+      - if @red_pack.present?
+        - @red_pack.frozen_coupons.each do |frozen_coupon|
+          li haha
+    .qrcode_divider 按住二维码即可进入公众号下载app
+
+    .qrcode_for_gzh
+

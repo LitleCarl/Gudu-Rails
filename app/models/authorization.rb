@@ -224,7 +224,6 @@ class Authorization < ActiveRecord::Base
       res.__raise_response_if_essential__(response)
 
     end
-    puts "当前状态:#{response.message}"
 
     return response, red_pack, frozen_coupon
 

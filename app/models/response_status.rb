@@ -250,10 +250,10 @@ class ResponseStatus
   #
   def __raise_response_if_essential__(response_status)
     if response_status.code != Code::SUCCESS
-      self.code = response_status.code
-      self.message = response_status.message
+      @code = response_status.code
+      @message = response_status.message
 
-      raise StandardError, self.message
+      raise StandardError, @message
     end
   end
 end

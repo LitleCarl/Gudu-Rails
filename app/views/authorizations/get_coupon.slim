@@ -7,12 +7,12 @@ html
     meta content="早餐巴士-校园早餐新兴领导者" name="keywords" /
     script src="/assets/jquery-1.11.1.min.js"
 
-  body style="background:#e84144"
+  body style="background:#e84144" onload="load()"
     .red_pack_header
     .icon_area
     .coupon_desc
       |您获得了
-      .highlight "#{@frozen_coupon.try(:discount)}元"
+      .highlight "#{@frozen_coupon.try(:discount) || 0}元"
       |早餐红包
     .owner_list_banner 都有谁拿了红包?
     ul.owner_list
@@ -22,4 +22,13 @@ html
     .qrcode_divider 按住二维码即可进入公众号下载app
 
     .qrcode_for_gzh
+
+javascript:
+  function load(){
+    var response_status = "#{@response_status.to_json}";
+    if (response_status.code != 200) {
+      alert(response_status.message || '系统异常,请稍后重试');
+    }
+  }
+
 

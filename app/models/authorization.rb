@@ -200,9 +200,11 @@ class Authorization < ActiveRecord::Base
   def self.get_frozen_coupon_by_weixin_authorization(options)
 
     frozen_coupon = nil
+    red_pack = nil
 
     catch_proc = proc {
       frozen_coupon = nil
+      red_pack = nil
     }
 
     response = ResponseStatus.__rescue__(catch_proc) do |res|
@@ -216,11 +218,11 @@ class Authorization < ActiveRecord::Base
       response, auth = self.create_or_update_by_options(json)
 
       # 生成第三方用户暂存优惠券
-      response, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack_id, authorization: auth)
+      response, red_pack, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack_id, authorization: auth)
 
     end
 
-    return response, frozen_coupon
+    return response, red_pack, frozen_coupon
 
   end
 

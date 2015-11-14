@@ -12,13 +12,13 @@ html
     .icon_area
     .coupon_desc
       |您获得了
-      .highlight 2元
-      |早餐券
+      .highlight "#{@frozen_coupon}元"
+      |早餐红包
     .owner_list_banner 都有谁拿了红包?
     ul.owner_list
       - if @red_pack.present?
         - @red_pack.frozen_coupons.each do |frozen_coupon|
-          li haha
+          li "#{frozen_coupon.authorization.try(:nick_name)获得了￥frozen_coupon.discount红包}"
     .qrcode_divider 按住二维码即可进入公众号下载app
 
     .qrcode_for_gzh

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb4b51e4-cbba-42cd-ab6b-0019490e91bb" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/authorizations/get_coupon.slim" afterPath="$PROJECT_DIR$/app/views/authorizations/get_coupon.slim" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/red_pack.rb" afterPath="$PROJECT_DIR$/app/models/red_pack.rb" />
     </list>
     <ignored path="gudu-rails.iws" />
@@ -65,16 +66,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="red_pack.rb" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/models/red_pack.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6333333">
-              <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="frozen_coupon.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/frozen_coupon.rb">
           <provider selected="true" editor-type-id="text-editor">
@@ -95,41 +86,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="order_pay_done_sms_worker.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/workers/order_pay_done_sms_worker.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="15" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="authorizations_controller.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/authorizations_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="16" column="72" selection-start-line="16" selection-start-column="72" selection-end-line="16" selection-end-column="72" />
+              <caret line="16" column="47" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="47" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="get_coupon.slim" pinned="false" current-in-tab="false">
+      <file leaf-file-name="get_coupon.slim" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/authorizations/get_coupon.slim">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.875">
-              <caret line="19" column="34" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="red_pack.sass" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/red_pack.sass">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.5">
-              <caret line="35" column="12" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.36458334">
+              <caret line="14" column="37" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -191,12 +162,12 @@
         <option value="$PROJECT_DIR$/app/assets/stylesheets/red_pack.scss" />
         <option value="$PROJECT_DIR$/app/assets/stylesheets/red_pack.sass" />
         <option value="$PROJECT_DIR$/app/controllers/authorizations_controller.rb" />
-        <option value="$PROJECT_DIR$/app/views/authorizations/get_coupon.slim" />
         <option value="$PROJECT_DIR$/db/migrate/20151114081123_add_name_to_authorization.rb" />
         <option value="$PROJECT_DIR$/app/models/frozen_coupon.rb" />
         <option value="$PROJECT_DIR$/app/workers/fetch_weixin_user_info_worker.rb" />
         <option value="$PROJECT_DIR$/app/models/authorization.rb" />
         <option value="$PROJECT_DIR$/app/models/red_pack.rb" />
+        <option value="$PROJECT_DIR$/app/views/authorizations/get_coupon.slim" />
       </list>
     </option>
   </component>
@@ -282,6 +253,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="workers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gudu-rails" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gudu-rails" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gudu-rails" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gudu-rails" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="authorizations" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -864,14 +875,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/authorizations/get_coupon.json.jbuilder">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2">
-          <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.5">
@@ -920,26 +923,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/authorizations/get_coupon.slim">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.875">
-          <caret line="19" column="34" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/frozen_coupon.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="54" column="30" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/migrate/20151114081123_add_name_to_authorization.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.05">
           <caret line="2" column="38" selection-start-line="2" selection-start-column="38" selection-end-line="2" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/red_pack.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/authorization.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="220" column="67" selection-start-line="220" selection-start-column="67" selection-end-line="220" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/authorizations/get_coupon.json.jbuilder">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2">
+          <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
           <folding />
         </state>
       </provider>
@@ -955,23 +966,23 @@
     <entry file="file://$PROJECT_DIR$/app/controllers/authorizations_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="72" selection-start-line="16" selection-start-column="72" selection-end-line="16" selection-end-column="72" />
+          <caret line="16" column="47" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/authorization.rb">
+    <entry file="file://$PROJECT_DIR$/app/models/frozen_coupon.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="220" column="67" selection-start-line="220" selection-start-column="67" selection-end-line="220" selection-end-column="67" />
+          <caret line="54" column="30" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/red_pack.rb">
+    <entry file="file://$PROJECT_DIR$/app/views/authorizations/get_coupon.slim">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6333333">
-          <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.36458334">
+          <caret line="14" column="37" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="37" />
           <folding />
         </state>
       </provider>

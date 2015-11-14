@@ -21,7 +21,8 @@ html
           li "#{frozen_coupon.authorization.try(:nick_name)}获得了￥#{frozen_coupon.discount}红包"
     .qrcode_divider 按住二维码即可进入公众号下载app
 
-    .qrcode_for_gzh
+    .qrcode_wrapper
+      img.qrcode_for_gzh src=image_url("qrcode_for_gzh.jpg")
 
 javascript:
   function load(){

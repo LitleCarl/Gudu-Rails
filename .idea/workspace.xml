@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb4b51e4-cbba-42cd-ab6b-0019490e91bb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/authorization.rb" afterPath="$PROJECT_DIR$/app/models/authorization.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/authorizations_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/authorizations_controller.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/authorizations/get_coupon.slim" afterPath="$PROJECT_DIR$/app/views/authorizations/get_coupon.slim" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/stylesheets/red_pack.sass" afterPath="$PROJECT_DIR$/app/assets/stylesheets/red_pack.sass" />
     </list>
     <ignored path="gudu-rails.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -118,11 +116,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="get_coupon.slim" pinned="false" current-in-tab="true">
+      <file leaf-file-name="get_coupon.slim" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/authorizations/get_coupon.slim">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.703125">
-              <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
+            <state vertical-scroll-proportion="-15.0">
+              <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="red_pack.sass" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/red_pack.sass">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5052083">
+              <caret line="59" column="20" selection-start-line="59" selection-start-column="20" selection-end-line="59" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -181,7 +189,6 @@
         <option value="$PROJECT_DIR$/db/migrate/20151114044219_add_frozen_coupon_belongs_to_red_pack.rb" />
         <option value="$PROJECT_DIR$/app/views/layouts/application.html.erb" />
         <option value="$PROJECT_DIR$/app/assets/stylesheets/red_pack.scss" />
-        <option value="$PROJECT_DIR$/app/assets/stylesheets/red_pack.sass" />
         <option value="$PROJECT_DIR$/db/migrate/20151114081123_add_name_to_authorization.rb" />
         <option value="$PROJECT_DIR$/app/workers/fetch_weixin_user_info_worker.rb" />
         <option value="$PROJECT_DIR$/app/models/red_pack.rb" />
@@ -190,6 +197,7 @@
         <option value="$PROJECT_DIR$/app/controllers/authorizations_controller.rb" />
         <option value="$PROJECT_DIR$/app/models/authorization.rb" />
         <option value="$PROJECT_DIR$/app/views/authorizations/get_coupon.slim" />
+        <option value="$PROJECT_DIR$/app/assets/stylesheets/red_pack.sass" />
       </list>
     </option>
   </component>
@@ -929,14 +937,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/red_pack.sass">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.5">
-          <caret line="35" column="12" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/migrate/20151114081123_add_name_to_authorization.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.05">
@@ -1003,8 +1003,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/authorizations/get_coupon.slim">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.703125">
-          <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
+        <state vertical-scroll-proportion="-15.0">
+          <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/red_pack.sass">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5052083">
+          <caret line="59" column="20" selection-start-line="59" selection-start-column="20" selection-end-line="59" selection-end-column="20" />
           <folding />
         </state>
       </provider>

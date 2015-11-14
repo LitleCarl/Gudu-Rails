@@ -15,7 +15,6 @@ class AuthorizationsController < ApplicationController
   # 客户获取优惠券的action
   def get_coupon
     @response_status, @red_pack, @frozen_coupon = Authorization.get_frozen_coupon_by_weixin_authorization(params)
-    puts "当前状态:#{response.code},#{response.message}"
   end
 
   # 公众号验证开发者

@@ -25,7 +25,7 @@ html
 
 javascript:
   function load(){
-    var response_status = "#{@response_status.to_json}";
+    var response_status = #{raw @response_status.to_json};
     if (response_status.code != 200) {
       alert(response_status.message || '系统异常,请稍后重试');
     }

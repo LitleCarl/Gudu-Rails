@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :user_about, only: :login_with_sms_code
+  skip_before_filter :user_about, only: [:login_with_sms_code, :bind_weixin]
 
   # 短信登陆
   def login_with_sms_code

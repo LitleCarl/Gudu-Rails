@@ -1,21 +1,22 @@
-require 'net/http'
 # == Schema Information
 #
 # Table name: authorizations
 #
 #  id            :integer          not null, primary key
-#  open_id       :string(255)
-#  provider      :string(255)
-#  token         :string(255)
-#  refresh_token :string(255)
+#  open_id       :string(255)                            # open id
+#  provider      :string(255)                            # 提供者(wx,weibo)
+#  token         :string(255)                            # 令牌
+#  refresh_token :string(255)                            # 刷新令牌
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  union_id      :string(255)
-#  user_id       :integer
-#  nick_name     :string(255)
-#  owner_id      :integer
+#  union_id      :string(255)                            # 用户唯一身份id
+#  user_id       :integer                                # 关联用户
+#  nick_name     :string(255)                            # 第三方昵称
+#  owner_id      :integer                                # 关联店铺拥有人
+#  avatar        :text(65535)                            # 头像地址
 #
 
+require 'net/http'
 class Authorization < ActiveRecord::Base
 
   # 通用查询方法
@@ -27,6 +28,8 @@ class Authorization < ActiveRecord::Base
   # 关联店铺东家
   belongs_to :owner
 
+  after_save :sync_avatar
+
   # provider
   module Provider
     # 微信开放平台
@@ -34,6 +37,15 @@ class Authorization < ActiveRecord::Base
 
     # 微信公众号
     WEIXIN_GZH = 'weixin_gzh'
+  end
+
+  # 同步头像
+  def sync_avatar
+    user = self.user
+    if user.present? && self.previous_changes['avatar'].present?
+      user.avatar = self.avatar
+      user.save
+    end
   end
 
   # 更新用户信息
@@ -56,6 +68,8 @@ class Authorization < ActiveRecord::Base
 
     json = JSON.parse(body,  {:symbolize_names => true})
     self.nick_name = json[:nickname] || '匿名'
+    self.avatar = json[:headimgurl]
+
     self.save!
   end
 
@@ -188,6 +202,7 @@ class Authorization < ActiveRecord::Base
         auth.open_id = options[:openid]
         auth.refresh_token = options[:refresh_token]
         auth.provider = options[:provider]
+
         auth.save!
 
         auth.update_profile

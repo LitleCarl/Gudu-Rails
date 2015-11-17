@@ -3,8 +3,8 @@
 # Table name: red_packs
 #
 #  id         :integer          not null, primary key
-#  expired_at :datetime         not null
-#  user_id    :integer          not null
+#  expired_at :datetime         not null              # 过期时间
+#  user_id    :integer          not null              # 关联用户
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

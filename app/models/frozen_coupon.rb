@@ -3,15 +3,15 @@
 # Table name: frozen_coupons
 #
 #  id               :integer          not null, primary key
-#  authorization_id :integer
-#  discount         :decimal(10, 2)   default("0.00"), not null
-#  activated_date   :datetime         not null
-#  expired_date     :datetime         not null
-#  least_price      :decimal(10, 2)   default("0.00"), not null
-#  coupon_id        :integer
+#  authorization_id :integer                                    # 关联第三方登录(微信)
+#  discount         :decimal(10, 2)   default("0.00"), not null # 抵扣金额
+#  activated_date   :datetime         not null                  # 生效日期
+#  expired_date     :datetime         not null                  # 失效日期
+#  least_price      :decimal(10, 2)   default("0.00"), not null # 最低起用价
+#  coupon_id        :integer                                    # 关联优惠券
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  red_pack_id      :integer
+#  red_pack_id      :integer                                    # 暂存优惠券属于某个红包
 #
 
 class FrozenCoupon < ActiveRecord::Base

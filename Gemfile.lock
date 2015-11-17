@@ -98,6 +98,8 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    migration_comments (0.3.2)
+      activerecord (>= 2.3.2)
     mime-types (2.4.3)
     mini_portile (0.6.2)
     minitest (5.8.1)
@@ -216,6 +218,7 @@ DEPENDENCIES
   jquery-rails
   jwt (~> 1.5.1)
   kaminari (= 0.16.1)
+  migration_comments (= 0.3.2)
   mysql2 (~> 0.3.18)
   pingpp
   qiniu (~> 6.5.1)

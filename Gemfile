@@ -36,6 +36,8 @@ gem 'mysql2', '~> 0.3.18'
 
 gem 'annotate', '2.6.5'
 
+gem 'migration_comments', '0.3.2'
+
 gem 'hashie', '3.2.0'
 gem 'jwt', '~> 1.5.1'
 # yml 配置管理 - https://github.com/binarylogic/settingslogic

@@ -14,6 +14,7 @@
 class Owner < ActiveRecord::Base
   has_one :store
   has_many :sub_orders
+  has_one :authorization
 
   before_save :set_password_encrypted
 

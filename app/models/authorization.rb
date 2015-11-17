@@ -12,11 +12,20 @@ require 'net/http'
 #  updated_at    :datetime         not null
 #  union_id      :string(255)
 #  user_id       :integer
+#  nick_name     :string(255)
+#  owner_id      :integer
 #
 
 class Authorization < ActiveRecord::Base
 
+  # 通用查询方法
+  include Concerns::Query::Methods
+
+  # 关联用户
   belongs_to :user
+
+  # 关联店铺东家
+  belongs_to :owner
 
   # provider
   module Provider
@@ -217,7 +226,7 @@ class Authorization < ActiveRecord::Base
 
       response, auth = self.create_or_update_by_options(json)
 
-      res.__raise_response_if_essential__(response)
+      res.__raise__response__(response)
 
       # 生成第三方用户暂存优惠券
       response, red_pack, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack_id, authorization: auth)
@@ -225,6 +234,21 @@ class Authorization < ActiveRecord::Base
 
     end
     return response, red_pack, frozen_coupon
+  end
+
+  #
+  # 查询未绑定过用户的authorization
+  #
+  # @param options [Hash]
+  #
+  # @return [Array] 响应, 用户, token
+  #
+  def self.query_not_binded_by_options(options = {})
+    result = self.query_by_options(user_id: nil)
+
+    result = result.where(options) if options.present?
+
+    result
   end
 
 end

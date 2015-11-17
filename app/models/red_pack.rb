@@ -55,7 +55,7 @@ class RedPack < ActiveRecord::Base
                                                               least_price: 1,
                                                               authorization: authorization
                                                           })
-      res.__raise_response_if_essential__(response)
+      res.__raise__response__(response)
 
     end
 

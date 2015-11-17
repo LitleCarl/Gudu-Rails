@@ -61,7 +61,7 @@ class FrozenCoupon < ActiveRecord::Base
                                             expired_date: expired_date,
                                             least_price: least_price
                                         })
-        res.__raise_response_if_essential__(response)
+        res.__raise__response__(response)
         frozen_coupon.coupon = coupon
       end
 

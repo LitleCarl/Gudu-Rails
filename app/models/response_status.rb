@@ -40,6 +40,9 @@ class ResponseStatus
     # 需要登录
     NEED_LOGIN = 800
 
+    # 缺少参数
+    MISS_PARAM = 501
+
   end
 
   def initialize(code = Code::SUCCESS, message = '', messages = [])
@@ -248,7 +251,7 @@ class ResponseStatus
   #
   # @param code [ResponseStatus] 状态
   #
-  def __raise_response_if_essential__(response_status)
+  def __raise__response__(response_status)
     if response_status.code != Code::SUCCESS
       @code = response_status.code
       @message = response_status.message

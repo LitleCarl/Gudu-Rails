@@ -94,7 +94,7 @@ class Authorization < ActiveRecord::Base
 
     if self.is_gzh?
       url = 'https://api.weixin.qq.com/cgi-bin/user/info'
-      token = self.gzh_token
+      token = Authorization.get_access_token_for_gzh#self.gzh_token
       open_id = self.gzh_open_id
     elsif self.is_open?
       url = 'https://api.weixin.qq.com/sns/userinfo'
@@ -330,6 +330,23 @@ class Authorization < ActiveRecord::Base
     result = result.where(options) if options.present?
 
     result
+  end
+
+
+  #(奇怪) 获取公众号基础access_token
+  def self.get_access_token_for_gzh
+    url = self.path_with_params('https://api.weixin.qq.com/cgi-bin/token', grant_type: 'client_credential', appid: WeixinGongZhongSetting.app_id, secret: WeixinGongZhongSetting.secret)
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+    body = http.request(request).body
+
+    json = JSON.parse(body,  {:symbolize_names => true})
+
+    return json[:access_token]
   end
 
 end

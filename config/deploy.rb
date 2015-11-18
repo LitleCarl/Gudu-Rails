@@ -60,7 +60,7 @@ before 'deploy:check:linked_files', 'deploy:shared:execute' do
 
     puts "bundle = #{bundle}"
 
-    #execute "source ~/.bashrc; cd #{project_dir}; git pull;"
+    execute "source ~/.bashrc; cd #{project_dir}; git pull;"
 
     if bundle.eql?('update')
       execute "source ~/.bashrc; cd #{project_dir}; bundle update; bundle package --all;"

@@ -18,6 +18,6 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-every 1.day, :at => '1:00 am' do
+every 1.day, :at => '0:01 am' do
   runner "Specification.update_daily_stock"
 end

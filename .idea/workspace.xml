@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eb4b51e4-cbba-42cd-ab6b-0019490e91bb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/authorization.rb" afterPath="$PROJECT_DIR$/app/models/authorization.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/deploy.rb" afterPath="$PROJECT_DIR$/config/deploy.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/schema.rb" afterPath="$PROJECT_DIR$/db/schema.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="eb4b51e4-cbba-42cd-ab6b-0019490e91bb" name="Default" comment="" />
     <ignored path="gudu-rails.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/components/" />
@@ -98,10 +93,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="response_status.rb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="response_status.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/models/response_status.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.09659091">
               <caret line="214" column="21" selection-start-line="214" selection-start-column="21" selection-end-line="214" selection-end-column="21" />
               <folding />
             </state>
@@ -118,10 +113,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="authorization.rb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="authorization.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/authorization.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2274326">
+            <state vertical-scroll-proportion="-7.185185">
               <caret line="224" column="74" selection-start-line="224" selection-start-column="67" selection-end-line="224" selection-end-column="74" />
               <folding />
             </state>
@@ -568,9 +563,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1003" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19275825" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19275825" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31828195" sideWeight="0.5063898" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -977,14 +972,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/response_status.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="214" column="21" selection-start-line="214" selection-start-column="21" selection-end-line="214" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/frozen_coupon.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1003,8 +990,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/authorization.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2274326">
+        <state vertical-scroll-proportion="-7.185185">
           <caret line="224" column="74" selection-start-line="224" selection-start-column="67" selection-end-line="224" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/response_status.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09659091">
+          <caret line="214" column="21" selection-start-line="214" selection-start-column="21" selection-end-line="214" selection-end-column="21" />
           <folding />
         </state>
       </provider>

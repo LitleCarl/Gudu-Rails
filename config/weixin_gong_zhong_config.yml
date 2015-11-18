@@ -12,4 +12,5 @@ test:
 
 production:
   <<: *development
-
+  app_id: wx98e5b3cd70319417
+  secret: 600009eb02c49ca3edba296608fc7be7

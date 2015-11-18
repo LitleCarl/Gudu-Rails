@@ -2,18 +2,21 @@
 #
 # Table name: authorizations
 #
-#  id            :integer          not null, primary key
-#  open_id       :string(255)                            # open id
-#  provider      :string(255)                            # 提供者(wx,weibo)
-#  token         :string(255)                            # 令牌
-#  refresh_token :string(255)                            # 刷新令牌
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  union_id      :string(255)                            # 用户唯一身份id
-#  user_id       :integer                                # 关联用户
-#  nick_name     :string(255)                            # 第三方昵称
-#  owner_id      :integer                                # 关联店铺拥有人
-#  avatar        :text(65535)                            # 头像地址
+#  id                 :integer          not null, primary key
+#  provider           :string(255)                            # 提供者(wx,weibo)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  union_id           :string(255)                            # 用户唯一身份id
+#  user_id            :integer                                # 关联用户
+#  nick_name          :string(255)                            # 第三方昵称
+#  owner_id           :integer                                # 关联店铺拥有人
+#  avatar             :text(65535)                            # 头像地址
+#  gzh_token          :string(255)                            # 公众号token
+#  gzh_refresh_token  :string(255)                            # 公众号refresh_token
+#  open_token         :string(255)                            # 开放平台token
+#  open_refresh_token :string(255)                            # 开放平台refresh_token
+#  gzh_open_id        :string(255)                            # 公众号open_id
+#  open_open_id       :string(255)                            # 开放平台open_id
 #
 
 require 'net/http'
@@ -39,6 +42,40 @@ class Authorization < ActiveRecord::Base
     WEIXIN_GZH = 'weixin_gzh'
   end
 
+  # 公众号来源
+  def is_gzh?
+    self.provider[Provider::WEIXIN_GZH].present?
+  end
+
+  # 开放平台来源
+  def is_open?
+    self.provider[Provider::WEIXIN_OPEN].present?
+  end
+
+  def add_provider(provider)
+    if provider == Provider::WEIXIN_GZH
+
+      if self.is_open?
+        self.provider = "#{Provider::WEIXIN_GZH},#{Provider::WEIXIN_OPEN}"
+      elsif self.is_gzh?
+
+      else
+        self.provider = "#{Provider::WEIXIN_GZH}"
+      end
+
+    elsif provider == Provider::WEIXIN_OPEN
+
+      if self.is_open?
+
+      elsif self.is_gzh?
+        self.provider = "#{Provider::WEIXIN_GZH},#{Provider::WEIXIN_OPEN}"
+      else
+        self.provider = "#{Provider::WEIXIN_OPEN}"
+      end
+
+    end
+  end
+
   # 同步头像
   def sync_avatar
     user = self.user
@@ -51,10 +88,12 @@ class Authorization < ActiveRecord::Base
   # 更新用户信息
   def update_profile
     url = ''
-    if self.provider == Provider::WEIXIN_GZH
+    if self.is_gzh?
       url = 'https://api.weixin.qq.com/cgi-bin/user/info'
-    else
+    elsif self.is_open?
       url = 'https://api.weixin.qq.com/sns/userinfo'
+    else
+      return
     end
 
     url = Authorization.path_with_params(url, access_token: self.token, openid: self.open_id, lang: 'zh_CN')
@@ -78,7 +117,7 @@ class Authorization < ActiveRecord::Base
     page + '?' + params.map {|k,v| CGI.escape(k.to_s)+'='+CGI.escape(v.to_s) }.join('&')
   end
 
-  # 获取用户信息的url
+  # 获取用户token的url
   #
   # @param code [String] 微信授权的code
   # @param setting [Class] WeixinOpenSetting/WeixinGongzhongSetting
@@ -131,10 +170,7 @@ class Authorization < ActiveRecord::Base
 
       auth_response, auth = self.create_or_update_by_options(json)
 
-      temp_res = ResponseStatus.merge_status(res, auth_response)
-
-      res.code = temp_res.code
-      res.message = temp_res.message
+      res.__raise__response__(auth_response)
     end
 
     return response, auth
@@ -164,6 +200,8 @@ class Authorization < ActiveRecord::Base
       json = self.get_user_token(code, WeixinGongZhongSetting)
 
       response, auth = self.create_or_update_by_options(json)
+
+      res.__raise__response__(response)
     end
 
     return response, auth
@@ -197,15 +235,35 @@ class Authorization < ActiveRecord::Base
 
       if auth.blank?
         auth = Authorization.new
-        auth.token = options[:access_token]
+
+        auth.gzh_token = options[:access_token] if options[:provider] == Provider::WEIXIN_GZH
+        auth.open_token = options[:access_token] if options[:provider] == Provider::WEIXIN_OPEN
+
+        auth.gzh_open_id = options[:openid] if options[:provider] == Provider::WEIXIN_GZH
+        auth.open_open_id = options[:openid] if options[:provider] == Provider::WEIXIN_OPEN
+
+        auth.gzh_refresh_token = options[:refresh_token] if options[:provider] == Provider::WEIXIN_GZH
+        auth.open_refresh_token = options[:refresh_token] if options[:provider] == Provider::WEIXIN_OPEN
+
         auth.union_id = options[:unionid]
-        auth.open_id = options[:openid]
-        auth.refresh_token = options[:refresh_token]
         auth.provider = options[:provider]
 
         auth.save!
 
         auth.update_profile
+
+      else
+        auth.gzh_token = options[:access_token] if options[:provider] == Provider::WEIXIN_GZH
+        auth.open_token = options[:access_token] if options[:provider] == Provider::WEIXIN_OPEN
+
+        auth.gzh_open_id = options[:openid] if options[:provider] == Provider::WEIXIN_GZH
+        auth.open_open_id = options[:openid] if options[:provider] == Provider::WEIXIN_OPEN
+
+        auth.gzh_refresh_token = options[:refresh_token] if options[:provider] == Provider::WEIXIN_GZH
+        auth.open_refresh_token = options[:refresh_token] if options[:provider] == Provider::WEIXIN_OPEN
+
+        auth.add_provider(options[:provider])
+        auth.save!
       end
 
     end
@@ -245,7 +303,7 @@ class Authorization < ActiveRecord::Base
 
       # 生成第三方用户暂存优惠券
       response, red_pack, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack_id, authorization: auth)
-      res.__raise_response_if_essential__(response)
+      res.__raise__response__(response)
 
     end
     return response, red_pack, frozen_coupon

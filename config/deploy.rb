@@ -60,7 +60,7 @@ before 'deploy:check:linked_files', 'deploy:shared:execute' do
 
     puts "bundle = #{bundle}"
 
-    execute "source ~/.bashrc; cd #{project_dir}; git pull;"
+    #execute "source ~/.bashrc; cd #{project_dir}; git pull;"
 
     if bundle.eql?('update')
       execute "source ~/.bashrc; cd #{project_dir}; bundle update; bundle package --all;"
@@ -70,8 +70,6 @@ before 'deploy:check:linked_files', 'deploy:shared:execute' do
     #execute "mkdir -p #{shared_path}/bundle/ruby/#{ruby_version}/cache; cp -r #{project_dir}/vendor/cache/* #{shared_path}/bundle/ruby/#{ruby_version}/cache"
 
     execute "cp -r #{project_dir}/config/* #{shared_path}/config"
-
-
 
     #execute "rm -fr #{shared_path}/config/puma; cp -r #{project_dir}/config/puma #{shared_path}/config"
   end
@@ -91,5 +89,5 @@ namespace :deploy do
 
     end
   end
-
 end
+

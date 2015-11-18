@@ -24,19 +24,6 @@ ActiveRecord::Schema.define(version: 20151118020644) do
   end
 
   create_table "authorizations", force: :cascade do |t|
-<<<<<<< HEAD
-    t.string   "open_id",       limit: 255
-    t.string   "provider",      limit: 255
-    t.string   "token",         limit: 255
-    t.string   "refresh_token", limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.string   "union_id",      limit: 255
-    t.integer  "user_id",       limit: 4
-    t.string   "nick_name",     limit: 255
-    t.integer  "owner_id",      limit: 4
-    t.text     "avatar",        limit: 65535,              comment: "头像地址"
-=======
     t.string   "provider",           limit: 255,                comment: "提供者(wx,weibo)"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
@@ -51,7 +38,7 @@ ActiveRecord::Schema.define(version: 20151118020644) do
     t.string   "open_refresh_token", limit: 255,                comment: "开放平台refresh_token"
     t.string   "gzh_open_id",        limit: 255,                comment: "公众号open_id"
     t.string   "open_open_id",       limit: 255,                comment: "开放平台open_id"
->>>>>>> 8be627b24d3033b8193fb652d23216fc9c3a83a0
+
   end
 
   create_table "body_infos", force: :cascade do |t|

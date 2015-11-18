@@ -87,16 +87,24 @@ class Authorization < ActiveRecord::Base
 
   # 更新用户信息
   def update_profile
+    token = nil
+    open_id = nil
+
     url = ''
+
     if self.is_gzh?
       url = 'https://api.weixin.qq.com/cgi-bin/user/info'
+      token = self.gzh_token
+      open_id = self.gzh_open_id
     elsif self.is_open?
       url = 'https://api.weixin.qq.com/sns/userinfo'
+      token = self.open_token
+      open_id = self.open_open_id
     else
       return
     end
 
-    url = Authorization.path_with_params(url, access_token: self.token, openid: self.open_id, lang: 'zh_CN')
+    url = Authorization.path_with_params(url, access_token: token, openid: open_id, lang: 'zh_CN')
     uri = URI.parse(url)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true

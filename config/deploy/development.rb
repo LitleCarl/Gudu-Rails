@@ -51,7 +51,7 @@
 # ------------------------------------
 server 'api.zaocan84.com',
   user: 'root',
-  roles: %w{web app},
+  roles: %w{web app db},
   ssh_options: {
     user: 'root', # overrides user setting above
     keys: %w(/root/.ssh/id_rsa),

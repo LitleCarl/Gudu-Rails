@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118050755) do
+ActiveRecord::Schema.define(version: 20151118020644) do
 
   create_table "addresses", force: :cascade, comment: "用户收货地址" do |t|
     t.string   "name",            limit: 255,                              comment: "收货人名"
@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 20151118050755) do
     t.string   "open_refresh_token", limit: 255,                comment: "开放平台refresh_token"
     t.string   "gzh_open_id",        limit: 255,                comment: "公众号open_id"
     t.string   "open_open_id",       limit: 255,                comment: "开放平台open_id"
-    t.string   "test",               limit: 255
   end
 
   create_table "body_infos", force: :cascade do |t|

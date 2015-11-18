@@ -18,6 +18,7 @@ class Address < ActiveRecord::Base
   validates :name, :address, :phone, :user_id, presence: true
   validate :check_fields
   after_save :detect_address_is_set_default
+
   def self.add_address(params)
     response_status = ResponseStatus.default
     data = nil

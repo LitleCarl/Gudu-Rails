@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117060851) do
+ActiveRecord::Schema.define(version: 20151118020644) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20151117060851) do
   end
 
   create_table "authorizations", force: :cascade do |t|
+<<<<<<< HEAD
     t.string   "open_id",       limit: 255
     t.string   "provider",      limit: 255
     t.string   "token",         limit: 255
@@ -35,6 +36,22 @@ ActiveRecord::Schema.define(version: 20151117060851) do
     t.string   "nick_name",     limit: 255
     t.integer  "owner_id",      limit: 4
     t.text     "avatar",        limit: 65535,              comment: "头像地址"
+=======
+    t.string   "provider",           limit: 255,                comment: "提供者(wx,weibo)"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "union_id",           limit: 255,                comment: "用户唯一身份id"
+    t.integer  "user_id",            limit: 4,                  comment: "关联用户"
+    t.string   "nick_name",          limit: 255,                comment: "第三方昵称"
+    t.integer  "owner_id",           limit: 4,                  comment: "关联店铺拥有人"
+    t.text     "avatar",             limit: 65535,              comment: "头像地址"
+    t.string   "gzh_token",          limit: 255,                comment: "公众号token"
+    t.string   "gzh_refresh_token",  limit: 255,                comment: "公众号refresh_token"
+    t.string   "open_token",         limit: 255,                comment: "开放平台token"
+    t.string   "open_refresh_token", limit: 255,                comment: "开放平台refresh_token"
+    t.string   "gzh_open_id",        limit: 255,                comment: "公众号open_id"
+    t.string   "open_open_id",       limit: 255,                comment: "开放平台open_id"
+>>>>>>> 8be627b24d3033b8193fb652d23216fc9c3a83a0
   end
 
   create_table "body_infos", force: :cascade do |t|

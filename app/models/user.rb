@@ -61,6 +61,8 @@ class User < ActiveRecord::Base
 
       authorization.user = user
       authorization.save!
+
+      user.avatar = authorization.avatar
     end
 
     return response, user, token

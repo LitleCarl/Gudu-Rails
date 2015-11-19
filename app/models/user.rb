@@ -27,6 +27,9 @@ class User < ActiveRecord::Base
   # 关联优惠券
   has_many :coupons
 
+  # 关联第三方登录
+  has_one :authorization
+
   before_save :set_password_encrypted
 
   #

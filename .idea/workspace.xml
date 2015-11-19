@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb4b51e4-cbba-42cd-ab6b-0019490e91bb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/users/_user.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/users/_user.json.jbuilder" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/user.rb" afterPath="$PROJECT_DIR$/app/models/user.rb" />
     </list>
     <ignored path="gudu-rails.iws" />
@@ -69,8 +68,8 @@
       <file leaf-file-name="authorization.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/authorization.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.518518">
-              <caret line="168" column="11" selection-start-line="168" selection-start-column="11" selection-end-line="168" selection-end-column="11" />
+            <state vertical-scroll-proportion="-15.555555">
+              <caret line="28" column="18" selection-start-line="28" selection-start-column="14" selection-end-line="28" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -96,21 +95,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user.rb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="user.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/models/user.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="64" column="17" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_user.json.jbuilder" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/views/users/_user.json.jbuilder">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.017045455">
-              <caret line="1" column="34" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.47727272">
+              <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -226,8 +215,8 @@
         <option value="$PROJECT_DIR$/config/weixin_gong_zhong_config.yml" />
         <option value="$PROJECT_DIR$/app/models/red_pack.rb" />
         <option value="$PROJECT_DIR$/app/models/authorization.rb" />
-        <option value="$PROJECT_DIR$/app/models/user.rb" />
         <option value="$PROJECT_DIR$/app/views/users/_user.json.jbuilder" />
+        <option value="$PROJECT_DIR$/app/models/user.rb" />
       </list>
     </option>
   </component>
@@ -1039,14 +1028,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/authorization.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.518518">
-          <caret line="168" column="11" selection-start-line="168" selection-start-column="11" selection-end-line="168" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/authorizations_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1063,18 +1044,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/user.rb">
+    <entry file="file://$PROJECT_DIR$/app/views/users/_user.json.jbuilder">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="64" column="17" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.017045455">
+          <caret line="1" column="34" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/users/_user.json.jbuilder">
+    <entry file="file://$PROJECT_DIR$/app/models/authorization.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.017045455">
-          <caret line="1" column="34" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
+        <state vertical-scroll-proportion="-15.555555">
+          <caret line="28" column="18" selection-start-line="28" selection-start-column="14" selection-end-line="28" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/user.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.47727272">
+          <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
           <folding />
         </state>
       </provider>

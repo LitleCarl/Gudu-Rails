@@ -4,7 +4,7 @@ class AuthorizationsController < ApplicationController
 
   # ios/android登录回调
   def authorization
-    @response_status, @auth = Authorization.fetch_access_token_and_open_id(params)
+    @response_status, @auth, @user, @token = Authorization.fetch_access_token_and_open_id(params)
   end
 
   # 公众号获取用户信息,微信浏览器redirect的action

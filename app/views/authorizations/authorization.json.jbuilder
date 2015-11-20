@@ -8,4 +8,19 @@ json.data do | json |
   else
     json.auth nil
   end
+
+
+  if @token
+    json.token @token
+  else
+    json.token nil
+  end
+
+  json.user do
+    if @user.present?
+      json.partial! @user, partial: 'users/user', as: :user
+    else
+      json.nil!
+    end
+  end
 end

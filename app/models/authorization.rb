@@ -164,12 +164,19 @@ class Authorization < ActiveRecord::Base
   # @param options [Hash]
   # @option options [String] :code 刷新token的代号
   #
-  # @return [ResponseStatus] 响应
+  # @return [ResponseStatus] 响应, Auth, User(如果未绑定过为nil), Token(如果未绑定过为nil)
   #
   def self.fetch_access_token_and_open_id(options)
 
     auth = nil
+    token = nil
+    user = nil
 
+    catch_proc = proc {
+      auth = nil
+      token = nil
+      user = nil
+    }
     response = ResponseStatus.__rescue__ do |res|
       code = options[:code]
       res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank?
@@ -179,9 +186,14 @@ class Authorization < ActiveRecord::Base
       auth_response, auth = self.create_or_update_by_options(json)
 
       res.__raise__response__(auth_response)
+      user = auth.user
+
+      if user.present?
+        token = TsaoUtil.sign_jwt_user_session(user.phone)
+      end
     end
 
-    return response, auth
+    return response, auth, user,token
   end
 
   #

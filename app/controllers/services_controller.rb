@@ -77,7 +77,8 @@ class ServicesController < ApplicationController
                              {
                                  name: "微信",
                                  code: "wx"
-                             }]
+                             }],
+        red_pack_available: true
     }
   end
 

@@ -36,9 +36,9 @@ class User < ActiveRecord::Base
   # 绑定微信登录
   #
   # @param options [Hash]
-  # @option options [String] :message_id 内容
-  # @option options [Status] :status 状态
-  # @option options [User] :user 消息接受者
+  # @option options [String] :phone 手机号
+  # @option options [String] :smsCode 验证码
+  # @option options [String] :smsToken token
   # @option options [String] :union_id 微信联合id
   #
   # @return [Array] 响应, 用户, token
@@ -55,8 +55,13 @@ class User < ActiveRecord::Base
     response = ResponseStatus.__rescue__(catch_proc) do |res|
       res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if options[:union_id].blank?
 
+      user =  User.query_first_by_options(phone: options[:phone])
+      res.__raise__(ResponseStatus::Code::ERROR, '该手机用户已经绑定过其他微信') if user.present? && user.authorization.present?
+
       response, user, token = self.validate_login_with_sms_token(options)
       res.__raise__response__(response)
+
+
 
       authorization = Authorization.query_not_binded_by_options(union_id: options[:union_id]).first
 

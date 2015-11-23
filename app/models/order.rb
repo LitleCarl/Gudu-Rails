@@ -135,6 +135,7 @@ class Order < ActiveRecord::Base
     data = nil
     begin
       self.transaction do
+        raise StandardError.new '购物车是空的' if params[:cart_items].blank?
         raise RestError::MissParameterError if params[:campus].blank? || params[:cart_items].blank? || params[:pay_method].blank? || params[:delivery_time].blank? || params[:receiver_name].blank? || params[:receiver_phone].blank? || params[:receiver_address].blank?
         user = params[:user]
         cart_items = params[:cart_items]

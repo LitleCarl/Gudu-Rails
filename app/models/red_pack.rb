@@ -49,7 +49,7 @@ class RedPack < ActiveRecord::Base
 
     response = ResponseStatus.__rescue__(catch_proc) do |res|
       red_pack_id, authorization = options[:red_pack_id], options[:authorization]
-      red_pack = self.query_first_by_options(id: red_pack_id).where('expired_at > ?', Time.now)
+      red_pack = self.query_by_options(id: red_pack_id).where('expired_at > ?', Time.now).first
 
       res.__raise__(ResponseStatus::Code::ERROR, '红包不存在错误') if red_pack.blank?
       res.__raise__(ResponseStatus::Code::ERROR, '微信用户不存在错误') if authorization.blank?

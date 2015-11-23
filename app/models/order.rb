@@ -275,7 +275,8 @@ class Order < ActiveRecord::Base
       if red_pack.blank?
         red_pack = RedPack.new
         red_pack.user = self.user
-        red_pack.expired_at = self.payment.time_paid + BasicConfigSetting.red_pack_duration
+        red_pack.order = self
+        red_pack.expired_at = self.payment.time_paid + BasicConfigSetting.red_pack_duration.to_i
         red_pack.save!
       end
     end

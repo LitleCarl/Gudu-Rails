@@ -18,6 +18,9 @@ class RedPack < ActiveRecord::Base
   # 关联用户
   belongs_to :user
 
+  # 关联订单
+  belongs_to :order
+
   # 关联暂存红包
   has_many :frozen_coupons
 

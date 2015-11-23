@@ -311,18 +311,25 @@ class Authorization < ActiveRecord::Base
 
     response = ResponseStatus.__rescue__(catch_proc) do |res|
       code = options[:code]
-      red_pack_id = options[:red_pack_id]
+      order_number = options[:order_number]
 
-      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank? || red_pack_id.blank?
+      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank? || order_number.blank?
 
       json = self.get_user_token(code, WeixinGongZhongSetting)
+
+      order = Order.query_first_by_options(order_number: order_number)
+
+      res.__raise__(ResponseStatus::Code::ERROR, '订单信息错误') if order.blank?
+
+      response, red_pack = order.create_or_get_red_pack
+      res.__raise__response__(response)
 
       response, auth = self.create_or_update_by_options(json)
 
       res.__raise__response__(response)
 
       # 生成第三方用户暂存优惠券
-      response, red_pack, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack_id, authorization: auth)
+      response, red_pack, frozen_coupon = RedPack.generate_frozen_coupon_by_options(red_pack_id: red_pack.id, authorization: auth)
       res.__raise__response__(response)
 
     end

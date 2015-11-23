@@ -29,8 +29,8 @@ class Payment < ActiveRecord::Base
 
   # 创建Payment后关联订单
   def set_order_paid_and_update_product_specification
-    if self.order.status == Order::Status::Not_Paid
-      self.order.status = Order::Status::Not_Delivered
+    if self.order.status == Order::Status::NOT_PAID
+      self.order.status = Order::Status::NOT_DELIVERED
       self.order.save
       Rails.logger.debug '第三方支付回调并且关联订单成功'
       # 开始更新商品状态

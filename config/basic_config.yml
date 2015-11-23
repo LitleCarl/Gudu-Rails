@@ -1,0 +1,11 @@
+default: &default
+  red_pack_available: true
+  red_pack_duration: 60 * 60 * 8 #8小时
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

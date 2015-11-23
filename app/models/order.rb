@@ -20,10 +20,23 @@
 #
 
 class Order < ActiveRecord::Base
+
+  # 通用查询方法
+  include Concerns::Query::Methods
+
+  # 关联学校
   belongs_to :campus
+
+  # 关联用户
   belongs_to :user
+
+  # 关联支付
   has_one :payment
+
+  # 关联订单内容
   has_many :order_items
+
+  # 关联优惠券
   has_one :coupon
 
   before_create :generate_order_number
@@ -32,17 +45,26 @@ class Order < ActiveRecord::Base
   after_create :check_coupon
 
   module Status
-    Dead = 0          # 取消的订单
-    Not_Paid = 1      # 未支付
-    Not_Delivered = 2 # 未发货
-    Not_Received = 3  # 未收到
-    Not_Commented = 4 # 未评论
-    Done = 5          # 完成
+    DEAD = 0          # 取消的订单
+
+    NOT_PAID = 1      # 未支付
+
+    NOT_DELIVERED = 2 # 未发货
+
+    NOT_RECEIVED = 3  # 未收到
+
+    NOT_COMMENTED = 4 # 未评论
+
+    DONE = 5          # 完成
+
+    PAYMENT_SUCCESS = [NOT_DELIVERED, NOT_RECEIVED, NOT_COMMENTED, DONE]
   end
 
   module PayMethod
     WEIXIN = 'wx'
+
     ALIPAY = 'alipay'
+
     ALL = [WEIXIN, ALIPAY]
   end
 
@@ -75,7 +97,7 @@ class Order < ActiveRecord::Base
       raise RestError::MissParameterError if params[:order_id].blank?
       user = params[:user]
       if user.present?
-        order = Order.where({user_id: user.id, id: params[:order_id], status: Order::Status::Not_Paid}).first
+        order = Order.where({user_id: user.id, id: params[:order_id], status: Order::Status::NOT_PAID}).first
         if order.present? && order.charge_json.blank?
           charge = Pingpp::Charge.create(
               :order_no  => order.id,
@@ -181,7 +203,7 @@ class Order < ActiveRecord::Base
             order.receiver_name = params[:receiver_name]
             order.receiver_phone = params[:receiver_phone]
             order.receiver_address = params[:receiver_address]
-            order.status = Order::Status::Not_Paid
+            order.status = Order::Status::NOT_PAID
 
             order.save!
             # 创建Order_Item
@@ -211,7 +233,7 @@ class Order < ActiveRecord::Base
 
   def check_order_status
     # 检查订单是否从未支付到支付
-    if self.status_changed? && self.status_was == Order::Status::Not_Paid && self.status == Order::Status::Not_Delivered
+    if self.status_changed? && self.status_was == Order::Status::NOT_PAID && self.status == Order::Status::NOT_DELIVERED
       OrderPayDoneSmsWorker.perform_async(self.id)
     end
   end
@@ -230,6 +252,32 @@ class Order < ActiveRecord::Base
 
   def check_coupon
 
+  end
+
+  #
+  # 创建或者获取红包
+  #
+  def create_or_get_red_pack
+    red_pack = nil
+
+    catch_proc = proc { red_pack = nil }
+
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
+      res.__raise__(ResponseStatus::Code::ERROR, '红包功能未开启') unless BasicConfigSetting.red_pack_available
+
+      res.__raise__(ResponseStatus::Code::ERROR, '还没有红包可发') unless Status::PAYMENT_SUCCESS.include?(self.status)
+
+      red_pack = self.red_pack
+
+      if red_pack.blank?
+        red_pack = RedPack.new
+        red_pack.user = self.user
+        red_pack.expired_at = self.payment.time_paid + BasicConfigSetting.red_pack_duration
+        red_pack.save!
+      end
+    end
+
+    return response, red_pack
   end
 
 end

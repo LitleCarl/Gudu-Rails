@@ -87,6 +87,10 @@ namespace :deploy do
 
       execute "cd #{work_dir};rake tmp:cache:clear; rm -rf ./tmp ; mkdir tmp ; chmod 777 -R ./tmp "
 
+      nginx_dir = '/opt/nginx/sbin'
+
+      execute "cd #{nginx_dir};./nginx -s stop; ./nginx "
+
     end
   end
 end

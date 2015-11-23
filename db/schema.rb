@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118020644) do
+ActiveRecord::Schema.define(version: 20151123035131) do
 
   create_table "addresses", force: :cascade, comment: "用户收货地址" do |t|
     t.string   "name",            limit: 255,                              comment: "收货人名"
@@ -199,6 +199,7 @@ ActiveRecord::Schema.define(version: 20151118020644) do
     t.integer  "user_id",    limit: 4, null: false, comment: "关联用户"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.integer  "order_id",   limit: 4,              comment: "红包关联订单"
   end
 
   create_table "specifications", force: :cascade do |t|

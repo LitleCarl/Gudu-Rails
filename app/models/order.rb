@@ -30,13 +30,16 @@ class Order < ActiveRecord::Base
   # 关联用户
   belongs_to :user
 
+  # 关联红包
+  has_one :red_pack
+
   # 关联支付
   has_one :payment
 
   # 关联订单内容
   has_many :order_items
 
-  # 关联优惠券
+  # 关联优惠券 (如果订单使用了优惠券)
   has_one :coupon
 
   before_create :generate_order_number

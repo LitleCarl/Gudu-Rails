@@ -7,6 +7,7 @@
 #  user_id    :integer          not null              # 关联用户
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  order_id   :integer                                # 红包关联订单
 #
 
 class RedPack < ActiveRecord::Base

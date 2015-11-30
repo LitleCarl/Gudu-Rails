@@ -89,7 +89,7 @@ namespace :deploy do
 
       nginx_dir = '/opt/nginx/sbin'
 
-      execute "cd #{nginx_dir};./nginx -s stop; ./nginx "
+      #execute "cd #{nginx_dir};./nginx -s stop; ./nginx "
 
     end
   end

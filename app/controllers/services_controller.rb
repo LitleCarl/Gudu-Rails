@@ -1,4 +1,5 @@
 require 'date'
+require "open-uri"
 
 class ServicesController < ApplicationController
   skip_before_filter :user_about

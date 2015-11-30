@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
   resources :services ,except: ALL_REST_ACTION do
     collection do
+      get :get_image_form
+
       # 发送登录验证码
       post :send_login_sms_code
 

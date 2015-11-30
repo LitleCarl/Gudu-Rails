@@ -48,6 +48,8 @@ class Order < ActiveRecord::Base
   after_create :check_coupon
 
   module Status
+    include Concerns::Dictionary::Module::I18n
+
     DEAD = 0          # 取消的订单
 
     NOT_PAID = 1      # 未支付
@@ -61,6 +63,9 @@ class Order < ActiveRecord::Base
     DONE = 5          # 完成
 
     PAYMENT_SUCCESS = [NOT_DELIVERED, NOT_RECEIVED, NOT_COMMENTED, DONE]
+
+    # 全部
+    ALL = get_all_values
   end
 
   module PayMethod

@@ -40,4 +40,9 @@ class OrdersController < ApplicationController
       @charge = nil
     end
   end
+
+  def show
+    @response_status, @order= Order.query_by_id(params)
+  end
+
 end

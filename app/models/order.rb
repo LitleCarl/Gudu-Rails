@@ -76,6 +76,25 @@ class Order < ActiveRecord::Base
     ALL = [WEIXIN, ALIPAY]
   end
 
+  def self.query_by_id(options)
+    order = nil
+
+    catch_proc = proc {
+      order = nil
+    }
+
+    response = ResponseStatus.__rescue__ do(catch_proc) |res|
+      order_id = options[:order_id]
+      user = options[:user]
+
+      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if order_id.blank? || user.blank?
+
+      order = self.query_first_by_options(user: user, id: order_id)
+    end
+
+    return response, order
+  end
+
   def self.get_orders_of_user(params)
     response_status = ResponseStatus.default
     data = nil
@@ -114,7 +133,7 @@ class Order < ActiveRecord::Base
               :amount    => (order.pay_price * 100).to_i,
               :client_ip => '127.0.0.1',
               :currency  => 'cny',
-              :subject   => '咕嘟早餐',
+              :subject   => '早餐巴士',
               :body      => '开启全新一天'
           )
           order.charge_json = charge

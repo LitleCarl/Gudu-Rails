@@ -83,7 +83,7 @@ class Order < ActiveRecord::Base
       order = nil
     }
 
-    response = ResponseStatus.__rescue__ do(catch_proc) |res|
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
       order_id = options[:order_id]
       user = options[:user]
 

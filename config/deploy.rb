@@ -84,11 +84,11 @@ namespace :deploy do
       # within release_path do
       #   execute :rake, 'cache:clear'
       # end
-      work_dir = "/github/#{fetch(:application)}/current"
+      #work_dir = "/github/#{fetch(:application)}/current"
 
-      execute "cd #{work_dir};rake tmp:cache:clear; rm -rf ./tmp ; mkdir tmp ; chmod 777 -R ./tmp "
+      #execute "cd #{work_dir};rake tmp:cache:clear; rm -rf ./tmp ; mkdir tmp ; chmod 777 -R ./tmp "
 
-      nginx_dir = '/opt/nginx/sbin'
+      #nginx_dir = '/opt/nginx/sbin'
 
       #execute "cd #{nginx_dir};./nginx -s stop; ./nginx "
 

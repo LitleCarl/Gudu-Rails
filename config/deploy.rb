@@ -32,8 +32,8 @@ set :branch, 'release/production'
 # Default value for linked_dirs is []
 # set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
 
-set :linked_files, %w{config/database.yml Gemfile.lock}
-set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/assets}
+set :linked_files, %w{config/database.yml Gemfile.lock Gemfile}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}# public/assets}
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -67,6 +67,7 @@ before 'deploy:check:linked_files', 'deploy:shared:execute' do
     end
 
     execute "cp #{project_dir}/Gemfile.lock #{shared_path}"
+    execute "cp #{project_dir}/Gemfile #{shared_path}"
     #execute "mkdir -p #{shared_path}/bundle/ruby/#{ruby_version}/cache; cp -r #{project_dir}/vendor/cache/* #{shared_path}/bundle/ruby/#{ruby_version}/cache"
 
     execute "cp -r #{project_dir}/config/* #{shared_path}/config"

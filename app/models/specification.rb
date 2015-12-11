@@ -15,9 +15,17 @@
 #
 
 class Specification < ActiveRecord::Base
+
+  # 通用查询方法
+  include Concerns::Query::Methods
+
+  # 关联商品
   belongs_to :product
+
   before_save :ensure_stock_not_negative
+
   after_save :update_product_min_max_price
+
   module Status
     Normal = 1  # 上架
     Pending = 2 # 下架

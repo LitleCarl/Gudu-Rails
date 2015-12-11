@@ -79,6 +79,12 @@ gem 'capistrano-rails', '~> 1.1', '>= 1.1.5'
 
 gem 'capistrano-rvm', '~> 0.1.2'
 
+# http://github.com/svenfuchs/i18n
+gem 'i18n', '~> 0.7.0'
+
+# http://spreadsheet.rubyforge.org/
+gem 'spreadsheet', '~> 1.0', '>= 1.0.9'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

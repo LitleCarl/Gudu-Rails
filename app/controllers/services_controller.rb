@@ -1,4 +1,5 @@
 require 'date'
+require "open-uri"
 
 class ServicesController < ApplicationController
   skip_before_filter :user_about
@@ -78,7 +79,8 @@ class ServicesController < ApplicationController
                                  name: "微信",
                                  code: "wx"
                              }],
-        red_pack_available: true
+        red_pack_available: true,
+        kefu_phone: '13788982942'
     }
   end
 

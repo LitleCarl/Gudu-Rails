@@ -48,6 +48,8 @@ class Order < ActiveRecord::Base
   after_create :check_coupon
 
   module Status
+    include Concerns::Dictionary::Module::I18n
+
     DEAD = 0          # 取消的订单
 
     NOT_PAID = 1      # 未支付
@@ -61,6 +63,9 @@ class Order < ActiveRecord::Base
     DONE = 5          # 完成
 
     PAYMENT_SUCCESS = [NOT_DELIVERED, NOT_RECEIVED, NOT_COMMENTED, DONE]
+
+    # 全部
+    ALL = get_all_values
   end
 
   module PayMethod
@@ -69,6 +74,25 @@ class Order < ActiveRecord::Base
     ALIPAY = 'alipay'
 
     ALL = [WEIXIN, ALIPAY]
+  end
+
+  def self.query_by_id(options)
+    order = nil
+
+    catch_proc = proc {
+      order = nil
+    }
+
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
+      order_id = options[:order_id]
+      user = options[:user]
+
+      res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if order_id.blank? || user.blank?
+
+      order = self.query_first_by_options(user: user, id: order_id)
+    end
+
+    return response, order
   end
 
   def self.get_orders_of_user(params)
@@ -109,7 +133,7 @@ class Order < ActiveRecord::Base
               :amount    => (order.pay_price * 100).to_i,
               :client_ip => '127.0.0.1',
               :currency  => 'cny',
-              :subject   => '咕嘟早餐',
+              :subject   => '早餐巴士',
               :body      => '开启全新一天'
           )
           order.charge_json = charge
@@ -135,6 +159,7 @@ class Order < ActiveRecord::Base
     data = nil
     begin
       self.transaction do
+        raise StandardError.new '购物车是空的' if params[:cart_items].blank?
         raise RestError::MissParameterError if params[:campus].blank? || params[:cart_items].blank? || params[:pay_method].blank? || params[:delivery_time].blank? || params[:receiver_name].blank? || params[:receiver_phone].blank? || params[:receiver_address].blank?
         user = params[:user]
         cart_items = params[:cart_items]

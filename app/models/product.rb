@@ -18,9 +18,13 @@
 #
 
 class Product < ActiveRecord::Base
+
   belongs_to :store
+
   has_one :nutrition
+
   has_many :specifications
+
   has_many :product_images
 
   # 拼音

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :orders, param: :order_id, only: [:show, :index, :create] do
+  resources :orders, param: :order_id, only: [:show, :index, :create, :show] do
     member do
       # 获取订单的支付chagre
       get :get_charge_for_unpaid_order
@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
   resources :services ,except: ALL_REST_ACTION do
     collection do
+      get :get_image_form
+
       # 发送登录验证码
       post :send_login_sms_code
 

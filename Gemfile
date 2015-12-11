@@ -85,9 +85,6 @@ gem 'i18n', '~> 0.7.0'
 # http://spreadsheet.rubyforge.org/
 gem 'spreadsheet', '~> 1.0', '>= 1.0.9'
 
-# https://github.com/cldwalker/hirb
-# gem 'hirb', '0.7.3'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

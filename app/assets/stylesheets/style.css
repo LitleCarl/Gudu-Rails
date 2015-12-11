@@ -815,65 +815,85 @@ a.button2 img {
   font-size: 13px;
 }
 }
-@media only screen and (max-width: 320px){
-.header-top {
-  padding: 0.5em 0;
-}
-span.menu {
-  margin-top: 0.3em;
-}
-.button h2 {
-  font-size: 1.25em;
-}
-.top-menu ul {
-  width: 90%;
-}
-.button {
- margin-top: 1.5em;
-}
-.header {
-  min-height: 400px;
-}
-.center-img img {
-  width: 35%;
-}
-.center-img {
-  margin-top: 2em;
-}
-.service-section h3 {
-  font-size: 1.3em;
-}
-.service-grid h4 {
-  font-size: 1.25em;
-}
-.video {
-  padding: 2em 0;
-}
-.video iframe {
-  margin-top: 1em;
-  }
-.feature-grid1 h4 {
-  font-size: 1.25em;
-}
-.feature h3 {
-  font-size: 1.3em;
-}
-.feature-grid2 h4 {
-  font-size: 1.25em;
-}
-.team-section h3 {
-  font-size: 1.3em;
-}
-.social-icon {
-  padding: 20px 0 0;
-}
-.social-icon i {
-  width: 30px;
-  height: 30px;
-  background: url("/assets/img-sprite.png") no-repeat 0px 0px;
-  display: inline-block;
-  background-size: 321px;
-}
-.contact-header h3 {
-  font-size: 1.3em;
+@media only screen and (max-width: 320px) {
+    .header-top {
+        padding: 0.5em 0;
+    }
+
+    span.menu {
+        margin-top: 0.3em;
+    }
+
+    .button h2 {
+        font-size: 1.25em;
+    }
+
+    .top-menu ul {
+        width: 90%;
+    }
+
+    .button {
+        margin-top: 1.5em;
+    }
+
+    .header {
+        min-height: 400px;
+    }
+
+    .center-img img {
+        width: 35%;
+    }
+
+    .center-img {
+        margin-top: 2em;
+    }
+
+    .service-section h3 {
+        font-size: 1.3em;
+    }
+
+    .service-grid h4 {
+        font-size: 1.25em;
+    }
+
+    .video {
+        padding: 2em 0;
+    }
+
+    .video iframe {
+        margin-top: 1em;
+    }
+
+    .feature-grid1 h4 {
+        font-size: 1.25em;
+    }
+
+    .feature h3 {
+        font-size: 1.3em;
+    }
+
+    .feature-grid2 h4 {
+        font-size: 1.25em;
+    }
+
+    .team-section h3 {
+        font-size: 1.3em;
+    }
+
+    .social-icon {
+        padding: 20px 0 0;
+    }
+
+    .social-icon i {
+        width: 30px;
+        height: 30px;
+        background: url("/assets/img-sprite.png") no-repeat 0px 0px;
+        display: inline-block;
+        background-size: 321px;
+    }
+
+    .contact-header h3 {
+        font-size: 1.3em;
+    }
+
 }

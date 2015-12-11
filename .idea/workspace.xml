@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb4b51e4-cbba-42cd-ab6b-0019490e91bb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/deploy.rb" afterPath="$PROJECT_DIR$/config/deploy.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/stylesheets/style.css" afterPath="$PROJECT_DIR$/app/assets/stylesheets/style.css" />
     </list>
     <ignored path="gudu-rails.iws" />
@@ -86,9 +85,17 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.72809666">
-              <caret line="872" column="20" selection-start-line="872" selection-start-column="20" selection-end-line="872" selection-end-column="20" />
-              <folding />
+            <state vertical-scroll-proportion="5.913386">
+              <caret line="426" column="42" selection-start-line="426" selection-start-column="42" selection-end-line="426" selection-end-column="42" />
+              <folding>
+                <element signature="e#6918#6943#0" expanded="false" />
+                <element signature="e#6951#7183#0" expanded="false" />
+                <element signature="e#7212#7894#0" expanded="false" />
+                <element signature="e#7895#9730#0" expanded="false" />
+                <element signature="e#9731#10718#0" expanded="false" />
+                <element signature="e#10719#12302#0" expanded="false" />
+                <element signature="e#12303#13490#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1154,9 +1161,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.72809666">
-          <caret line="872" column="20" selection-start-line="872" selection-start-column="20" selection-end-line="872" selection-end-column="20" />
-          <folding />
+        <state vertical-scroll-proportion="5.913386">
+          <caret line="426" column="42" selection-start-line="426" selection-start-column="42" selection-end-line="426" selection-end-column="42" />
+          <folding>
+            <element signature="e#6918#6943#0" expanded="false" />
+            <element signature="e#6951#7183#0" expanded="false" />
+            <element signature="e#7212#7894#0" expanded="false" />
+            <element signature="e#7895#9730#0" expanded="false" />
+            <element signature="e#9731#10718#0" expanded="false" />
+            <element signature="e#10719#12302#0" expanded="false" />
+            <element signature="e#12303#13490#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

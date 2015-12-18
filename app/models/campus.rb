@@ -15,6 +15,9 @@
 
 class Campus < ActiveRecord::Base
   self.table_name = 'campuses'
+  
+  # 通用查询方法
+  include Concerns::Query::Methods
 
   before_save :update_first_letter
 

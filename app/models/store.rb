@@ -90,7 +90,7 @@ class Store < ActiveRecord::Base
     response = ResponseStatus.__rescue__ do |res|
       res.__raise__(Response::Code::MISS_PARAM, '参数错误') if options[:campus_id].blank?
 
-      stores = self.query_by_options(campus_id: params[:campus_id])
+      stores = self.query_by_options(campus_id: options[:campus_id])
       count = data.count
       if count > 0
         index = rand count

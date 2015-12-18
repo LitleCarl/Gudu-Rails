@@ -10,6 +10,7 @@
 #  location      :string(255)                            # 地址坐标
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  first_letter  :string(255)                            # 学校名称拼音首字母
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

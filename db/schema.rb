@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151123035131) do
+ActiveRecord::Schema.define(version: 20151218032443) do
 
   create_table "addresses", force: :cascade, comment: "用户收货地址" do |t|
     t.string   "name",            limit: 255,                              comment: "收货人名"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20151123035131) do
     t.string   "location",      limit: 255,              comment: "地址坐标"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.string   "first_letter",  limit: 255,              comment: "学校名称拼音首字母"
   end
 
   create_table "cart_items", force: :cascade do |t|

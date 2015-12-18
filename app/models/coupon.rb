@@ -11,7 +11,7 @@
 #  least_price    :decimal(10, 2)   default("0.00"), not null # 最低起用价
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  order_id       :integer                                    # 订单关联coupon(如果订单使用了优惠券)
+#  order_id       :integer                                    # 订单关联coupon
 #
 
 class Coupon < ActiveRecord::Base

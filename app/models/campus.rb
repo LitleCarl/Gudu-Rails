@@ -15,7 +15,7 @@
 
 class Campus < ActiveRecord::Base
   self.table_name = 'campuses'
-  
+
   # 通用查询方法
   include Concerns::Query::Methods
 
@@ -31,7 +31,7 @@ class Campus < ActiveRecord::Base
   belongs_to :city
 
   def update_first_letter
-    if self.changed.include?('first_letter')
+    if self.changed.include?('name')
       self.first_letter = (HanziToPinyin.hanzi_to_pinyin(self.name)[0] || '#').upcase
     end
   end

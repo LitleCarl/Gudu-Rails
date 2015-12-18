@@ -67,9 +67,8 @@ class ServicesController < ApplicationController
   end
 
 
-  def basic_config
-    @response_status = ResponseStatus.default_success
-    @config = {
+  def self.config
+    {
         availableDeliveryTime: ["6:29", "7:00", "7:30" , "8:30", "9:00"],
         availablePayMethod: [{
                                  name: "支付宝",
@@ -80,8 +79,17 @@ class ServicesController < ApplicationController
                                  code: "wx"
                              }],
         red_pack_available: true,
-        kefu_phone: '13788982942'
+        kefu_phone: '13788982942',
+        # 营业时间至 (小时)
+        deadline_hour: 12,
+        # 营业时间至 (分钟)
+        deadline_minute: 30
     }
+  end
+
+  def basic_config
+    @response_status = ResponseStatus.default_success
+    @config = ServicesController.config
   end
 
   def send_login_sms_code

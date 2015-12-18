@@ -157,6 +157,12 @@ class Order < ActiveRecord::Base
   def self.create_new_order(params)
     response_status = ResponseStatus.default
     data = nil
+
+    if Time.now.hour > ServicesController.config[:deadline_hour] && Time.now.min > ServicesController.config[:deadline_minute]
+      response_status.message = "太迟啦,明天记得在#{ServicesController.config[:deadline_hour]}点#{ServicesController.config[:deadline_hour]}之前来哦"
+      return response_status, data
+    end
+
     begin
       self.transaction do
         raise StandardError.new '购物车是空的' if params[:cart_items].blank?

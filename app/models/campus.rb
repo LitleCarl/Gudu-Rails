@@ -43,10 +43,27 @@ class Campus < ActiveRecord::Base
       return response_status, data
   end
 
-  def self.get_all_campuses(params)
-    response_status = ResponseStatus.default_success
-    data = self.all
-    return response_status, data
+  #
+  # 获取学校学校列表,可指定关键字
+  #
+  # @param options [Hash]
+  # option options [String] :keyword 关键字
+  #
+  # @return [Response, Array] 状态，学校列表
+  #
+  def self.get_all_campuses(options)
+    campuses = []
+    catch_proc = proc { campuses = [] }
+
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
+      if options[:keyword].present?
+        campuses = self.query_by_options(like_name: options[:keyword])
+      else
+        campuses = self.all
+      end
+    end
+
+    return response, campuses
   end
 
 end

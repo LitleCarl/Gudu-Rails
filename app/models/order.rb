@@ -159,7 +159,7 @@ class Order < ActiveRecord::Base
     data = nil
 
     if Time.now.hour > ServicesController.config[:deadline_hour] && Time.now.min > ServicesController.config[:deadline_minute]
-      response_status.message = "太迟啦,明天记得在#{ServicesController.config[:deadline_hour]}点#{ServicesController.config[:deadline_hour]}之前来哦"
+      response_status.message = "太迟啦,明天记得在#{ServicesController.get_config[:deadline_hour]}点#{ServicesController.get_config[:deadline_hour]}之前来哦"
       return response_status, data
     end
 

@@ -67,7 +67,7 @@ class ServicesController < ApplicationController
   end
 
 
-  def self.config
+  def self.get_config
     {
         availableDeliveryTime: ["6:29", "7:00", "7:30" , "8:30", "9:00"],
         availablePayMethod: [{
@@ -89,7 +89,7 @@ class ServicesController < ApplicationController
 
   def basic_config
     @response_status = ResponseStatus.default_success
-    @config = ServicesController.config
+    @config = ServicesController.get_config
   end
 
   def send_login_sms_code

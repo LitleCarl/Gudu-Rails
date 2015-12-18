@@ -88,7 +88,7 @@ class Store < ActiveRecord::Base
     store = nil
 
     response = ResponseStatus.__rescue__ do |res|
-      res.__raise__(Response::Code::MISS_PARAM, '参数错误') if options[:campus_id].blank?
+      res.__raise__(ResponseStatus::Code::MISS_PARAM, '参数错误') if options[:campus_id].blank?
 
       stores = Campus.query_first_by_id(options[:campus_id]).stores
       count = stores.count
@@ -96,7 +96,7 @@ class Store < ActiveRecord::Base
         index = rand count
         store = stores[index]
       else
-        res.__raise__(Response::Code::ERROR, '该学校还没有店铺哦')
+        res.__raise__(ResponseStatus::Code::ERROR, '该学校还没有店铺哦')
       end
     end
 

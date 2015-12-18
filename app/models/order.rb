@@ -158,7 +158,7 @@ class Order < ActiveRecord::Base
     response_status = ResponseStatus.default
     data = nil
 
-    if Time.now.hour > ServicesController.config[:deadline_hour] && Time.now.min > ServicesController.config[:deadline_minute]
+    if Time.now.hour > ServicesController.get_config[:deadline_hour] && Time.now.min > ServicesController.get_config[:deadline_minute]
       response_status.message = "太迟啦,明天记得在#{ServicesController.get_config[:deadline_hour]}点#{ServicesController.get_config[:deadline_hour]}之前来哦"
       return response_status, data
     end

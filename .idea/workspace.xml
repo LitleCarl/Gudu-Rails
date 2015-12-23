@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb4b51e4-cbba-42cd-ab6b-0019490e91bb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/initializers/airbrake.rb" afterPath="$PROJECT_DIR$/config/initializers/airbrake.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/errbit.yml" afterPath="$PROJECT_DIR$/config/errbit.yml" />
     </list>
     <ignored path="gudu-rails.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,11 +39,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="airbrake.rb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="airbrake.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/initializers/airbrake.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32058492">
-              <caret line="19" column="47" selection-start-line="19" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="19" column="28" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -59,11 +59,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="errbit.yml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="errbit.yml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/config/errbit.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.32058492">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -179,8 +179,8 @@
         <option value="$PROJECT_DIR$/app/controllers/services_controller.rb" />
         <option value="$PROJECT_DIR$/Gemfile" />
         <option value="$PROJECT_DIR$/app/settings/errbit_setting.rb" />
-        <option value="$PROJECT_DIR$/config/errbit.yml" />
         <option value="$PROJECT_DIR$/config/initializers/airbrake.rb" />
+        <option value="$PROJECT_DIR$/config/errbit.yml" />
       </list>
     </option>
   </component>
@@ -1001,18 +1001,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/errbit.yml">
+    <entry file="file://$PROJECT_DIR$/config/initializers/airbrake.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <caret line="19" column="28" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/initializers/airbrake.rb">
+    <entry file="file://$PROJECT_DIR$/config/errbit.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.32058492">
-          <caret line="19" column="47" selection-start-line="19" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding />
         </state>
       </provider>

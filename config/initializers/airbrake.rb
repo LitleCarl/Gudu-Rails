@@ -17,6 +17,6 @@ if ErrbitSetting.status_open?
     # end
     #config.user_attributes += [:id]
 
-    config.logger = Logger.new("#{Rails.root}/log/errbit.log")
+    # config.logger = Logger.new("#{Rails.root}/log/errbit.log")
   end
 end

@@ -20,7 +20,6 @@ class CampusesController < ApplicationController
 @apiSuccess {Array}  campuses 学校列表
 =end
   def index
-    nothing.x
     @response_status, @data = Campus.get_all_campuses(params)
   end
 

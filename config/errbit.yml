@@ -1,8 +1,7 @@
 # encoding: UTF-8
 
 defaults: &defaults
-  status: close # open | close
-
+  status: open
   api_key: 3a2938e26187337cc21b0cc87224a185
   host: errbit.zaocan84.com
   port: 80

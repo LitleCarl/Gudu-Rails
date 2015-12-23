@@ -1,5 +1,5 @@
 
-json.(campus, :id, :name, :logo_filename, :address, :location)
+json.(campus, :id, :name, :logo_filename, :address, :location, :first_letter)
 # has_many
 
 # belongs_to

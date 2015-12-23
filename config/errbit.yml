@@ -1,0 +1,18 @@
+# encoding: UTF-8
+
+defaults: &defaults
+  status: open
+  api_key: 3a2938e26187337cc21b0cc87224a185
+  host: errbit.zaocan84.com
+  port: 80
+  secure: 443
+
+development: &development
+  <<: *defaults
+
+test:
+  <<: *development
+
+production:
+  <<: *development
+

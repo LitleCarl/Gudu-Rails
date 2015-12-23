@@ -22,4 +22,9 @@ class CampusesController < ApplicationController
   def index
     @response_status, @data = Campus.get_all_campuses(params)
   end
+
+  # 根据名称或拼音搜索校园
+  def search
+    @response_status, @campuses = Campus.search(params)
+  end
 end

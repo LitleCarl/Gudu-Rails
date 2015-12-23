@@ -85,6 +85,13 @@ gem 'i18n', '~> 0.7.0'
 # http://spreadsheet.rubyforge.org/
 gem 'spreadsheet', '~> 1.0', '>= 1.0.9'
 
+#### Exception Notification
+
+# https://airbrake.io
+# https://github.com/airbrake/airbrake
+# https://github.com/errbit/errbit
+gem 'airbrake', '4.3.4'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

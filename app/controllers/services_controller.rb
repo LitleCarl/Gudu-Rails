@@ -104,4 +104,26 @@ class ServicesController < ApplicationController
       @response_status.message = ex.message
     end
   end
+
+  # 下载app
+  def download
+    redirect_to_url = ''
+    if is_iphone_device?
+      #appstore
+      redirect_to_url =  "https://itunes.apple.com/cn/app/yun-dian-jia/id783464466?mt=8"
+    elsif is_android_device?
+      #Android版在应用宝的地址
+      redirect_to_url = "http://fusion.qq.com/app_download?appid=%201104977687&platform=qzone&via=QZ.MOBILEDETAIL.QRCODE&u=3046917960"
+    end
+
+    respond_to do |format|
+      if is_iphone_device? &&  weixin_browser?
+        format.html
+      else
+        format.html { redirect_to  redirect_to_url}
+      end
+    end
+
+  end
+
 end

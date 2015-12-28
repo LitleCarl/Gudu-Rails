@@ -92,6 +92,14 @@ gem 'spreadsheet', '~> 1.0', '>= 1.0.9'
 # https://github.com/errbit/errbit
 gem 'airbrake', '4.3.4'
 
+# https://github.com/tscolari/mobylette
+# gem 'mobylette', '3.5'
+
+# # http://www.rubyonrails.org/
+# gem 'actionview', '4.2.3'
+
+# gem 'bootstrap-sass', '~> 3.1.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

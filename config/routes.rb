@@ -59,6 +59,8 @@ Rails.application.routes.draw do
 
       # 搜索学校内的店铺和商品
       get :search_product_and_store_for_campus
+
+      get :download
     end
   end
 

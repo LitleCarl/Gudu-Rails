@@ -116,7 +116,7 @@ class Store < ActiveRecord::Base
   #
   def self.run_main_food_list_program(list = nil)
     list ||= Store.all
-    Store.each do |store|
+    list.each do |store|
       store.main_food_list = store.products.order('month_sale DESC').limit(9).pluck(&:name).join(' ')
       store.save!
     end

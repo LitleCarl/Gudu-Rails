@@ -83,4 +83,34 @@ class Product < ActiveRecord::Base
     self.brief ||= '暂无简介'
   end
 
+  # def create_product(name, price, category, brief = '', ka = nil)
+  #
+  #   Product.transaction do
+  #     pro = Product.new
+  #     pro.name = name
+  #     pro.brief = brief if brief.present?
+  #     pro.category = category if category.present?
+  #     pro.store = Store.first
+  #     pro.logo_filename = 'null'
+  #
+  #     pro.save!
+  #     spe = Specification.new
+  #     spe.name = '规格'
+  #     spe.value = '大'
+  #     spe.price = price
+  #     spe.product = pro
+  #     spe.stock = 500
+  #     spe.stock_per_day = 500
+  #     spe.save!
+  #
+  #     if ka.present?
+  #       nutrition = Nutrition.new
+  #       nutrition.energy = ka
+  #       nutrition.product = pro
+  #       nutrition.save!
+  #     end
+  #   end
+  #
+  # end
+
 end

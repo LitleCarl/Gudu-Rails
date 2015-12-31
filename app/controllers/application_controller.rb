@@ -10,6 +10,27 @@ class ApplicationController < ActionController::Base
   class UserNotFoundError < StandardError
 
   end
+
+  # 是微信浏览器
+  def weixin_browser?
+    RequestBrowser.weixin_browser?(request)
+  end
+
+  def qq_browser?
+    RequestBrowser.qq_browser?(request)
+  end
+
+  # 是安卓
+  def is_android_device?
+    RequestBrowser.is_android?(request)
+  end
+
+  # 是iOS
+  def is_iphone_device?
+    RequestBrowser.is_iphone?(request)
+  end
+
+
   def user_about
     token = request.headers['x-access-token']
     Rails.logger.error('headers' + token) if token.present?

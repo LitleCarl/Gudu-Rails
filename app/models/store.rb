@@ -109,6 +109,18 @@ class Store < ActiveRecord::Base
     self.includes(:campuses).references(:campuses).where({campuses: {id: campus_id}}).where("stores.name like #{keyword} or stores.pinyin like #{keyword}")
   end
 
+  #
+  # 刷店铺的招牌菜列表
+  #
+  # Console方法
+  #
+  def self.run_main_food_list_program(list = nil)
+    list ||= Store.all
+    list.each do |store|
+      store.main_food_list = store.products.order('month_sale DESC').limit(9).pluck(:name).join(' ')
+      store.save!
+    end
+  end
 
   ########################################################################
   #

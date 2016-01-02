@@ -92,6 +92,9 @@ gem 'spreadsheet', '~> 1.0', '>= 1.0.9'
 # https://github.com/errbit/errbit
 gem 'airbrake', '4.3.4'
 
+# https://github.com/excid3/receipts
+gem 'receipts', '0.1.3'
+
 # https://github.com/tscolari/mobylette
 # gem 'mobylette', '3.5'
 

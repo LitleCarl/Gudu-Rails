@@ -76,6 +76,30 @@ class Order < ActiveRecord::Base
     ALL = [WEIXIN, ALIPAY]
   end
 
+
+  def self.receipt(options)
+    Receipts::Receipt.new(
+        id: '58488430030',
+        product: "GoRails",
+        company: {
+            name: "收货人: 曹佳鑫",
+            address: "总价: 3.50元",
+            email: "送餐时间: #{Time.now.to_s}",
+            logo: Rails.root.join("app/assets/images/ad_banner.png")
+        },
+        line_items: [
+            ["香菇菜包", "2份 ¥3.5元"],
+            ["香菇菜包", "2份 ¥3.5元"],
+            ["香菇菜包", "2份 ¥3.5元"],
+            ["香菇菜包", "2份 ¥3.5元"]
+        ],
+        font: {
+            bold: Rails.root.join('app/assets/fonts/custom_font.ttf'),
+            normal: Rails.root.join('app/assets/fonts/custom_font.ttf'),
+        }
+    )
+  end
+
   def self.query_by_id(options)
     order = nil
 

@@ -146,12 +146,12 @@ class Store < ActiveRecord::Base
     # 回头客数
     back_num = result.having('count > 1').to_a.count
     # 回头率
-    back_ratio = 0.0
     if base_num == 0
       back_ratio = 0.0
     else
       back_ratio = back_num / base_num.to_f
     end
+
     self.back_ratio = back_ratio
     self.save
   end

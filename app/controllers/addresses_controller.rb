@@ -4,7 +4,7 @@ class AddressesController < ApplicationController
   end
 
   def destroy
-    @response_status, @data = Address.delete_address(params)
+    @response_status = Address.delete_address(params)
   end
 
   def update

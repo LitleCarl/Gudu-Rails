@@ -177,7 +177,7 @@ class Authorization < ActiveRecord::Base
       token = nil
       user = nil
     }
-    response = ResponseStatus.__rescue__ do |res|
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
       code = options[:code]
       res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank?
 

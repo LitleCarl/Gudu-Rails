@@ -114,7 +114,6 @@ class ServicesController < ApplicationController
     elsif is_android_device?
       #Android版在应用宝的地址
       redirect_to_url = "http://fusion.qq.com/app_download?appid=1104986485&platform=qzone&via=QZ.MOBILEDETAIL.QRCODE&u=3046917960"
-
       # redirect_to_url = "http://fusion.qq.com/app_download?appid=%201104977687&platform=qzone&via=QZ.MOBILEDETAIL.QRCODE&u=3046917960"
     end
 

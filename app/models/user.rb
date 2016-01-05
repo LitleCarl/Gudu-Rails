@@ -122,7 +122,21 @@ class User < ActiveRecord::Base
       user = User.new
       user.phone = phone
       user.password = '123456'
-      user.save
+
+      user.save!
+
+      options = {
+          discount: 2.5,
+          least_price: 3.0,
+          activated_date: Time.now,
+          expired_date: Time.now + 7.days,
+          user: user
+      }
+
+      #TODO 注册用户免费两张优惠券
+      Coupon.generate_coupon(options)
+      Coupon.generate_coupon(options)
+
     end
     user
   end

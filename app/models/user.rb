@@ -126,8 +126,8 @@ class User < ActiveRecord::Base
       user.save!
 
       options = {
-          discount: 2.5,
-          least_price: 3.0,
+          discount: 2,
+          least_price: 3,
           activated_date: Time.now,
           expired_date: Time.now + 7.days,
           user: user
@@ -135,6 +135,8 @@ class User < ActiveRecord::Base
 
       #TODO 注册用户免费两张优惠券
       Coupon.generate_coupon(options)
+      options[:discount] = 3
+      options[:least_price] = 5
       Coupon.generate_coupon(options)
 
     end

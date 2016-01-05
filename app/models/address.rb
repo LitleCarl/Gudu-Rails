@@ -51,7 +51,7 @@ class Address < ActiveRecord::Base
   # @return [ResponseStatus] 响应
   def self.delete_address(options)
     response = ResponseStatus.__rescue__ do |res|
-      id, user = options[:id], options[:user]
+      id, user = options[:address_id], options[:user]
 
       id = id[/[0-9]+$/] if id.present? # 给iOS删除地址做兼容
 

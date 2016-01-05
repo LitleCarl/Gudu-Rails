@@ -1,4 +1,5 @@
 class AddressesController < ApplicationController
+
   def create
     @response_status, @data = Address.add_address(params)
   end

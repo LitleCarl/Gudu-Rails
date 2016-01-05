@@ -69,7 +69,7 @@ class ServicesController < ApplicationController
 
   def self.get_config
     {
-        availableDeliveryTime: ["6:29", "7:00", "7:30" , "8:30", "9:00"],
+        availableDeliveryTime: ["6:30", "7:00", "7:30" , "8:30", "9:00"],
         availablePayMethod: [{
                                  name: "支付宝",
                                  code: "alipay"

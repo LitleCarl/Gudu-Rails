@@ -51,7 +51,10 @@ class Address < ActiveRecord::Base
   # @return [ResponseStatus] 响应
   def self.delete_address(options)
     response = ResponseStatus.__rescue__ do |res|
-      id, user = options[:code], options[:user]
+      id, user = options[:id], options[:user]
+
+      id = id[/[0-9]+$/] if id.present? # 给iOS删除地址做兼容
+
       res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺失参数') if id.blank? || user.blank?
 
       address = query_first_by_options(id: id, user_id: user.id)

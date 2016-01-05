@@ -240,9 +240,6 @@ class Authorization < ActiveRecord::Base
   # @return [ResponseStatus] 响应
   #
   def self.create_or_update_by_options(options)
-
-    # TODO 公众号出炉后需要更新
-    #options[:unionid] = 'o6TlUw19J7RhdPOtugs3UkWoTMBk' if options[:unionid].blank?
     auth = nil
 
     response = ResponseStatus.__rescue__ do |res|

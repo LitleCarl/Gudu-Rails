@@ -48,7 +48,7 @@ class OrdersController < ApplicationController
   end
 
   def test_print
-    @receipt= Order.receipt(params)
+    @response_status, @receipt= Order.receipt(params)
 
     respond_to do |format|
       format.pdf {

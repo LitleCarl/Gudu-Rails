@@ -13,7 +13,27 @@
 #
 
 class OrderItem < ActiveRecord::Base
+
+  # 通用查询方法
+  include Concerns::Query::Methods
+
+  # 数组助手
+  include ActionView::Helpers::NumberHelper
+
+  # 关联商品
   belongs_to :product
+
+  # 关联订单
   belongs_to :order
+
+  # 关联规格
   belongs_to :specification
+
+  #
+  # 格式化输出订单在此OrderItem上花了多少钱
+  #
+  def quantity_multiply_price_snapshot
+    "#{number_to_currency(quantity * price_snapshot, unit: '¥')}元"
+  end
+
 end

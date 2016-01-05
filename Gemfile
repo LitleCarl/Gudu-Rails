@@ -85,6 +85,9 @@ gem 'i18n', '~> 0.7.0'
 # http://spreadsheet.rubyforge.org/
 gem 'spreadsheet', '~> 1.0', '>= 1.0.9'
 
+# https://rubygems.org/gems/prawn-print
+gem 'prawn-print', '0.0.3'
+
 #### Exception Notification
 
 # https://airbrake.io
@@ -93,7 +96,7 @@ gem 'spreadsheet', '~> 1.0', '>= 1.0.9'
 gem 'airbrake', '4.3.4'
 
 # https://github.com/excid3/receipts
-gem 'receipts', '0.1.3'
+gem 'receipts', git: 'git@github.com:LitleCarl/receipts.git'
 
 # https://github.com/tscolari/mobylette
 # gem 'mobylette', '3.5'

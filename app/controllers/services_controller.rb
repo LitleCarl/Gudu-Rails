@@ -110,7 +110,7 @@ class ServicesController < ApplicationController
     redirect_to_url = ''
     if is_iphone_device?
       #appstore
-      redirect_to_url =  "https://itunes.apple.com/cn/app/yun-dian-jia/id783464466?mt=8"
+      redirect_to_url =  "https://itunes.apple.com/cn/app/zao-can-ba-shi/id1057051323?l=zh&ls=1&mt=8"
     elsif is_android_device?
       #Android版在应用宝的地址
       redirect_to_url = "http://fusion.qq.com/app_download?appid=1104986485&platform=qzone&via=QZ.MOBILEDETAIL.QRCODE&u=3046917960"

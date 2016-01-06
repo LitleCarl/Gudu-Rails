@@ -110,11 +110,10 @@ class ServicesController < ApplicationController
     redirect_to_url = ''
     if is_iphone_device?
       #appstore
-      redirect_to_url =  "https://itunes.apple.com/cn/app/zao-can-ba-shi/id1057051323?l=zh&ls=1&mt=8"
+      redirect_to_url =  AppVersion::DownloadURL::IPHONE_URL
     elsif is_android_device?
       #Android版在应用宝的地址
-      redirect_to_url = "http://fusion.qq.com/app_download?appid=1104986485&platform=qzone&via=QZ.MOBILEDETAIL.QRCODE&u=3046917960"
-      # redirect_to_url = "http://fusion.qq.com/app_download?appid=%201104977687&platform=qzone&via=QZ.MOBILEDETAIL.QRCODE&u=3046917960"
+      redirect_to_url = AppVersion::DownloadURL::ANDOIRD_URL
     end
 
     respond_to do |format|
@@ -124,7 +123,13 @@ class ServicesController < ApplicationController
         format.html { redirect_to  redirect_to_url}
       end
     end
+  end
 
+  #
+  # app更新检查
+  #
+  def check_update
+    @response_status, @update_info = AppVersion.check_update(params)
   end
 
 end

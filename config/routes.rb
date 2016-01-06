@@ -16,6 +16,10 @@ Rails.application.routes.draw do
       # 获取订单的支付chagre
       get :get_charge_for_unpaid_order
     end
+
+    collection do
+      # get :test_print
+    end
   end
 
   resources :users, param: :user_id, only: [:index] do
@@ -61,6 +65,9 @@ Rails.application.routes.draw do
       get :search_product_and_store_for_campus
 
       get :download
+
+      # 更新检查
+      get :check_update
     end
   end
 

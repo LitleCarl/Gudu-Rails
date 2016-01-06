@@ -76,6 +76,70 @@ class Order < ActiveRecord::Base
     ALL = [WEIXIN, ALIPAY]
   end
 
+  #
+  # 打印当日产生订单的小票
+  #
+  # @param options [Hash]
+  # option options [start_number] :从此订单号开始打印
+  # option options [date] :选择要打印的日期
+  #
+  # @return [Response, Array] 状态，学校列表
+  #
+  def self.receipt(options)
+    receipt = nil
+
+    response = ResponseStatus.__rescue__ do |res|
+      start_number = options[:start_number]
+      date = options[:date] || Time.now
+
+      orders = Order.joins(:payment).where('payments.time_paid >= ? AND payments.time_paid <= ?', date.beginning_of_day, date.end_of_day)
+      orders = orders.where('orders.status = ?', Status::NOT_DELIVERED)
+
+      if start_number.blank?
+        order = self.query_first_by_options(status: Status::NOT_DELIVERED, order_number: start_number)
+
+        res.__raise__(ResponseStatus::Code::ERROR, "订单号:#{start_number}不存在") if order.blank?
+
+        orders = orders.where('orders.id > ?', order.id)
+      end
+
+      orders = orders.order('id asc')
+
+      orders.each do |order|
+
+        line_items = []
+
+        order.order_items.each do |order_item|
+          line_items << ["#{order_item.product.name}(#{order_item.specification.value})", "#{order_item.quantity}份","#{order_item.quantity_multiply_price_snapshot}"]
+        end
+
+        receipt = Receipts::Receipt.new(
+            id: "#{order.order_number}",
+            product: '早餐巴士',
+            receiver_info: {
+                name: "收货人: #{order.receiver_name}",
+                address: "地址: #{order.receiver_address}",
+                phone: "手机: #{order.receiver_phone}",
+                delivery_time: "送达时间: #{order.format_delivery_time}",
+            },
+            logo: Rails.root.join('app/assets/images/Icon.png'),
+            line_items: line_items,
+            font: {
+                bold: Rails.root.join('app/assets/fonts/custom_font.ttf'),
+                normal: Rails.root.join('app/assets/fonts/custom_font.ttf'),
+            }
+        )
+
+        # receipt.print
+        receipt.render_file("/Users/tsaojixin/Downloads/tmp/#{order.delivery_time.gsub(/:/, '')}/#{order.order_number}.pdf")
+      end
+
+    end
+
+    return response, receipt
+
+  end
+
   def self.query_by_id(options)
     order = nil
 
@@ -314,5 +378,14 @@ class Order < ActiveRecord::Base
 
     return response, red_pack
   end
+
+  #
+  # 获取订单送餐时间格式化输出
+  #
+  def format_delivery_time
+    time = self.created_at + 1.day
+    "#{time.strftime("%Y年%m月%d日")}#{self.delivery_time}"
+  end
+
 
 end

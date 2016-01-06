@@ -1,7 +1,5 @@
 class OrdersController < ApplicationController
 
-  skip_before_filter :user_about
-
 =begin
 @api {get} /orders 获取用户订单列表
 @apiName GetOrders
@@ -47,17 +45,17 @@ class OrdersController < ApplicationController
     @response_status, @order= Order.query_by_id(params)
   end
 
-  def test_print
-    @response_status, @receipt= Order.receipt(params)
-
-    respond_to do |format|
-      format.pdf {
-        send_data @receipt.render,
-                  filename: "adcss-gorails-receipt.pdf",
-                  type: "application/pdf",
-                  disposition: :inline
-      }
-    end
-  end
+  # def test_print
+  #   @response_status, @receipt= Order.receipt(params)
+  #
+  #   respond_to do |format|
+  #     format.pdf {
+  #       send_data @receipt.render,
+  #                 filename: "adcss-gorails-receipt.pdf",
+  #                 type: "application/pdf",
+  #                 disposition: :inline
+  #     }
+  #   end
+  # end
 
 end

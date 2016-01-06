@@ -130,8 +130,8 @@ class Order < ActiveRecord::Base
             }
         )
 
-        receipt.print
-        # receipt.render_file("/Users/tsaojixin/Downloads/tmp/#{order.order_number}.pdf")
+        # receipt.print
+        receipt.render_file("/Users/tsaojixin/Downloads/tmp/#{order.delivery_time.gsub(/:/, '')}/#{order.order_number}.pdf")
       end
 
     end

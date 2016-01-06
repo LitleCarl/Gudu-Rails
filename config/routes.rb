@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     end
 
     collection do
-      get :test_print
+      # get :test_print
     end
   end
 
@@ -65,6 +65,9 @@ Rails.application.routes.draw do
       get :search_product_and_store_for_campus
 
       get :download
+
+      # 更新检查
+      get :check_update
     end
   end
 

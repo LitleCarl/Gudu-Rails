@@ -81,7 +81,7 @@ class ServicesController < ApplicationController
         red_pack_available: true,
         kefu_phone: '13788982942',
         # 营业时间至 (小时)
-        deadline_hour: 22,
+        deadline_hour: 23,
         # 营业时间至 (分钟)
         deadline_minute: 30
     }

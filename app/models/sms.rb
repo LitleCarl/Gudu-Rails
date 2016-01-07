@@ -3,6 +3,9 @@ class Sms
   module TemplateID
     LoginCode = 'ASDFQIOSALWS'
     PayDone = 'ZL6IQABG7738'
+
+    # 提醒下单
+    PROMPT = '7AY987U86U8L'
   end
 
   # 返回支付时间, 订单价格, 预计送达时间

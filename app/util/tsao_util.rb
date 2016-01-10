@@ -2,7 +2,7 @@ class TsaoUtil < Settingslogic
   source "#{Rails.root}/config/jwt.yml"
   namespace Rails.env
   def self.sign_jwt_user_session(phone = '')
-    exp = Time.now.to_i + 4 * 3600 #4小时
+    exp = Time.now.to_i + 24 * 7 * 3600 # 7周session
     payload = {phone: phone, exp: exp}
     token = JWT.encode payload, TsaoUtil[:secret], 'HS256'
     token

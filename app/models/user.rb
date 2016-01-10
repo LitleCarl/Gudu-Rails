@@ -53,24 +53,30 @@ class User < ActiveRecord::Base
     }
 
     response = ResponseStatus.__rescue__(catch_proc) do |res|
-      res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if options[:union_id].blank?
+      transaction do
+        res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if options[:union_id].blank?
 
-      user =  User.query_first_by_options(phone: options[:phone])
-      res.__raise__(ResponseStatus::Code::ERROR, '该手机用户已经绑定过其他微信') if user.present? && user.authorization.present?
+        user =  User.query_first_by_options(phone: options[:phone])
+        res.__raise__(ResponseStatus::Code::ERROR, '该手机用户已经绑定过其他微信') if user.present? && user.authorization.present?
 
-      response, user, token = self.validate_login_with_sms_token(options)
-      res.__raise__response__(response)
+        response, user, token = self.validate_login_with_sms_token(options)
+        res.__raise__response__(response)
 
 
 
-      authorization = Authorization.query_not_binded_by_options(union_id: options[:union_id]).first
+        authorization = Authorization.query_first_by_options(union_id: options[:union_id]).first
 
-      res.__raise__(ResponseStatus::Code::ERROR, '微信可能还没授权') if authorization.blank?
+        res.__raise__(ResponseStatus::Code::ERROR, '微信可能还没授权') if authorization.blank?
 
-      authorization.user = user
-      authorization.save!
+        authorization.user = user
+        authorization.save!
 
-      user.avatar = authorization.avatar
+        # 同步未领取红包
+        authorization.sync_coupons_from_frozen_coupons
+
+        user.avatar = authorization.avatar
+        user.save!
+      end
     end
 
     return response, user, token

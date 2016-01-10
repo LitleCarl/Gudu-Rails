@@ -54,7 +54,7 @@ class RedPack < ActiveRecord::Base
       res.__raise__(ResponseStatus::Code::ERROR, '红包不存在错误') if red_pack.blank?
       res.__raise__(ResponseStatus::Code::ERROR, '微信用户不存在错误') if authorization.blank?
 
-      #查找是否已经给此用户过红包
+      # 查找是否已经给此用户过红包
       frozen_coupon = FrozenCoupon.where(red_pack: red_pack, authorization: authorization)
 
       res.__raise__(ResponseStatus::Code::ERROR, '您已经领过此红包，不能重复领取') if frozen_coupon.present?

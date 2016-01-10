@@ -31,6 +31,9 @@ class Authorization < ActiveRecord::Base
   # 关联店铺东家
   belongs_to :owner
 
+  # 关联暂存红包
+  has_many :frozen_coupons
+
   after_save :sync_avatar
 
   # provider
@@ -179,7 +182,7 @@ class Authorization < ActiveRecord::Base
     }
     response = ResponseStatus.__rescue__(catch_proc) do |res|
       #TODO 微信功能暂时关闭
-      res.__raise__(ResponseStatus::Code::ERROR, '抱歉,微信登录功能暂时关闭,敬请期待')
+      # res.__raise__(ResponseStatus::Code::ERROR, '抱歉,微信登录功能暂时关闭,敬请期待')
 
       code = options[:code]
       res.__raise__(ResponseStatus::Code::ERROR, '缺失参数') if code.blank?
@@ -366,6 +369,29 @@ class Authorization < ActiveRecord::Base
     json = JSON.parse(body,  {:symbolize_names => true})
 
     return json[:access_token]
+  end
+
+  # 新绑定用户把红包从FrozenCoupon同步过去
+  def sync_coupons_from_frozen_coupons
+    ResponseStatus.__rescue__(catch_proc) do |res|
+
+      res.__raise__(ResponseStatus::Code::ERROR, '此认证尚未绑定用户') if self.user.blank?
+
+      transaction do
+        self.frozen_coupons.where('coupon_id is NULL').each do |frozen_coupon|
+          coupon = Coupon.generate_coupon(
+              discount: frozen_coupon.discount,
+              least_price: frozen_coupon.least_price,
+              activated_date: frozen_coupon.activated_date,
+              expired_date: frozen_coupon.expired_date,
+              user: self.user
+          )
+          frozen_coupon.coupon = coupon
+          frozen_coupon.save!
+        end
+      end
+
+    end
   end
 
 end

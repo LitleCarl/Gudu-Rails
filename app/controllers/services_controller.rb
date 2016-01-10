@@ -78,7 +78,7 @@ class ServicesController < ApplicationController
                                  name: "微信",
                                  code: "wx"
                              }],
-        red_pack_available: true,
+        red_pack_available: false,
         kefu_phone: '13788982942',
         # 营业时间至 (小时)
         deadline_hour: 23,

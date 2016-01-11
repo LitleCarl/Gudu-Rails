@@ -54,7 +54,13 @@ class User < ActiveRecord::Base
 
     response = ResponseStatus.__rescue__(catch_proc) do |res|
       transaction do
-        res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if options[:union_id].blank?
+        phone, sms_code, union_id, sms_token = options[:phone], options[:code], options[:union_id], options[:smsToken]
+
+        res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if union_id.blank? || phone.blank? || sms_token.blank? || sms_code.blank?
+
+        phone_in_token, code_in_token = TsaoUtil.decode_sms_code(sms_token)
+
+        res.__raise__(ResponseStatus::Code::ERROR, '验证码错误') if phone != phone_in_token || code_in_token != sms_code
 
         user =  User.query_first_by_options(phone: options[:phone])
         res.__raise__(ResponseStatus::Code::ERROR, '该手机用户已经绑定过其他微信') if user.present? && user.authorization.present?
@@ -96,20 +102,14 @@ class User < ActiveRecord::Base
     token = nil
 
     begin
-      if options[:phone] == '13122898910'
+      raise RestError::MissParameterError if options[:phone].blank? || options[:smsCode].blank? || options[:smsToken].blank?
+      phone, sms_code = TsaoUtil.decode_sms_code(options[:smsToken])
+      if options[:phone] == phone && options[:smsCode] == sms_code
+        user = User.upsert_user_if_not_found(phone)
+        token = TsaoUtil.sign_jwt_user_session(phone)
         response_status = ResponseStatus.default_success
-        user = User.upsert_user_if_not_found(options[:phone])
-        token = TsaoUtil.sign_jwt_user_session(options[:phone])
       else
-        raise RestError::MissParameterError if options[:phone].blank? || options[:smsCode].blank? || options[:smsToken].blank?
-        phone, sms_code = TsaoUtil.decode_sms_code(options[:smsToken])
-        if options[:phone] == phone && options[:smsCode] == sms_code
-          user = User.upsert_user_if_not_found(phone)
-          token = TsaoUtil.sign_jwt_user_session(phone)
-          response_status = ResponseStatus.default_success
-        else
-          response_status.message = '验证码不正确'
-        end
+        response_status.message = '验证码不正确'
       end
     rescue Exception => ex
       Rails.logger.error(ex.message)

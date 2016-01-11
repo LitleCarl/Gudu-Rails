@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
 
     response = ResponseStatus.__rescue__(catch_proc) do |res|
       transaction do
-        phone, sms_code, union_id, sms_token = options[:phone], options[:code], options[:union_id], options[:smsToken]
+        phone, sms_code, union_id, sms_token = options[:phone], options[:smsCode], options[:union_id], options[:smsToken]
 
         res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if union_id.blank? || phone.blank? || sms_token.blank? || sms_code.blank?
 

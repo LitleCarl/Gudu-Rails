@@ -6,6 +6,11 @@ class Sms
 
     # 提醒下单
     PROMPT = '7AY987U86U8L'
+
+    # 阿里大鱼登录验证
+    ALI_LoginCode = 'SMS_4385586'
+    # 阿里大鱼短信通知
+    ALI_PayDone = 'SMS_4450454'
   end
 
   # 返回支付时间, 订单价格, 预计送达时间
@@ -16,6 +21,45 @@ class Sms
     else
       return nil, nil, nil
     end
+  end
+
+
+  def self.sms_alidayu(mobile, template_id, template_params)
+    key = '690b3c48abb45ac6e1cb8b67c876c73b'
+    url = 'http://gw.api.taobao.com/router/rest'
+    param = {
+        method: 'alibaba.aliqin.fc.sms.num.send',
+        app_key: '23297274',
+        timestamp: Time.now.strftime('%Y-%m-%d %H:%M:%S').to_s,
+        v: '2.0',
+        format: 'json',
+        sign_method: 'md5',
+        sms_type: 'normal',
+        sms_free_sign_name: '注册验证',
+        rec_num: mobile,
+        sms_template_code: template_id,
+        sms_param:  template_params.to_json
+    }
+    query = param.sort.map do |key, value|
+      "#{key}#{value}"
+    end.compact.join('')
+
+    param[:sign] = Digest::MD5.hexdigest("#{key}#{query}#{key}").upcase
+
+    ResponseStatus.__rescue__ do |res|
+
+      url = URI.parse(url)
+      req = Net::HTTP::Post.new(url.path)
+      req.set_form_data(param)
+      # req.body = param.to_json
+      res = Net::HTTP.new(url.host,url.port).start{|http| http.request(req)}
+
+      res_data = JSON.parse(res.body)
+      Rails.logger.info(res_data.class)
+
+      Rails.logger.info("短信发送结果:#{res_data}")
+    end
+
   end
 
   # 智验短信平台 http://www.zhiyan.net

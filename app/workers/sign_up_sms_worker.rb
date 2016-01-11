@@ -2,6 +2,7 @@ class SignUpSmsWorker
   include Sidekiq::Worker
 
   def perform(phone, code)
-    Sms.sms_zhiyan(phone, Sms::TemplateID::LoginCode, code.to_s)
+    template_params = {code: code, product: '早餐巴士'}
+    Sms.sms_alidayu(phone, Sms::TemplateID::ALI_LoginCode, template_params)
   end
 end

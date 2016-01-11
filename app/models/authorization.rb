@@ -379,13 +379,16 @@ class Authorization < ActiveRecord::Base
 
       transaction do
         self.frozen_coupons.where('coupon_id is NULL').each do |frozen_coupon|
-          coupon = Coupon.generate_coupon(
+          response, coupon = Coupon.generate_coupon(
               discount: frozen_coupon.discount,
               least_price: frozen_coupon.least_price,
               activated_date: frozen_coupon.activated_date,
               expired_date: frozen_coupon.expired_date,
               user: self.user
           )
+
+          res.__raise__response__(response)
+          
           frozen_coupon.coupon = coupon
           frozen_coupon.save!
         end

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :orders, param: :order_id, only: [:show, :index, :create, :show] do
+  resources :orders, param: :order_id, only: [:show, :index, :create, :show, :update] do
     member do
       # 获取订单的支付chagre
       get :get_charge_for_unpaid_order

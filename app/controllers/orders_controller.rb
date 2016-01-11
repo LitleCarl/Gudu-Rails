@@ -45,17 +45,8 @@ class OrdersController < ApplicationController
     @response_status, @order= Order.query_by_id(params)
   end
 
-  # def test_print
-  #   @response_status, @receipt= Order.receipt(params)
-  #
-  #   respond_to do |format|
-  #     format.pdf {
-  #       send_data @receipt.render,
-  #                 filename: "adcss-gorails-receipt.pdf",
-  #                 type: "application/pdf",
-  #                 disposition: :inline
-  #     }
-  #   end
-  # end
+  def update
+    @response_status, @order= Order.update_by_options(params)
+  end
 
 end

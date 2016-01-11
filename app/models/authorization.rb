@@ -388,7 +388,7 @@ class Authorization < ActiveRecord::Base
           )
 
           res.__raise__response__(response)
-          
+
           frozen_coupon.coupon = coupon
           frozen_coupon.save!
         end

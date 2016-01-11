@@ -54,7 +54,9 @@ class Order < ActiveRecord::Base
 
     NOT_PAID = 1      # 未支付
 
-    NOT_DELIVERED = 2 # 未发货
+    WAITING_CONFIRM = 11      # 已支付待确认
+
+    NOT_DELIVERED = 2 # 已确认未发货
 
     NOT_RECEIVED = 3  # 未收到
 
@@ -62,7 +64,7 @@ class Order < ActiveRecord::Base
 
     DONE = 5          # 完成
 
-    PAYMENT_SUCCESS = [NOT_DELIVERED, NOT_RECEIVED, NOT_COMMENTED, DONE]
+    PAYMENT_SUCCESS = [WAITING_CONFIRM, NOT_DELIVERED, NOT_RECEIVED, NOT_COMMENTED, DONE]
 
     # 全部
     ALL = get_all_values
@@ -327,6 +329,43 @@ class Order < ActiveRecord::Base
       response_status.message = e.message
     end
     return response_status, data
+  end
+
+  # 更新用户订单
+  #
+  # @param options [Hash] 约束
+  # @option options [Order] :order 订单数据
+  # @option options [User] :user 关联用户
+  #
+  # @return [Array] response, coupon
+  #
+  def self.update_by_options(options = {})
+    order = nil
+
+    catch_proc = proc{ order = nil }
+    
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
+
+      user, order_id = options[:user], options[:order_id]
+
+      # post 参数
+      delivery_time, receiver_name, receiver_phone = options[:delivery_time], options[:receiver_name], options[:receiver_phone]
+
+      res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if user.blank? ||  order_id.blank?
+
+      order = query_first_by_options(id: order_id, user: user)
+
+      res.__raise__(ResponseStatus::Code::ERROR, '订单不存在') if order.blank?
+
+      # 更新发货时间,收货人,收货电话
+      order.delivery_time = delivery_time if delivery_time.present?
+      order.receiver_name = receiver_name if receiver_name.present?
+      order.receiver_phone = receiver_phone if receiver_phone.present?
+
+      order.save!
+    end
+
+    return response, order
   end
 
   def check_order_status

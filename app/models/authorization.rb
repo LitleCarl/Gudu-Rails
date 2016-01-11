@@ -373,7 +373,7 @@ class Authorization < ActiveRecord::Base
 
   # 新绑定用户把红包从FrozenCoupon同步过去
   def sync_coupons_from_frozen_coupons
-    ResponseStatus.__rescue__(catch_proc) do |res|
+    ResponseStatus.__rescue__ do |res|
 
       res.__raise__(ResponseStatus::Code::ERROR, '此认证尚未绑定用户') if self.user.blank?
 

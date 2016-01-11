@@ -62,8 +62,6 @@ class User < ActiveRecord::Base
         response, user, token = self.validate_login_with_sms_token(options)
         res.__raise__response__(response)
 
-
-
         authorization = Authorization.query_first_by_options(union_id: options[:union_id])
 
         res.__raise__(ResponseStatus::Code::ERROR, '微信可能还没授权') if authorization.blank?

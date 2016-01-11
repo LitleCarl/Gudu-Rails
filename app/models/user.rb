@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
 
 
 
-        authorization = Authorization.query_first_by_options(union_id: options[:union_id]).first
+        authorization = Authorization.query_first_by_options(union_id: options[:union_id])
 
         res.__raise__(ResponseStatus::Code::ERROR, '微信可能还没授权') if authorization.blank?
 

@@ -97,7 +97,7 @@ class Order < ActiveRecord::Base
       orders = Order.joins(:payment).where('payments.time_paid >= ? AND payments.time_paid <= ?', date.beginning_of_day, date.end_of_day)
       orders = orders.where('orders.status = ?', Status::NOT_DELIVERED)
 
-      if start_number.blank?
+      if start_number.present?
         order = self.query_first_by_options(status: Status::NOT_DELIVERED, order_number: start_number)
 
         res.__raise__(ResponseStatus::Code::ERROR, "订单号:#{start_number}不存在") if order.blank?
@@ -224,6 +224,10 @@ class Order < ActiveRecord::Base
     response_status = ResponseStatus.default
     data = nil
 
+    #TODO 暂停内测
+    response_status.message = "寒假内测结束啦,下学期见~"
+    return response_status, data
+
     if (Time.now.hour + Time.now.min / 60.0) > (ServicesController.get_config[:deadline_hour] + ServicesController.get_config[:deadline_minute] / 60.0)
       response_status.message = "太迟啦,明天记得在#{ServicesController.get_config[:deadline_hour]}点#{ServicesController.get_config[:deadline_hour]}之前来哦"
       return response_status, data
@@ -343,7 +347,7 @@ class Order < ActiveRecord::Base
     order = nil
 
     catch_proc = proc{ order = nil }
-    
+
     response = ResponseStatus.__rescue__(catch_proc) do |res|
 
       user, order_id = options[:user], options[:order_id]

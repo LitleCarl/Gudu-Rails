@@ -15,8 +15,8 @@ class Express < ActiveRecord::Base
   include Concerns::Query::Methods
 
   # 关联送餐员
-  has_one :expresser
+  belongs_to :expresser
 
   # 关联订单
-  has_one :order
+  belongs_to :order
 end

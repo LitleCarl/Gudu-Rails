@@ -14,4 +14,9 @@ class Express < ActiveRecord::Base
   # 通用查询方法
   include Concerns::Query::Methods
 
+  # 关联送餐员
+  has_one :expresser
+
+  # 关联订单
+  has_one :order
 end

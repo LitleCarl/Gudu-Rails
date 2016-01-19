@@ -14,4 +14,6 @@ class Expresser < ActiveRecord::Base
   # 通用查询方法
   include Concerns::Query::Methods
 
+  # 关联物流
+  has_many :expresses
 end

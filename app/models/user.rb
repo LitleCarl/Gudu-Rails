@@ -1,10 +1,10 @@
 # == Schema Information
 #
-# Table name: users # 用户表
+# Table name: users
 #
-#  id         :integer          not null, primary key                                 # 用户表
-#  phone      :string(255)      not null                                              # 用户手机
-#  password   :string(255)      default("e10adc3949ba59abbe56e057f20f883e"), not null # 用户密码 默认123456
+#  id         :integer          not null, primary key
+#  phone      :string(255)      not null
+#  password   :string(255)      default("e10adc3949ba59abbe56e057f20f883e"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  avatar     :text(65535)                                                            # 用户头像
@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
 
         res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if union_id.blank? || phone.blank? || sms_token.blank? || sms_code.blank?
 
-        phone_in_token, code_in_token = TsaoUtil.decode_sms_code(sms_token)
+        phone_in_token, code_in_token, usage = TsaoUtil.decode_sms_code(sms_token)
 
         res.__raise__(ResponseStatus::Code::ERROR, '验证码错误') if phone != phone_in_token || code_in_token != sms_code
 
@@ -103,8 +103,9 @@ class User < ActiveRecord::Base
 
     begin
       raise RestError::MissParameterError if options[:phone].blank? || options[:smsCode].blank? || options[:smsToken].blank?
-      phone, sms_code = TsaoUtil.decode_sms_code(options[:smsToken])
-      if options[:phone] == phone && options[:smsCode] == sms_code
+      phone, sms_code, usage = TsaoUtil.decode_sms_code(options[:smsToken])
+
+      if options[:phone] == phone && options[:smsCode] == sms_code && usage == TsaoUtil::Usage::USER_SIGN_IN
         user = User.upsert_user_if_not_found(phone)
         token = TsaoUtil.sign_jwt_user_session(phone)
         response_status = ResponseStatus.default_success

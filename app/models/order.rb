@@ -4,7 +4,7 @@
 #
 #  id               :integer          not null, primary key
 #  status           :integer          default("1"), not null
-#  price            :decimal(10, 2)   default("0.00"), not null # 总金额
+#  price            :decimal(10, 2)   default("0.00"), not null
 #  delivery_time    :string(255)      not null
 #  receiver_name    :string(255)      not null
 #  receiver_phone   :string(255)      not null
@@ -14,8 +14,8 @@
 #  pay_method       :string(255)      not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  charge_json      :text(65535)                                # 订单关联charge
-#  order_number     :string(255)                                # 订单编号
+#  charge_json      :text(65535)
+#  order_number     :string(255)
 #  pay_price        :decimal(10, 2)   default("0.00")           # 实际支付金额
 #
 
@@ -23,6 +23,9 @@ class Order < ActiveRecord::Base
 
   # 通用查询方法
   include Concerns::Query::Methods
+
+  # mixin 管理者
+  include Concerns::Management::Api::V1::OrderConcern
 
   # 关联学校
   belongs_to :campus
@@ -41,6 +44,12 @@ class Order < ActiveRecord::Base
 
   # 关联优惠券 (如果订单使用了优惠券)
   has_one :coupon
+
+  # 关联物流
+  has_one :express
+
+  # 关联快递员
+  has_one :expresser, through: :express
 
   before_create :generate_order_number
   validate :check_order_fields

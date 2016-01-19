@@ -97,7 +97,7 @@ class ServicesController < ApplicationController
     @token = nil
     begin
       raise StandardError.new('手机号输入有误') if params[:phone].blank? || !RegularTest.is_phone_number(params[:phone])
-      @token = TsaoUtil.send_login_sms_code(params[:phone])
+      @token = TsaoUtil.send_sms_code(params[:phone], TsaoUtil::Usage::USER_SIGN_IN)
       @response_status = ResponseStatus.default_success
     rescue Exception => ex
       Rails.logger.error(ex.message)

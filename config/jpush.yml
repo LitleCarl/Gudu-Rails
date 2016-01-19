@@ -1,0 +1,15 @@
+# encoding: UTF-8
+
+defaults: &defaults
+  app_key: b2a38b117d2a688d36d9d56d
+  secret: 17627e6311979687dc031e80
+development: &development
+  <<: *defaults
+
+test: &test
+  <<: *defaults
+
+
+production: &production
+  <<: *defaults
+

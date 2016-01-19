@@ -90,4 +90,29 @@ Rails.application.routes.draw do
       get :get_coupon
     end
   end
+
+  # 管理者路由部分
+  namespace :management do
+    namespace :api do
+      namespace :v1 do
+
+        # 管理者
+        resources :managers, except: ALL_REST_ACTION do
+          collection do
+            # 发送验证码
+            get :send_login_code
+
+            # 用验证码登录
+            get :login_with_sms_code
+          end
+        end
+
+        # 订单查询
+        resources :orders, only: [:index]
+
+      end
+    end
+  end
+
+
 end

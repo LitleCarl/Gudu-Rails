@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119063652) do
+ActiveRecord::Schema.define(version: 20160120061043) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -102,10 +102,11 @@ ActiveRecord::Schema.define(version: 20160119063652) do
   end
 
   create_table "expressers", force: :cascade do |t|
-    t.string   "name",       limit: 255, null: false, comment: "快递员名字"
-    t.string   "phone",      limit: 255, null: false, comment: "快递员手机"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "name",       limit: 255,                    null: false, comment: "快递员名字"
+    t.string   "phone",      limit: 255,                    null: false, comment: "手机号"
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "password",   limit: 255, default: "123456",              comment: "密码"
   end
 
   create_table "expresses", force: :cascade do |t|

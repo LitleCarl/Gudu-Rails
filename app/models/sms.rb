@@ -9,8 +9,12 @@ class Sms
 
     # 阿里大鱼登录验证
     ALI_LoginCode = 'SMS_4385586'
-    # 阿里大鱼短信通知
+
+    # 阿里大鱼订单下单短信通知
     ALI_PayDone = 'SMS_4450454'
+
+    # 阿里大鱼订单派送通知
+    ALI_ORDER_DELIVERED = 'SMS_4745998'
   end
 
   # 返回支付时间, 订单价格, 预计送达时间
@@ -35,7 +39,7 @@ class Sms
         format: 'json',
         sign_method: 'md5',
         sms_type: 'normal',
-        sms_free_sign_name: '注册验证',
+        sms_free_sign_name: '早餐巴士',
         rec_num: mobile,
         sms_template_code: template_id,
         sms_param:  template_params.to_json

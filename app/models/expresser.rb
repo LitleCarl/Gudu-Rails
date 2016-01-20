@@ -79,6 +79,8 @@ class Expresser < ActiveRecord::Base
       express.expresser = expresser
 
       express.save!
+
+      OrderPayDoneSmsWorker.perform_async(order.receiver_phone, order.id)
     end
 
     response

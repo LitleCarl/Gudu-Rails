@@ -122,9 +122,11 @@ Rails.application.routes.draw do
         # 管理者
         resources :expressers, except: ALL_REST_ACTION do
           collection do
-            # 发送验证码
+            # 送餐员登录
             post :sign_in
 
+            # 送餐员扫二维码邦订单
+            post :bind_order
           end
         end
 

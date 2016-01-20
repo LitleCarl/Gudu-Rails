@@ -53,4 +53,35 @@ class Expresser < ActiveRecord::Base
     return response, expresser, token
   end
 
+  #
+  # 送货员扫订单二维码绑定订单
+  #
+  # @param options [Hash]
+  # @option options [Expresser] :expresser 送餐员
+  # @option options [String] :order_number 订单号
+  #
+  # @return [ResponseStatus] 响应
+  #
+  def self.bind_order(options = {})
+    response = ResponseStatus.__rescue__ do |res|
+      expresser, order_number = options[:expresser], options[:order_number]
+
+      res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if expresser.blank? || order_number.blank?
+
+      order = Order.query_first_by_options(order_number: order_number, status: Order::Status::PAYMENT_SUCCESS)
+
+      res.__raise__(ResponseStatus::Code::ERROR, '订单不存在') if order.blank?
+      res.__raise__(ResponseStatus::Code::ERROR, "此订单已经由#{order.expresser.name}#{order.expresser.phone}派送") if order.expresser.present?
+
+      express = Express.new
+
+      express.order = order
+      express.expresser = expresser
+
+      express.save!
+    end
+
+    response
+  end
+
 end

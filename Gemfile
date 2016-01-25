@@ -101,13 +101,8 @@ gem 'receipts', git: 'git@github.com:LitleCarl/receipts.git'
 # JPush's officially supported Ruby client library for accessing JPush APIs. 极光推送官方支持的 Ruby 版本服务器端 SDK. Read more: https://github.com/jpush/jpush-api-ruby-client
 gem 'jpush', '3.2.1'
 
-# https://github.com/tscolari/mobylette
-# gem 'mobylette', '3.5'
-
-# # http://www.rubyonrails.org/
-# gem 'actionview', '4.2.3'
-
-# gem 'bootstrap-sass', '~> 3.1.1'
+# Use materialzecss in your rails asset pipeline. https://github.com/mkhairi/materialize-sass
+gem 'materialize-sass'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

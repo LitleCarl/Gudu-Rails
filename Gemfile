@@ -65,6 +65,9 @@ gem 'whenever', :require => false
 
 gem 'slim', '~> 3.0', '>= 3.0.6'
 
+# Slim templates generator for Rails 3 and 4
+gem 'slim-rails'
+
 # https://github.com/capistrano/capistrano
 gem 'capistrano', '3.4.0'
 
@@ -103,6 +106,15 @@ gem 'jpush', '3.2.1'
 
 # Use materialzecss in your rails asset pipeline. https://github.com/mkhairi/materialize-sass
 gem 'materialize-sass'
+
+# Injects Angular.js into your asset pipeline as well as other Angular modules. https://github.com/hiravgandhi/angularjs-rails/
+gem 'angularjs-rails', '1.4.8'
+
+# lodash for the Rails asset pipeline. http://github.com/rh/lodash-rails
+gem 'lodash-rails', '4.0.0'
+
+# Flexible authentication solution for Rails with Warden. Read more: https://github.com/plataformatec/devise
+gem 'devise', '3.5.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -137,4 +137,13 @@ Rails.application.routes.draw do
     end
   end
 
+  # 移动端
+    namespace :mobile do
+      namespace :v1 do
+
+        # 管理者
+        resources :campuses
+      end
+    end
+
 end

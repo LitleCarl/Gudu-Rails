@@ -1,0 +1,39 @@
+doctype html
+html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
+  head
+    title MyApp
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    = stylesheet_link_tag 'mobile', media: 'all', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  body
+    nav
+      .nav-wrapper
+        .brand-logo.center href="#" 早餐巴士
+
+        ul#slide-out.side-nav
+          li.center-align
+            .chip
+              img src='http://materializecss.com/images/yuna.jpg' {{campus.name || '选择学校'}}
+          li
+            a href="#!"  点餐
+          li
+            a href="#!"  购物车
+          li
+            a href="#!"  个人中心
+        a.button-collapse data-activates="slide-out" href="#"
+          i.mdi-navigation-menu
+    .ng-view
+      = yield
+
+    script type= "text/ng-template" id="SelectCampusTemplate.html"
+      .card-panel.center-align.select-campus-card
+        .row
+          .input-field.col.s12
+            input#campus.validate placeholder="复旦大学" type="text" /
+            label for="campus"  学校
+
+              label 学校
+        button.waves-effect.waves-light.btn.i-primary_bg-color  ng-class='{disabled: !couldGoNext()}' ng-click='goToCampus()' 下一步
+
+    = javascript_include_tag 'mobile', 'data-turbolinks-track' => true
+

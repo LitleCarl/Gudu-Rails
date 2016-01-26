@@ -116,6 +116,8 @@ gem 'lodash-rails', '4.0.0'
 # Flexible authentication solution for Rails with Warden. Read more: https://github.com/plataformatec/devise
 gem 'devise', '3.5.2'
 
+gem 'puma', '2.15.3'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

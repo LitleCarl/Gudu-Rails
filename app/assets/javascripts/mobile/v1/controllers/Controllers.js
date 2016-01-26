@@ -9,6 +9,7 @@ function ImportControllers(appModule){
     appModule.controller('SelectCampusController', ['$scope', '$http', 'HttpService', function($scope, $http, HttpService){
         var self = $scope;
         self.CampusList = [{name: 'cjx'}];
+        self.search_text = '';
 
         HttpService.loadCampuses().then(
             function(responseObject){

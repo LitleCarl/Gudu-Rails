@@ -118,6 +118,9 @@ gem 'devise', '3.5.2'
 
 gem 'puma', '2.15.3'
 
+# This is basically a ruby gem for asset pipeline which includes the version 0.1.6 of the awesome rstacruz' nprogress library #https://github.com/caarlos0/nprogress-rails
+gem 'nprogress-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

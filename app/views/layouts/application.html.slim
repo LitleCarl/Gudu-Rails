@@ -2,7 +2,8 @@ doctype html
 html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
   head
     title MyApp
-    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport" /
+    /meta name="viewport" content="width=device-width, initial-scale=1.0"
     = stylesheet_link_tag 'mobile', media: 'all', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
@@ -26,14 +27,12 @@ html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
       = yield
 
     script type= "text/ng-template" id="SelectCampusTemplate.html"
-      .card-panel.center-align.select-campus-card
+      .select-campus-card
         .row
-          .input-field.col.s12
-            input#campus.validate placeholder="复旦大学" type="text" /
-            label for="campus"  学校
-
-              label 学校
-        button.waves-effect.waves-light.btn.i-primary_bg-color  ng-class='{disabled: !couldGoNext()}' ng-click='goToCampus()' 下一步
+          .input-field.col.s8
+            input#campus.validate placeholder="复旦大学" type="text" ng-model='search_text'
+          .input-field.col.s4
+            button.waves-effect.waves-light.narrow-btn.i-primary_bg-color  ng-class='{disabled: search_text.length<1}' ng-click='goToCampus()' 搜索
 
     = javascript_include_tag 'mobile', 'data-turbolinks-track' => true
 

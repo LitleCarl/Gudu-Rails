@@ -4,7 +4,7 @@ html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
     title MyApp
     meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport" /
     /meta name="viewport" content="width=device-width, initial-scale=1.0"
-    = stylesheet_link_tag 'mobile', media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag 'management', media: 'all', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
     nav
@@ -12,7 +12,7 @@ html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
         .brand-logo.center href="#" 早餐巴士
 
         ul#slide-out.side-nav
-          li.center-align
+          a.center-align href='#/'
             .chip
               img src='http://materializecss.com/images/yuna.jpg' {{campus.name || '选择学校'}}
           li
@@ -32,7 +32,22 @@ html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
           .input-field.col.s8
             input#campus.validate placeholder="复旦大学" type="text" ng-model='search_text'
           .input-field.col.s4
-            button.waves-effect.waves-light.narrow-btn.i-primary_bg-color  ng-class='{disabled: search_text.length<1}' ng-click='goToCampus()' 搜索
+            button.waves-effect.waves-light.narrow-btn.i-primary_bg-color ng-disabled="search_text.length<1" ng-class='{disabled: search_text.length<1}' ng-click='SearchCampus()'  搜索
 
-    = javascript_include_tag 'mobile', 'data-turbolinks-track' => true
+      ul.collection
+        a.collection-item ng-repeat='campus in CampusList' ng-bind='campus.name' ng-href='#campuses/{{campus.id}}'
 
+
+    script type= "text/ng-template" id="StoreListTemplate.html"
+
+      ul.collection.col.s12
+        li.collection-item.avatar ng-repeat='store in StoreList'
+          img.circle alt="" ng-src="{{store.logo_filename}}" /
+          span.title ng-bind='store.name'
+          p
+            | 月售:{{store.month_sale}}
+            br
+            | {{store.brief}}
+          a.secondary-content href="#!"
+
+    = javascript_include_tag 'management', 'data-turbolinks-track' => true

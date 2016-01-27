@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  ALL_REST_ACTION = [ :index, :new, :create, :show, :edit, :update, :destroy ]
+  ALL_REST_ACTION = [:index, :new, :create, :show, :edit, :update, :destroy ]
   resources :addresses, param: :address_id, only: [:create, :update, :destroy ] do
 
   end
@@ -93,6 +93,7 @@ Rails.application.routes.draw do
 
   # 管理者路由部分
   namespace :management do
+    # 管理者查看订单API接口
     namespace :api do
       namespace :v1 do
 
@@ -112,6 +113,12 @@ Rails.application.routes.draw do
 
       end
     end
+
+    devise_for :managers, controllers: {sessions: 'management/devise/sessions', registrations: 'management/devise/registrations'}
+
+    resources :managers, only: [:show]
+    resources :orders, only: [:index]
+    resources :products, only: [:index]
   end
 
   # 送餐员路由部分

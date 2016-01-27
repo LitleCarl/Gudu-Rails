@@ -22,6 +22,8 @@ class Specification < ActiveRecord::Base
   # 关联商品
   belongs_to :product
 
+  has_many :order_items
+
   before_save :ensure_stock_not_negative
 
   after_save :update_product_min_max_price

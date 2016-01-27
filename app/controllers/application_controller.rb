@@ -2,7 +2,10 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   #protect_from_forgery with: :exception
-  before_filter :user_about
+
+  layout 'management' if :devise_controller?
+
+  before_filter :user_about, unless: (:devise_controller? || :is_management_controller?)
 
   include Shared::Concerns::ApplicationControllerConcern
 

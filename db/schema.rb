@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160120061043) do
+ActiveRecord::Schema.define(version: 20160127065547) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -129,12 +129,24 @@ ActiveRecord::Schema.define(version: 20160120061043) do
   end
 
   create_table "managers", force: :cascade do |t|
-    t.string   "phone",      limit: 255, null: false, comment: "手机号"
-    t.integer  "campus_id",  limit: 4,                comment: "所属校区"
-    t.boolean  "write",                               comment: "修改权限"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "phone",                  limit: 255, default: "", null: false, comment: "手机号"
+    t.integer  "campus_id",              limit: 4,                             comment: "所属校区"
+    t.boolean  "write",                                                        comment: "修改权限"
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
   end
+
+  add_index "managers", ["phone"], name: "index_managers_on_phone", unique: true, using: :btree
+  add_index "managers", ["reset_password_token"], name: "index_managers_on_reset_password_token", unique: true, using: :btree
 
   create_table "nutritions", force: :cascade do |t|
     t.float    "energy",       limit: 24, default: 0.0

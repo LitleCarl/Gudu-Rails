@@ -1,10 +1,10 @@
 # == Schema Information
 #
-# Table name: users # 用户表
+# Table name: users
 #
-#  id         :integer          not null, primary key                                 # 用户表
-#  phone      :string(255)      not null                                              # 用户手机
-#  password   :string(255)      default("e10adc3949ba59abbe56e057f20f883e"), not null # 用户密码 默认123456
+#  id         :integer          not null, primary key
+#  phone      :string(255)      not null
+#  password   :string(255)      default("e10adc3949ba59abbe56e057f20f883e"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  avatar     :text(65535)                                                            # 用户头像
@@ -53,24 +53,34 @@ class User < ActiveRecord::Base
     }
 
     response = ResponseStatus.__rescue__(catch_proc) do |res|
-      res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if options[:union_id].blank?
+      transaction do
+        phone, sms_code, union_id, sms_token = options[:phone], options[:smsCode], options[:union_id], options[:smsToken]
 
-      user =  User.query_first_by_options(phone: options[:phone])
-      res.__raise__(ResponseStatus::Code::ERROR, '该手机用户已经绑定过其他微信') if user.present? && user.authorization.present?
+        res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺少参数') if union_id.blank? || phone.blank? || sms_token.blank? || sms_code.blank?
 
-      response, user, token = self.validate_login_with_sms_token(options)
-      res.__raise__response__(response)
+        phone_in_token, code_in_token, usage = TsaoUtil.decode_sms_code(sms_token)
 
+        res.__raise__(ResponseStatus::Code::ERROR, '验证码错误') if phone != phone_in_token || code_in_token != sms_code
 
+        user =  User.query_first_by_options(phone: options[:phone])
+        res.__raise__(ResponseStatus::Code::ERROR, '该手机用户已经绑定过其他微信') if user.present? && user.authorization.present?
 
-      authorization = Authorization.query_not_binded_by_options(union_id: options[:union_id]).first
+        response, user, token = self.validate_login_with_sms_token(options)
+        res.__raise__response__(response)
 
-      res.__raise__(ResponseStatus::Code::ERROR, '微信可能还没授权') if authorization.blank?
+        authorization = Authorization.query_first_by_options(union_id: options[:union_id])
 
-      authorization.user = user
-      authorization.save!
+        res.__raise__(ResponseStatus::Code::ERROR, '微信可能还没授权') if authorization.blank?
 
-      user.avatar = authorization.avatar
+        authorization.user = user
+        authorization.save!
+
+        # 同步未领取红包
+        authorization.sync_coupons_from_frozen_coupons
+
+        user.avatar = authorization.avatar
+        user.save!
+      end
     end
 
     return response, user, token
@@ -92,20 +102,15 @@ class User < ActiveRecord::Base
     token = nil
 
     begin
-      if options[:phone] == '13122898910'
+      raise RestError::MissParameterError if options[:phone].blank? || options[:smsCode].blank? || options[:smsToken].blank?
+      phone, sms_code, usage = TsaoUtil.decode_sms_code(options[:smsToken])
+
+      if options[:phone] == phone && options[:smsCode] == sms_code && usage == TsaoUtil::Usage::USER_SIGN_IN
+        user = User.upsert_user_if_not_found(phone)
+        token = TsaoUtil.sign_jwt_user_session(phone)
         response_status = ResponseStatus.default_success
-        user = User.upsert_user_if_not_found(options[:phone])
-        token = TsaoUtil.sign_jwt_user_session(options[:phone])
       else
-        raise RestError::MissParameterError if options[:phone].blank? || options[:smsCode].blank? || options[:smsToken].blank?
-        phone, sms_code = TsaoUtil.decode_sms_code(options[:smsToken])
-        if options[:phone] == phone && options[:smsCode] == sms_code
-          user = User.upsert_user_if_not_found(phone)
-          token = TsaoUtil.sign_jwt_user_session(phone)
-          response_status = ResponseStatus.default_success
-        else
-          response_status.message = '验证码不正确'
-        end
+        response_status.message = '验证码不正确'
       end
     rescue Exception => ex
       Rails.logger.error(ex.message)
@@ -122,7 +127,23 @@ class User < ActiveRecord::Base
       user = User.new
       user.phone = phone
       user.password = '123456'
-      user.save
+
+      user.save!
+
+      options = {
+          discount: 2,
+          least_price: 3,
+          activated_date: Time.now,
+          expired_date: Time.now + 7.days,
+          user: user
+      }
+
+      #TODO 注册用户免费两张优惠券
+      Coupon.generate_coupon(options)
+      options[:discount] = 3
+      options[:least_price] = 5
+      Coupon.generate_coupon(options)
+
     end
     user
   end

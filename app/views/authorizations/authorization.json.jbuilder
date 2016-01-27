@@ -13,7 +13,7 @@ json.data do | json |
   if @token
     json.token @token
   else
-    json.token nil
+   # json.token nil
   end
 
   json.user do

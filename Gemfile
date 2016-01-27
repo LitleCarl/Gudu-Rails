@@ -65,6 +65,9 @@ gem 'whenever', :require => false
 
 gem 'slim', '~> 3.0', '>= 3.0.6'
 
+# Slim templates generator for Rails 3 and 4
+gem 'slim-rails'
+
 # https://github.com/capistrano/capistrano
 gem 'capistrano', '3.4.0'
 
@@ -85,6 +88,9 @@ gem 'i18n', '~> 0.7.0'
 # http://spreadsheet.rubyforge.org/
 gem 'spreadsheet', '~> 1.0', '>= 1.0.9'
 
+# https://rubygems.org/gems/prawn-print
+gem 'prawn-print', '0.0.3'
+
 #### Exception Notification
 
 # https://airbrake.io
@@ -92,13 +98,28 @@ gem 'spreadsheet', '~> 1.0', '>= 1.0.9'
 # https://github.com/errbit/errbit
 gem 'airbrake', '4.3.4'
 
-# https://github.com/tscolari/mobylette
-# gem 'mobylette', '3.5'
+# https://github.com/excid3/receipts
+gem 'receipts', git: 'git@github.com:LitleCarl/receipts.git'
 
-# # http://www.rubyonrails.org/
-# gem 'actionview', '4.2.3'
+# JPush's officially supported Ruby client library for accessing JPush APIs. 极光推送官方支持的 Ruby 版本服务器端 SDK. Read more: https://github.com/jpush/jpush-api-ruby-client
+gem 'jpush', '3.2.1'
 
-# gem 'bootstrap-sass', '~> 3.1.1'
+# Use materialzecss in your rails asset pipeline. https://github.com/mkhairi/materialize-sass
+gem 'materialize-sass'
+
+# Injects Angular.js into your asset pipeline as well as other Angular modules. https://github.com/hiravgandhi/angularjs-rails/
+gem 'angularjs-rails', '1.4.8'
+
+# lodash for the Rails asset pipeline. http://github.com/rh/lodash-rails
+gem 'lodash-rails', '4.0.0'
+
+# Flexible authentication solution for Rails with Warden. Read more: https://github.com/plataformatec/devise
+gem 'devise', '3.5.2'
+
+gem 'puma', '2.15.3'
+
+# This is basically a ruby gem for asset pipeline which includes the version 0.1.6 of the awesome rstacruz' nprogress library #https://github.com/caarlos0/nprogress-rails
+gem 'nprogress-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

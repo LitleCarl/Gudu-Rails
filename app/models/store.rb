@@ -3,20 +3,20 @@
 # Table name: stores
 #
 #  id             :integer          not null, primary key
-#  name           :string(255)      not null                  # 店铺名称
-#  brief          :string(255)      default("暂无简介"), not null # 店铺简介
-#  address        :string(255)      not null                  # 商铺地址
-#  logo_filename  :string(255)      not null                  # 商铺logo文件
-#  location       :string(255)                                # location
-#  pinyin         :string(255)                                # pinyin
-#  status         :integer          default("1")              # 店铺状态
+#  name           :string(255)      not null
+#  brief          :string(255)      default("暂无简介"), not null
+#  address        :string(255)      not null
+#  logo_filename  :string(255)      not null
+#  location       :string(255)
+#  pinyin         :string(255)
+#  status         :integer          default("1")
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  signature      :text(65535)                                # 店铺签名
-#  month_sale     :integer          default("0")              # 月销量
-#  back_ratio     :float(24)        default("0")              # 回头率,0-1
-#  main_food_list :text(65535)                                # 主打商品名称列表
-#  owner_id       :integer                                    # 关联商铺拥有人
+#  signature      :text(65535)
+#  month_sale     :integer          default("0")
+#  back_ratio     :float(24)        default("0")
+#  main_food_list :text(65535)
+#  owner_id       :integer
 #
 
 class Store < ActiveRecord::Base
@@ -43,7 +43,7 @@ class Store < ActiveRecord::Base
     data = nil
     begin
       raise RestError::MissParameterError if params[:campus_id].blank?
-      data = Campus.find(params[:campus_id]).stores.where('status = ?', Store::Status::Normal).order('created_at desc').page(params[:page]).per(params[:limit])
+      data = Campus.find(params[:campus_id]).stores.includes(:products => [:specifications, :nutrition, :product_images]).where('status = ?', Store::Status::Normal).order('created_at desc').page(params[:page]).per(params[:limit])
       response_status = ResponseStatus.default_success
     rescue Exception => ex
       Rails.logger.error(ex.message)
@@ -146,12 +146,12 @@ class Store < ActiveRecord::Base
     # 回头客数
     back_num = result.having('count > 1').to_a.count
     # 回头率
-    back_ratio = 0.0
     if base_num == 0
       back_ratio = 0.0
     else
       back_ratio = back_num / base_num.to_f
     end
+
     self.back_ratio = back_ratio
     self.save
   end

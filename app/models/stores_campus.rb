@@ -3,8 +3,8 @@
 # Table name: stores_campuses
 #
 #  id         :integer          not null, primary key
-#  store_id   :integer                                # 关联商铺
-#  campus_id  :integer                                # 关联校区
+#  store_id   :integer
+#  campus_id  :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

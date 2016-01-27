@@ -1,20 +1,24 @@
 # == Schema Information
 #
-# Table name: addresses # 用户收货地址
+# Table name: addresses
 #
-#  id              :integer          not null, primary key # 用户收货地址
-#  name            :string(255)                            # 收货人名
-#  address         :string(255)                            # 收货人地址
-#  phone           :string(255)                            # 收货人手机号
-#  user_id         :integer                                # 关联用户
+#  id              :integer          not null, primary key
+#  name            :string(255)
+#  address         :string(255)
+#  phone           :string(255)
+#  user_id         :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  default_address :boolean          default("0")          # 默认收货地址
+#  default_address :boolean          default("0")
 #
 
 class Address < ActiveRecord::Base
+
+  # 通用查询方法
+  include Concerns::Query::Methods
+
   belongs_to :user
-  #validates_uniqueness_of
+
   validates :name, :address, :phone, :user_id, presence: true
   validate :check_fields
   after_save :detect_address_is_set_default
@@ -38,28 +42,29 @@ class Address < ActiveRecord::Base
     return response_status, data
   end
 
-  def self.delete_address(params)
-    response_status = ResponseStatus.default
-    data = nil
-    begin
-      raise RestError::MissParameterError if params[:address_id].blank?
-      user = params[:user]
-      if user.present?
-        address = Address.find(params[:address_id]).where({user_id: user.id}).first
-        if address.present?
-          address.destroy!()
-          response_status = ResponseStatus.default_success
-          data = address
-        else
-          response_status.message = '地址不存在'
-        end
-      end
+  #
+  # 删除用户地址
+  #
+  # @param options [Hash]
+  # @option options [String] :id 用户地址id
+  #
+  # @return [ResponseStatus] 响应
+  def self.delete_address(options)
+    response = ResponseStatus.__rescue__ do |res|
+      id, user = options[:address_id], options[:user]
 
-    rescue Exception => ex
-      Rails.logger.error(ex.message)
-      response_status.message = '地址删除失败'
+      id = id[/[0-9]+$/] if id.present? # 给iOS删除地址做兼容
+
+      res.__raise__(ResponseStatus::Code::MISS_PARAM, '缺失参数') if id.blank? || user.blank?
+
+      address = query_first_by_options(id: id, user_id: user.id)
+
+      res.__raise__(ResponseStatus::Code::ERROR, '要删除的地址不存在') if address.blank?
+
+      address.destroy!
     end
-    return response_status, data
+
+    return response
   end
 
   def self.update_address(params)

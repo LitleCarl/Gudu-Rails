@@ -1,0 +1,22 @@
+doctype html
+html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
+  head
+    title 早餐巴士管理
+    meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport" /
+    /meta name="viewport" content="width=device-width, initial-scale=1.0"
+    = stylesheet_link_tag 'management', media: 'all', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  body
+    - if flash[:notice].present?
+      #notice style='display: none' = flash[:notice]
+    - if flash[:alert].present?
+      #alert style='display: none' = flash[:alert]
+    nav
+      .nav-wrapper
+        .brand-logo.center href="#" = current_management_manager.try(:campus).try(:name) || '早餐巴士管理'
+
+    .container
+      .row
+        = yield
+
+    = javascript_include_tag 'management', 'data-turbolinks-track' => true

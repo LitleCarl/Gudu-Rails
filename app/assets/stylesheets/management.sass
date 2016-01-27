@@ -1,0 +1,27 @@
+@import "materialize/components/color"
+$primary-color: color("blue", "lighten-2") !default
+@import "materialize"
+
+$nprogress-color: #f1f1f1
+$nprogress-height: 2px
+$nprogress-zindex: 10100
+@import 'nprogress'
+
+// logo
+nav .brand-logo
+  font-size: 1.5rem
+
+//
+.i-primary_bg-color
+  @extend .blue, .lighten-4
+.i-primary_text-color
+  @extend .blue-text
+
+// 选择学校
+.select-campus-card
+  margin: 10px 8px
+
+// 窄的btn
+.narrow-btn
+  @extend .btn
+  padding: 0 1rem

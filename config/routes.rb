@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  ALL_REST_ACTION = [ :index, :new, :create, :show, :edit, :update, :destroy ]
+  ALL_REST_ACTION = [:index, :new, :create, :show, :edit, :update, :destroy ]
   resources :addresses, param: :address_id, only: [:create, :update, :destroy ] do
 
   end
@@ -11,10 +11,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :orders, param: :order_id, only: [:show, :index, :create, :show] do
+  resources :orders, param: :order_id, only: [:show, :index, :create, :show, :update] do
     member do
       # 获取订单的支付chagre
       get :get_charge_for_unpaid_order
+    end
+
+    collection do
+      # get :test_print
     end
   end
 
@@ -61,6 +65,9 @@ Rails.application.routes.draw do
       get :search_product_and_store_for_campus
 
       get :download
+
+      # 更新检查
+      get :check_update
     end
   end
 
@@ -83,4 +90,67 @@ Rails.application.routes.draw do
       get :get_coupon
     end
   end
+
+  # 管理者路由部分
+  namespace :management do
+    # 管理者查看订单API接口
+    namespace :api do
+      namespace :v1 do
+
+        # 管理者
+        resources :managers, except: ALL_REST_ACTION do
+          collection do
+            # 发送验证码
+            get :send_login_code
+
+            # 用验证码登录
+            get :login_with_sms_code
+          end
+        end
+
+        # 订单查询
+        resources :orders, only: [:index]
+
+      end
+    end
+
+    devise_for :managers, controllers: {sessions: 'management/devise/sessions', registrations: 'management/devise/registrations'}
+
+    resources :managers, only: [:show]
+    resources :orders, only: [:index]
+    resources :products, only: [:index]
+  end
+
+  # 送餐员路由部分
+  namespace :expresses do
+    namespace :api do
+      namespace :v1 do
+
+        # 管理者
+        resources :expressers, except: ALL_REST_ACTION do
+          collection do
+            # 送餐员登录
+            post :sign_in
+
+            # 送餐员扫二维码邦订单
+            post :bind_order
+          end
+        end
+
+        # 订单查询
+        resources :orders, only: [:index]
+
+      end
+    end
+  end
+
+  # 移动端
+    namespace :mobile do
+      namespace :v1 do
+
+        # 管理者
+        resources :campuses
+      end
+    end
+
 end

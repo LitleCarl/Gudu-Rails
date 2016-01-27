@@ -16,4 +16,5 @@
 # end
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'campus', 'campuses'
+  inflect.irregular 'express', 'expresses'
 end

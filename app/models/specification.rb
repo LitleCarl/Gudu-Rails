@@ -3,12 +3,12 @@
 # Table name: specifications
 #
 #  id            :integer          not null, primary key
-#  name          :string(255)      not null                  # 规格名称:颜色
-#  value         :string(255)      not null                  # 规格值
-#  price         :decimal(10, 2)   default("0.00"), not null # 商品单价
+#  name          :string(255)      not null
+#  value         :string(255)      not null
+#  price         :decimal(10, 2)   default("0.00"), not null
 #  product_id    :integer          not null
-#  status        :integer          default("1"), not null    # 规格状态
-#  stock         :integer          default("0")              # 库存
+#  status        :integer          default("1"), not null
+#  stock         :integer          default("0")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  stock_per_day :integer          default("10"), not null   # 订单每日更新的库存
@@ -21,6 +21,8 @@ class Specification < ActiveRecord::Base
 
   # 关联商品
   belongs_to :product
+
+  has_many :order_items
 
   before_save :ensure_stock_not_negative
 

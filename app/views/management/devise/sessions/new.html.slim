@@ -1,0 +1,7 @@
+.row.section
+  .card.col.s4.push-s4
+    .sign_in_box.section.center-align
+      = form_tag management_manager_session_url, name: 'sign_in_form', method: :post, novalidate: 'novalidate'
+        input name='management_manager[phone]' type='text' placeholder='请输入手机号'
+        input name='management_manager[password]' type='password' placeholder='请输入密码 长度6-16位'
+        button.waves-effect.waves-light.btn type='submit' 登录

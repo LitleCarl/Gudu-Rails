@@ -1,10 +1,11 @@
 class AddressesController < ApplicationController
+
   def create
     @response_status, @data = Address.add_address(params)
   end
 
   def destroy
-    @response_status, @data = Address.delete_address(params)
+    @response_status = Address.delete_address(params)
   end
 
   def update

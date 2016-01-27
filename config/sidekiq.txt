@@ -1,0 +1,19 @@
+# Logfile created on 2016-01-14 15:44:51 +0800 by logger.rb/44203
+ErrbitSetting.status = open
+SidekiqRedisSetting.status = open
+2016-01-14T07:44:53.476Z 18426 TID-ovykzkezw INFO: Booting Sidekiq 3.5.3 with redis options {:url=>"redis://username:REDACTED@localhost:6379/12", :namespace=>"gudu-dev-sidekiq"}
+2016-01-14T07:44:56.027Z 18426 TID-ovykzkezw INFO: Running in ruby 2.1.5p273 (2014-11-13 revision 48405) [x86_64-darwin14.0]
+2016-01-14T07:44:56.027Z 18426 TID-ovykzkezw INFO: See LICENSE and the LGPL-3.0 for licensing details.
+2016-01-14T07:44:56.027Z 18426 TID-ovykzkezw INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
+2016-01-14T07:44:56.107Z 18426 TID-ovyl1z9pk SignUpSmsWorker JID-a9731bf2bc8cef5d34a77fc7 INFO: start
+2016-01-14T07:44:56.109Z 18426 TID-ovykznn5k SignUpSmsWorker JID-925248f382cf8bb8214f3740 INFO: start
+2016-01-14T07:44:56.110Z 18426 TID-ovyl234m4 SignUpSmsWorker JID-03d3d417782b772ca2ac1305 INFO: start
+2016-01-14T07:44:56.110Z 18426 TID-ovyl9hlj4 SignUpSmsWorker JID-de4d33617f8b55986f5eb8ea INFO: start
+2016-01-14T07:44:56.112Z 18426 TID-ovykzh7ys SignUpSmsWorker JID-e9e6ff045a305eaa21f6de1c INFO: start
+2016-01-14T07:44:56.693Z 18426 TID-ovyl1z9pk SignUpSmsWorker JID-a9731bf2bc8cef5d34a77fc7 INFO: done: 0.586 sec
+2016-01-14T07:44:56.693Z 18426 TID-ovykznn5k SignUpSmsWorker JID-925248f382cf8bb8214f3740 INFO: done: 0.585 sec
+2016-01-14T07:44:56.715Z 18426 TID-ovyl9hlj4 SignUpSmsWorker JID-de4d33617f8b55986f5eb8ea INFO: done: 0.605 sec
+2016-01-14T07:44:56.717Z 18426 TID-ovykzh7ys SignUpSmsWorker JID-e9e6ff045a305eaa21f6de1c INFO: done: 0.606 sec
+2016-01-14T07:44:56.720Z 18426 TID-ovyl234m4 SignUpSmsWorker JID-03d3d417782b772ca2ac1305 INFO: done: 0.61 sec
+2016-01-14T07:54:20.078Z 18426 TID-ovyl234m4 SignUpSmsWorker JID-772c131cb21be154a481dd2e INFO: start
+2016-01-14T07:54:24.303Z 18426 TID-ovyl234m4 SignUpSmsWorker JID-772c131cb21be154a481dd2e INFO: done: 4.225 sec

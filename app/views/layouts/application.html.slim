@@ -1,0 +1,53 @@
+doctype html
+html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
+  head
+    title MyApp
+    meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport" /
+    /meta name="viewport" content="width=device-width, initial-scale=1.0"
+    = stylesheet_link_tag 'management', media: 'all', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  body
+    nav
+      .nav-wrapper
+        .brand-logo.center href="#" 早餐巴士
+
+        ul#slide-out.side-nav
+          a.center-align href='#/'
+            .chip
+              img src='http://materializecss.com/images/yuna.jpg' {{campus.name || '选择学校'}}
+          li
+            a href="#!"  点餐
+          li
+            a href="#!"  购物车
+          li
+            a href="#!"  个人中心
+        a.button-collapse data-activates="slide-out" href="#"
+          i.mdi-navigation-menu
+    .ng-view
+      = yield
+
+    script type= "text/ng-template" id="SelectCampusTemplate.html"
+      .select-campus-card
+        .row
+          .input-field.col.s8
+            input#campus.validate placeholder="复旦大学" type="text" ng-model='search_text'
+          .input-field.col.s4
+            button.waves-effect.waves-light.narrow-btn.i-primary_bg-color ng-disabled="search_text.length<1" ng-class='{disabled: search_text.length<1}' ng-click='SearchCampus()'  搜索
+
+      ul.collection
+        a.collection-item ng-repeat='campus in CampusList' ng-bind='campus.name' ng-href='#campuses/{{campus.id}}'
+
+
+    script type= "text/ng-template" id="StoreListTemplate.html"
+
+      ul.collection.col.s12
+        li.collection-item.avatar ng-repeat='store in StoreList'
+          img.circle alt="" ng-src="{{store.logo_filename}}" /
+          span.title ng-bind='store.name'
+          p
+            | 月售:{{store.month_sale}}
+            br
+            | {{store.brief}}
+          a.secondary-content href="#!"
+
+    = javascript_include_tag 'management', 'data-turbolinks-track' => true

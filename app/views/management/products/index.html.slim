@@ -1,0 +1,28 @@
+= render 'management/common/left_nav'
+.col.s10.card ng-controller='ProductStatisticController'
+  .row
+    .col.s4.section
+      input.datepicker type="date" ng-model='SelectDate'
+    .col.s4.section
+      button#go-for-date.waves-effect.waves-light.btn ng-click='GoForDate()' 前往
+  .row
+    .col.s12
+    table.striped
+      thead
+        tr
+          th data-field="order_number" 商铺
+          th data-field="receiver_name"  商品名
+          th data-field="receiver_phone"  规格
+          th data-field="price"  数量
+
+      tbody
+        - order_items = OrderItem.where(order_id: @orders.ids)
+        - specification_and_quantity = order_items.group(:specification_id).sum(:quantity)
+        - specifications = Specification.includes([:product => :store]).where(id: specification_and_quantity.keys)
+        - specifications.each do|specification|
+          tr
+            td =specification.product.store.name
+            td =specification.product.name
+            td =specification.value
+            td =specification_and_quantity[specification.id]
+

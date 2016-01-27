@@ -5,13 +5,13 @@
 #  id             :integer          not null, primary key
 #  payment_method :string(255)      not null
 #  time_paid      :datetime         not null
-#  amount         :decimal(10, 2)   default("0.00"), not null # 支付总金额
-#  transaction_no :string(255)      not null                  # 交易号
-#  charge_id      :string(255)      not null                  # charge id
+#  amount         :decimal(10, 2)   default("0.00"), not null
+#  transaction_no :string(255)      not null
+#  charge_id      :string(255)      not null
 #  order_id       :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  pingpp_info    :text(65535)                                # pingpp返回json
+#  pingpp_info    :text(65535)
 #
 
 class Payment < ActiveRecord::Base
@@ -30,7 +30,7 @@ class Payment < ActiveRecord::Base
   # 创建Payment后关联订单
   def set_order_paid_and_update_product_specification
     if self.order.status == Order::Status::NOT_PAID
-      self.order.status = Order::Status::NOT_DELIVERED
+      self.order.status = Order::Status::WAITING_CONFIRM
       self.order.save
       Rails.logger.debug '第三方支付回调并且关联订单成功'
       # 开始更新商品状态

@@ -22,6 +22,15 @@ json.campus do
   json.partial! 'campuses/campus', campus: order.campus
 end
 
+# 送餐员
+json.expresser do
+  if order.expresser
+    json.partial! 'expressers/expresser', expresser: order.expresser
+  else
+    json.nil!
+  end
+end
+
 json.user_id order.user_id
 
 

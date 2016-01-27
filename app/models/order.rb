@@ -4,7 +4,7 @@
 #
 #  id               :integer          not null, primary key
 #  status           :integer          default("1"), not null
-#  price            :decimal(10, 2)   default("0.00"), not null # 总金额
+#  price            :decimal(10, 2)   default("0.00"), not null
 #  delivery_time    :string(255)      not null
 #  receiver_name    :string(255)      not null
 #  receiver_phone   :string(255)      not null
@@ -14,8 +14,8 @@
 #  pay_method       :string(255)      not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  charge_json      :text(65535)                                # 订单关联charge
-#  order_number     :string(255)                                # 订单编号
+#  charge_json      :text(65535)
+#  order_number     :string(255)
 #  pay_price        :decimal(10, 2)   default("0.00")           # 实际支付金额
 #
 
@@ -23,6 +23,9 @@ class Order < ActiveRecord::Base
 
   # 通用查询方法
   include Concerns::Query::Methods
+
+  # mixin 管理者
+  include Concerns::Management::Api::V1::OrderConcern
 
   # 关联学校
   belongs_to :campus
@@ -42,6 +45,12 @@ class Order < ActiveRecord::Base
   # 关联优惠券 (如果订单使用了优惠券)
   has_one :coupon
 
+  # 关联物流
+  has_one :express
+
+  # 关联快递员
+  has_one :expresser, through: :express
+
   before_create :generate_order_number
   validate :check_order_fields
   after_save :check_order_status
@@ -54,7 +63,9 @@ class Order < ActiveRecord::Base
 
     NOT_PAID = 1      # 未支付
 
-    NOT_DELIVERED = 2 # 未发货
+    WAITING_CONFIRM = 11      # 已支付待确认
+
+    NOT_DELIVERED = 2 # 已确认未发货
 
     NOT_RECEIVED = 3  # 未收到
 
@@ -62,7 +73,7 @@ class Order < ActiveRecord::Base
 
     DONE = 5          # 完成
 
-    PAYMENT_SUCCESS = [NOT_DELIVERED, NOT_RECEIVED, NOT_COMMENTED, DONE]
+    PAYMENT_SUCCESS = [WAITING_CONFIRM, NOT_DELIVERED, NOT_RECEIVED, NOT_COMMENTED, DONE]
 
     # 全部
     ALL = get_all_values
@@ -74,6 +85,70 @@ class Order < ActiveRecord::Base
     ALIPAY = 'alipay'
 
     ALL = [WEIXIN, ALIPAY]
+  end
+
+  #
+  # 打印当日产生订单的小票
+  #
+  # @param options [Hash]
+  # option options [start_number] :从此订单号开始打印
+  # option options [date] :选择要打印的日期
+  #
+  # @return [Response, Array] 状态，学校列表
+  #
+  def self.receipt(options)
+    receipt = nil
+
+    response = ResponseStatus.__rescue__ do |res|
+      start_number = options[:start_number]
+      date = options[:date] || Time.now
+
+      orders = Order.joins(:payment).where('payments.time_paid >= ? AND payments.time_paid <= ?', date.beginning_of_day, date.end_of_day)
+      orders = orders.where('orders.status = ?', Status::NOT_DELIVERED)
+
+      if start_number.present?
+        order = self.query_first_by_options(status: Status::NOT_DELIVERED, order_number: start_number)
+
+        res.__raise__(ResponseStatus::Code::ERROR, "订单号:#{start_number}不存在") if order.blank?
+
+        orders = orders.where('orders.id > ?', order.id)
+      end
+
+      orders = orders.order('id asc')
+
+      orders.each do |order|
+
+        line_items = []
+
+        order.order_items.each do |order_item|
+          line_items << ["#{order_item.product.name}(#{order_item.specification.value})", "#{order_item.quantity}份","#{order_item.quantity_multiply_price_snapshot}"]
+        end
+
+        receipt = Receipts::Receipt.new(
+            id: "#{order.order_number}",
+            product: '早餐巴士',
+            receiver_info: {
+                name: "收货人: #{order.receiver_name}",
+                address: "地址: #{order.receiver_address}",
+                phone: "手机: #{order.receiver_phone}",
+                delivery_time: "送达时间: #{order.format_delivery_time}",
+            },
+            logo: Rails.root.join('app/assets/images/Icon.png'),
+            line_items: line_items,
+            font: {
+                bold: Rails.root.join('app/assets/fonts/custom_font.ttf'),
+                normal: Rails.root.join('app/assets/fonts/custom_font.ttf'),
+            }
+        )
+
+        # receipt.print
+        receipt.render_file("/Users/tsaojixin/Downloads/tmp/#{order.delivery_time.gsub(/:/, '')}/#{order.order_number}.pdf")
+      end
+
+    end
+
+    return response, receipt
+
   end
 
   def self.query_by_id(options)
@@ -157,6 +232,10 @@ class Order < ActiveRecord::Base
   def self.create_new_order(params)
     response_status = ResponseStatus.default
     data = nil
+
+    #TODO 暂停内测
+    response_status.message = "寒假内测结束啦,下学期见~"
+    return response_status, data
 
     if (Time.now.hour + Time.now.min / 60.0) > (ServicesController.get_config[:deadline_hour] + ServicesController.get_config[:deadline_minute] / 60.0)
       response_status.message = "太迟啦,明天记得在#{ServicesController.get_config[:deadline_hour]}点#{ServicesController.get_config[:deadline_hour]}之前来哦"
@@ -265,6 +344,43 @@ class Order < ActiveRecord::Base
     return response_status, data
   end
 
+  # 更新用户订单
+  #
+  # @param options [Hash] 约束
+  # @option options [Order] :order 订单数据
+  # @option options [User] :user 关联用户
+  #
+  # @return [Array] response, coupon
+  #
+  def self.update_by_options(options = {})
+    order = nil
+
+    catch_proc = proc{ order = nil }
+
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
+
+      user, order_id = options[:user], options[:order_id]
+
+      # post 参数
+      delivery_time, receiver_name, receiver_phone = options[:delivery_time], options[:receiver_name], options[:receiver_phone]
+
+      res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if user.blank? ||  order_id.blank?
+
+      order = query_first_by_options(id: order_id, user: user)
+
+      res.__raise__(ResponseStatus::Code::ERROR, '订单不存在') if order.blank?
+
+      # 更新发货时间,收货人,收货电话
+      order.delivery_time = delivery_time if delivery_time.present?
+      order.receiver_name = receiver_name if receiver_name.present?
+      order.receiver_phone = receiver_phone if receiver_phone.present?
+
+      order.save!
+    end
+
+    return response, order
+  end
+
   def check_order_status
     # 检查订单是否从未支付到支付
     if self.status_changed? && self.status_was == Order::Status::NOT_PAID && self.status == Order::Status::NOT_DELIVERED
@@ -314,5 +430,14 @@ class Order < ActiveRecord::Base
 
     return response, red_pack
   end
+
+  #
+  # 获取订单送餐时间格式化输出
+  #
+  def format_delivery_time
+    time = self.created_at + 1.day
+    "#{time.strftime("%Y年%m月%d日")}#{self.delivery_time}"
+  end
+
 
 end

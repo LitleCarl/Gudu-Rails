@@ -69,7 +69,7 @@ class ServicesController < ApplicationController
 
   def self.get_config
     {
-        availableDeliveryTime: ["6:29", "7:00", "7:30" , "8:30", "9:00"],
+        availableDeliveryTime: ["6:30", "7:00", "7:30" , "8:30", "9:00"],
         availablePayMethod: [{
                                  name: "支付宝",
                                  code: "alipay"
@@ -78,10 +78,10 @@ class ServicesController < ApplicationController
                                  name: "微信",
                                  code: "wx"
                              }],
-        red_pack_available: true,
+        red_pack_available: false,
         kefu_phone: '13788982942',
         # 营业时间至 (小时)
-        deadline_hour: 22,
+        deadline_hour: 23,
         # 营业时间至 (分钟)
         deadline_minute: 30
     }
@@ -97,7 +97,7 @@ class ServicesController < ApplicationController
     @token = nil
     begin
       raise StandardError.new('手机号输入有误') if params[:phone].blank? || !RegularTest.is_phone_number(params[:phone])
-      @token = TsaoUtil.send_login_sms_code(params[:phone])
+      @token = TsaoUtil.send_sms_code(params[:phone], TsaoUtil::Usage::USER_SIGN_IN)
       @response_status = ResponseStatus.default_success
     rescue Exception => ex
       Rails.logger.error(ex.message)
@@ -110,12 +110,10 @@ class ServicesController < ApplicationController
     redirect_to_url = ''
     if is_iphone_device?
       #appstore
-      redirect_to_url =  "https://itunes.apple.com/cn/app/yun-dian-jia/id783464466?mt=8"
+      redirect_to_url =  AppVersion::DownloadURL::IPHONE_URL
     elsif is_android_device?
       #Android版在应用宝的地址
-      redirect_to_url = "http://fusion.qq.com/app_download?appid=1104986485&platform=qzone&via=QZ.MOBILEDETAIL.QRCODE&u=3046917960"
-
-      # redirect_to_url = "http://fusion.qq.com/app_download?appid=%201104977687&platform=qzone&via=QZ.MOBILEDETAIL.QRCODE&u=3046917960"
+      redirect_to_url = AppVersion::DownloadURL::ANDOIRD_URL
     end
 
     respond_to do |format|
@@ -125,7 +123,13 @@ class ServicesController < ApplicationController
         format.html { redirect_to  redirect_to_url}
       end
     end
+  end
 
+  #
+  # app更新检查
+  #
+  def check_update
+    @response_status, @update_info = AppVersion.check_update(params)
   end
 
 end

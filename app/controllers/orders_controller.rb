@@ -34,7 +34,6 @@ class OrdersController < ApplicationController
   def create
     @response_status, @order= Order.create_new_order(params)
     if @order.present?
-      puts "创建的id为:#{@order.id}"
      nothing, @charge = Order.get_charge_for_unpaid_order({user: params[:user], order_id: @order.id})
     else
       @charge = nil
@@ -43,6 +42,10 @@ class OrdersController < ApplicationController
 
   def show
     @response_status, @order= Order.query_by_id(params)
+  end
+
+  def update
+    @response_status, @order= Order.update_by_options(params)
   end
 
 end

@@ -1,0 +1,21 @@
+= render 'management/common/left_nav'
+.col.s8.m10.card
+  .row
+    .col.s12
+    table.striped
+      thead
+        tr
+          th data-field="store_name"  店铺名称
+          th data-field="contact_name"  联系人
+          th data-field="contact_phone"  联系电话
+          th data-field="operate"  操作
+
+      tbody
+        - @stores.each do |store|
+          tr
+            td =store.name
+            td =store.try(:owner).try(:contact_name)
+            td =store.try(:owner).try(:contact_phone)
+            td
+              a href='#{management_store_url(store)}' 查看
+

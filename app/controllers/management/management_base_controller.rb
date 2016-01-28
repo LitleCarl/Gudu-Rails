@@ -8,6 +8,8 @@ class Management::ManagementBaseController < ActionController::Base
 
   before_filter :set_manager_in_params
 
+  # before_render :detect_response_from_model_method
+
   # 在请求参数中加入manager
   def set_manager_in_params
     params[:manager] = current_management_manager
@@ -15,6 +17,15 @@ class Management::ManagementBaseController < ActionController::Base
 
   def is_management_controller?
     true
+  end
+
+  # 检查是否存在@response的message
+  def render *args
+    @response ||= nil
+    if @response.present? && @response.message.present?
+      flash[:alert] = @response.message
+    end
+    super
   end
 
 end

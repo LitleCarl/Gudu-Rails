@@ -24,6 +24,9 @@ class Store < ActiveRecord::Base
   # 通用查询方法
   include Concerns::Query::Methods
 
+  # mixin 管理者
+  include Concerns::Management::Api::V1::StoreConcern
+
   belongs_to :owner
 
   has_many :stores_campuses

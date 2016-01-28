@@ -119,6 +119,9 @@ Rails.application.routes.draw do
     resources :managers, only: [:show]
     resources :orders, only: [:index]
     resources :products, only: [:index]
+
+    # 店铺管理
+    resources :stores, only: [:index, :show]
   end
 
   # 送餐员路由部分

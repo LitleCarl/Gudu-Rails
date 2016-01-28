@@ -41,6 +41,11 @@
       div.modal.modal-fixed-footer id='m#{store.id}'
         .modal-content
           .row
+            .col.s4.card.push-s4.center-align
+              h5 =store.name
+              h6 联系人: #{store.try(:owner).try(:contact_name)}
+              h6 电话: #{store.try(:owner).try(:contact_phone)}
+          .row
             .col.s12
               table.striped.centered
                 thead

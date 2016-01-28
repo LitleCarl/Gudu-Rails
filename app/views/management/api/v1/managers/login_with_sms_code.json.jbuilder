@@ -6,7 +6,7 @@ json.data do | json |
   end
   json.manager do
     if @manager.present?
-      json.partial! @manager, partial: 'managers/manager', as: :manager
+      json.partial! 'managers/manager', manager: @manager
     else
       json.nil!
     end

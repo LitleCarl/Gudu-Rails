@@ -4,6 +4,7 @@
 //= require angular
 //= require angular-route
 //= require 'mobile/v1/modules/SharedHttp'
+//= require 'mobile/v1/modules/materialize-angular.js'
 //= require 'mobile/v1/controllers/Controllers.js'
 //= require 'mobile/v1/jquery/iScroll.js'
 
@@ -20,6 +21,7 @@ $(document).ready(function() {
             closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
         }
     );
+    $('.modal-trigger').leanModal();
 
     var notice = $('#notice');
     if (notice.length > 0){
@@ -30,9 +32,10 @@ $(document).ready(function() {
     if (alert.length > 0){
         Materialize.toast(alert.html(), 6000);
     }
+
 });
 
-var globalModule = angular.module('GlobalAngularModule', ['ngRoute', 'nprogress-rails']);
+var globalModule = angular.module('GlobalAngularModule', ['ngRoute', 'nprogress-rails', 'ui.materialize']);
 
 // 加载Http管理器
 InjectSharedHttpClient(globalModule);

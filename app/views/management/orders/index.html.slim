@@ -2,7 +2,8 @@
 .col.s10.card ng-controller='OrderQueryController'
   .row
     .col.s4.section
-      input.datepicker type="date" ng-model='SelectDate'
+      label for='date-picker' 日期
+      input#date-picker.datepicker input-date='' type="text" ng-model='SelectDate' format="dd/mm/yyyy"
     .col.s4.section
       button#go-for-date.waves-effect.waves-light.btn ng-click='GoForDate()' 前往
   .row
@@ -16,9 +17,9 @@
           th data-field="price"  总金额
           th data-field="pay_price"  实际付款
           th data-field="use_coupon"  使用优惠券
-          th data-field="pay_method"  支付方式
           th data-field="created_at"  下单时间
-          th data-field="price"  操作
+          th data-field="pay_method"  支付方式
+          th data-field="operate"  操作
       tbody
         - @orders.each do |order|
           tr
@@ -28,6 +29,6 @@
             td #{order.price}元
             td #{order.pay_price}元
             td =order.coupon.present? ? '是': '否'
-            td = order.created_at
-            td =order.pay_method
+            td = order.created_at.to_json_time
+            td =Order::PayMethod.get_desc_by_value(order.pay_method)
             td 详情

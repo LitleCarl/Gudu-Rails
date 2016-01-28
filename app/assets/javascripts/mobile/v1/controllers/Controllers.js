@@ -68,4 +68,13 @@ function ImportControllers(appModule){
           }
         };
     }])
+
+    appModule.controller('ProductStatisticController', ['$scope', '$routeParams', 'HttpService', function($scope, $routeParams, HttpService){
+        var self = $scope;
+        self.GoForDate = function(){
+            if (self.SelectDate){
+                window.location.href = "/management/products?date=" + self.SelectDate;
+            }
+        };
+    }])
 }

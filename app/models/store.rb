@@ -27,18 +27,38 @@ class Store < ActiveRecord::Base
   # mixin 管理者
   include Concerns::Management::Api::V1::StoreConcern
 
+  # 商城有一个拥有着
   belongs_to :owner
 
+  # 中间表
   has_many :stores_campuses
+
+  # 商城可以关联多个学校
   has_many :campuses, through: :stores_campuses
+
+  # 商城关联合同
   has_one :contract
+
+  # 商城关联商品
   has_many :products
+
+  # 商铺logo挂载
+  mount_uploader :logo_filename, ImageUploader
+
+  # 设置拼音
   before_save :set_store_pinyin
 
   module Status
+    include Concerns::Dictionary::Module::I18n
+
     Pending = 1  # 暂停
+
     Normal = 2 # 正常
+
     Suspend = 3 # 停止(合同到期)
+
+    # 全部
+    ALL = get_all_values
   end
 
   def self.get_stores_in_campus(params)

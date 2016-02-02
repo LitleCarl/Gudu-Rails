@@ -1,0 +1,64 @@
+= render 'management/common/left_nav'
+.col.s8.m10.card ng-controller='ProductStatisticController'
+  div
+    .row
+      .col.s4.section
+        label for='date-picker' 日期
+        input#date-picker.datepicker input-date='' type="text" ng-model='SelectDate' format="dd/mm/yyyy"
+      .col.s4.section
+        button#go-for-date.waves-effect.waves-light.btn ng-click='GoForDate()' 前往
+    .row
+      .col.s12
+        table.striped.centered
+          thead
+            tr
+              th data-field="store" 商铺
+              th data-field="operate" 操作
+          /tr
+          /  th data-field="order_number" 商铺
+          /  th data-field="receiver_name"  商品名
+          /  th data-field="receiver_phone"  规格
+          /  th data-field="price"  数量
+
+          tbody
+            - order_items = OrderItem.where(order_id: @orders.ids)
+
+            - specification_and_quantity = order_items.group(:specification_id).sum(:quantity)
+            - specifications = Specification.includes([:product => :store]).where(id: specification_and_quantity.keys)
+
+            - stores = Store.joins(:products => :specifications).where(specifications: {id: specifications.ids}).distinct
+
+            - store_specification_mapping = {}
+            - stores.each do |store|
+              - store_specification_mapping[store.id] = specifications.joins(product: :store).where('stores.id = ?', store.id)
+              tr
+                td =store.name
+                td
+                  button.modal-trigger.waves-effect.waves-light.btn href="#m#{store.id}" ng-click="SetCurrentSpecificationList(#{store.id})" 查看
+
+    - stores.each do |store|
+      - spes_of_store = store_specification_mapping[store.id]
+      div.modal.modal-fixed-footer id='m#{store.id}'
+        .modal-content
+          .row
+            .col.s4.card.push-s4.center-align
+              h5 =store.name
+              h6 联系人: #{store.try(:owner).try(:contact_name)}
+              h6 电话: #{store.try(:owner).try(:contact_phone)}
+          .row
+            .col.s12
+              table.striped.centered
+                thead
+                  tr
+                    th data-field="receiver_name"  商品名
+                    th data-field="receiver_phone"  规格
+                    th data-field="price"  数量
+
+                tbody
+                  - spes_of_store.each do |specification|
+                    tr
+                      td = specification.product.name
+                      td = specification.value
+                      td #{specification_and_quantity[specification.id]}
+
+

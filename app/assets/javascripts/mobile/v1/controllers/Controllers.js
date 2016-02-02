@@ -73,7 +73,7 @@ function ImportControllers(appModule){
         var self = $scope;
         self.GoForDate = function(){
             if (self.SelectDate){
-                window.location.href = "/management/products?date=" + self.SelectDate;
+                window.location.href = "/management/statistics?date=" + self.SelectDate;
             }
         };
     }])

@@ -9,4 +9,16 @@ class Management::StoresController < Management::ManagementBaseController
     @response, @store = Store.query_detail_for_management(params)
   end
 
+  def update
+    @response, @store = Store.create_or_update_with_options(params)
+  end
+
+  def new
+
+  end
+
+  def create
+    @response, @store = Store.create_or_update_with_options(params)
+  end
+
 end

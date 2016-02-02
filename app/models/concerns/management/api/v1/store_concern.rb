@@ -80,6 +80,76 @@ module Concerns::Management::Api::V1::StoreConcern
       return response, store
     end
 
+    # 管理者更新某店铺详情
+    #
+    # @param options [Hash]
+    # @option options [Manager] :manager 关联管理者
+    # @option options [String] :id 店铺id(可选)
+    # @option options [Json] :store 店铺json信息(name\address\brief\logo_filename)
+    # @option options [Json] :owner 店铺owner信息(contact_name\contact_phone)
+    #
+    # @return [Array] response, stores
+    #
+    def create_or_update_with_options(options = {})
+      store = nil
+
+      catch_proc = proc { store = nil }
+
+      response = ResponseStatus.__rescue__(catch_proc) do |res|
+        transaction do
+          manager, id, store_json, owner_json = options[:manager], options[:id], options[:store], options[:owner]
+
+          res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if manager.blank? || store_json.blank? || owner_json.blank?
+
+          res.__raise__(ResponseStatus::Code::ERROR, '您没有管辖校区') if manager.campus.blank?
+
+          store = manager.campus.stores.query_first_by_id(id)
+
+          res.__raise__(ResponseStatus::Code::ERROR, '店铺不存在或不再管辖校区内') if store.blank? && id.present?
+
+          create = false
+          # Upsert
+          if store.blank?
+            create = true
+            store = Store.new
+            res.__raise__(ResponseStatus::Code::ERROR, '店铺logo不可为空') if store_json[:logo_filename].blank?
+          end
+
+          store.name = store_json[:name] if store_json[:name].present?
+          store.address = store_json[:address] if store_json[:address].present?
+          store.brief = store_json[:brief] if store_json[:brief].present?
+          store.logo_filename = store_json[:logo_filename] if store_json[:logo_filename].present?
+          store.status = store_json[:status] if store_json[:status].present?
+
+          store.save!
+
+          if create
+            # 学校和商铺关联
+            store_campus = StoresCampus.new
+            store_campus.store = store
+            store_campus.campus = manager.campus
+            store_campus.save!
+
+          end
+
+          # 更新店主信息
+          owner = store.owner
+          if owner.blank?
+            owner = Owner.new
+            owner.username = "owner_#{rand(36 ** 6).to_s(36)}"
+            owner.password = '123456'
+          end
+
+          owner.contact_name = owner_json[:contact_name]
+          owner.contact_phone = owner_json[:contact_phone]
+          owner.store = store
+          owner.save!
+        end
+      end
+
+      return response, store
+    end
+
   end
 
 end

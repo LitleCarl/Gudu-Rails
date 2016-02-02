@@ -27,12 +27,20 @@ class Product < ActiveRecord::Base
 
   has_many :product_images
 
+  # mixin 管理员查询商品
+  include Concerns::Management::Api::V1::ProductConcern
+
   # 拼音
   before_save :set_pinyin, :set_default_brief
 
   module Status
+    include Concerns::Dictionary::Module::I18n
+
     Normal = 1  # 上架
     Pending = 2 # 下架
+
+    # 全部
+    ALL = get_all_values
   end
 
   # 根据id获取商品详情

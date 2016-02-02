@@ -36,3 +36,15 @@ zh:
           wx: 微信
           alipay: 支付宝
 
+      store:
+        status:
+          a1: 暂停
+          a2: 营业
+          a3: 停止
+
+      product:
+        status:
+          a1: 上架
+          a2: 下架
+
+

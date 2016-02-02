@@ -1,21 +1,24 @@
 = render 'management/common/left_nav'
 .col.s8.m10.card
+  .row.section.padding-horizontal
+    .col.s1.push-s11
+      = link_to '添加', new_management_store_url, class: %w(modal-trigger btn-floating btn-large waves-effect waves-light red)
   .row
     .col.s12
-    table.striped
-      thead
-        tr
-          th data-field="store_name"  店铺名称
-          th data-field="contact_name"  联系人
-          th data-field="contact_phone"  联系电话
-          th data-field="operate"  操作
-
-      tbody
-        - @stores.each do |store|
+      table.striped
+        thead
           tr
-            td =store.name
-            td =store.try(:owner).try(:contact_name)
-            td =store.try(:owner).try(:contact_phone)
-            td
-              a href='#{management_store_url(store)}' 查看
+            th data-field="store_name"  店铺名称
+            th data-field="contact_name"  联系人
+            th data-field="contact_phone"  联系电话
+            th data-field="operate"  操作
+
+        tbody
+          - @stores.each do |store|
+            tr
+              td =store.name
+              td =store.try(:owner).try(:contact_name)
+              td =store.try(:owner).try(:contact_phone)
+              td
+                a href='#{management_store_url(store)}' 查看
 

@@ -24,6 +24,13 @@ class Management::ManagementBaseController < ActionController::Base
     @response ||= nil
     if @response.present? && @response.message.present?
       flash[:alert] = @response.message
+
+      # 如果有重写返回地址,则直接跳转,不渲染了
+      if self.respond_to?(:redirect_url_if_error)
+        return  redirect_to self.redirect_url_if_error, flash: {alert: @response.message}
+      else
+        return  redirect_to request.referrer, flash: {alert: @response.message}
+      end
     end
     super
   end

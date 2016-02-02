@@ -118,10 +118,15 @@ Rails.application.routes.draw do
 
     resources :managers, only: [:show]
     resources :orders, only: [:index]
-    resources :products, only: [:index]
+    resources :statistics, only: [:index]
 
     # 店铺管理
-    resources :stores, only: [:index, :show]
+    resources :stores, only: [:index, :show, :update, :new, :create] do
+
+      # 店铺商品管理
+      resources :products
+
+    end
   end
 
   # 送餐员路由部分

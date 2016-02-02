@@ -116,7 +116,7 @@ module Concerns::Query
           keys.each do |key|
             value = options[key]
 
-            if value.present? || value.to_s.length > 0
+            if value.present?
               if key == :order
                 result = result.order(value) if value.present?
               else
@@ -128,6 +128,8 @@ module Concerns::Query
                   result = result.where("#{self.name.tableize}.#{attr_key} like ?", "%#{value}%") if self.attribute_names.include?(attr_key)
                 end
               end
+            elsif value == nil
+              result = result.where("#{self.table_name}.#{key} IS NULL")
             end
           end
         else

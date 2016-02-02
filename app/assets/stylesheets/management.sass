@@ -7,6 +7,13 @@ $nprogress-height: 2px
 $nprogress-zindex: 10100
 @import 'nprogress'
 
+@mixin prefix ($prop, $val...)
+  -webkit-#{$prop}: #{$val}
+  -moz-#{$prop}: #{$val}
+  -ms-#{$prop}: #{$val}
+  #{$prop}: #{$val}
+
+
 // logo
 nav .brand-logo
   font-size: 1.5rem
@@ -25,3 +32,18 @@ nav .brand-logo
 .narrow-btn
   @extend .btn
   padding: 0 1rem
+
+.padding-horizontal
+  padding-left: 1rem
+  padding-right: 1rem
+
+.store-logo-btn
+  position: absolute
+  width: 8rem !important
+  height: 8rem !important
+  padding: 0
+  +prefix (opacity, 0)
+
+.store-logo-img
+  width: 8em !important
+  height: 8em !important

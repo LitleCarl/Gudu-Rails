@@ -121,6 +121,13 @@ gem 'puma', '2.15.3'
 # This is basically a ruby gem for asset pipeline which includes the version 0.1.6 of the awesome rstacruz' nprogress library #https://github.com/caarlos0/nprogress-rails
 gem 'nprogress-rails'
 
+
+#### Rails File Uploads. https://github.com/carrierwaveuploader/carrierwave
+gem 'carrierwave', '0.10.0'
+
+# Qiniu Storage support for CarrierWave http://rubygems.org/gems/carrierwave-qiniu
+gem 'carrierwave-qiniu', '0.2.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

@@ -1,1 +1,1 @@
-json.(owner, :id, :username, :contact_name, :contact_phone)
+render_json_attrs(json, owner, [:id, :username, :contact_name, :contact_phone])

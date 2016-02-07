@@ -1,4 +1,4 @@
-json.(order_item, :id, :quantity, :price_snapshot, :order_id)
+render_json_attrs(json, order_item, [:id, :quantity, :price_snapshot, :order_id])
 json.product do | json |
   json.partial! 'products/product', product: order_item.product
 end

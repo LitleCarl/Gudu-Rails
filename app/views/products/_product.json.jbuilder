@@ -1,4 +1,4 @@
-json.(product, :id, :store_id, :name, :logo_filename, :brief, :min_price, :max_price, :category, :status, :pinyin, :month_sale)
+render_json_attrs(json, product, [:id, :store_id, :name, :logo_filename, :brief, :min_price, :max_price, :category, :status, :pinyin, :month_sale])
 json.specifications do | json |
   json.array! product.specifications, partial: 'specifications/specification', as: :specification
 end

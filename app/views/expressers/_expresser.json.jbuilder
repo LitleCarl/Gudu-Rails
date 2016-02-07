@@ -1,1 +1,1 @@
-json.(expresser, :id, :name, :phone)
+render_json_attrs(json, expresser, [:id, :name, :phone])

@@ -16,3 +16,5 @@ class Object
    self.strftime('%Y-%m-%d')
   end
 end
+
+

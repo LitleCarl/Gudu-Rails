@@ -1,0 +1,88 @@
+= render 'management/common/left_nav'
+.col.s8.m10.card ng-controller='ProductDetailController'
+  .row.padding-horizontal.section
+    - store =  @store || Store.new
+    - product = @product || Product.new
+    - url = action_new? ? management_store_products_path : management_store_product_path(store, product)
+
+    - method = action_new? ? :post : :put
+    = form_for product, url: url, class: %w(col s12), method: method do |f|
+      .row
+        .input-field.col.s6
+          =f.text_field :name, placeholder: '', type: 'text', id: 'name'
+          label for="name"  商品名称
+
+        .input-field.col.s4
+          .input-field.col.s12
+            = select(:product, :status, Product::Status.get_all_values.collect {|status| [ Product::Status.get_desc_by_value(status), status ] })
+
+            label 商品状态
+        .input-field.col.s2
+          .file-field.input-field
+            .btn.store-logo-btn
+              = f.file_field :logo_filename, id: 'logo_filename', onchange: 'readURL(this);'
+          = qiniu_img_tag(product.logo_filename, ImageTag::ImgHelper::ImageStyle::Square_LOGO, class: 'store-logo-img')
+      .row
+        .input-field.col.s6
+          = f.text_field :category, placeholder: '', type: 'text', id: 'address'
+          label for="address"  分类
+        .input-field.col.s6
+          = f.text_field :brief, placeholder: '简介', type: 'text', id: 'brief'
+          label for="address"  简介
+      .row
+        .col.s12
+          .card
+            .card-content
+              .product-images-scroller
+                - product.product_images.each do |product_image|
+                  .product-image-div  data-ng-mouseleave="hoverOut($event)" data-ng-mouseover='hoverIn($event)'
+                    = qiniu_img_tag(product_image.image_name, ImageTag::ImgHelper::ImageStyle::Square_LOGO, {class: 'product-image'})
+                    a.btn-floating.btn-large.waves-effect.waves-light.red.hover-btn ng-click='removeImage($event)'
+                      |删
+                      input.product-image-input type='text' name='product_image_ids[]' value="#{product_image.id}"
+            .card-action
+              .file-field.input-field#input_bar
+                .btn
+                  input type='file' onchange='readProductImagesURL(this);' name='new_images[]' 上传
+      .row.center-align
+        .col.s12
+          button.waves-effect.waves-light.btn type='submit'  提交
+javascript:
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $('.store-logo-img')
+                .attr('src', e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function readProductImagesURL(input) {
+    if (input.files && input.files[0]) {
+      _.forEach(input.files, function(file, index){
+        var reader = new FileReader();
+
+        var product_image_div = $('<div class="product-image-div" data-ng-mouseleave="hoverOut($event)" data-ng-mouseover="hoverIn($event)"> <img class="product-image"> <a class="btn-floating btn-large waves-effect waves-light red hover-btn" ng-click="removeImage($event)" style="height:0px;" > 删 </a></div>');
+
+        $('.product-images-scroller').append(product_image_div)
+
+        reader.onload = function (e) {
+          product_image_div.find('.product-image').attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[index]);
+
+
+        // 隐藏input 创建新input
+        var new_input = $('<div class="btn"> <input multiple="true" name="new_images[]" onchange="readProductImagesURL(this);" type="file">上传 </div>')
+        $(input).parent().hide();
+
+        $('#input_bar').append(new_input)
+      });
+
+    }
+  }

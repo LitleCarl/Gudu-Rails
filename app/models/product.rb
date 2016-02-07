@@ -30,14 +30,20 @@ class Product < ActiveRecord::Base
   # mixin 管理员查询商品
   include Concerns::Management::Api::V1::ProductConcern
 
+  # 商铺logo挂载
+  mount_uploader :logo_filename, ImageUploader
+
   # 拼音
   before_save :set_pinyin, :set_default_brief
 
   module Status
     include Concerns::Dictionary::Module::I18n
 
-    Normal = 1  # 上架
-    Pending = 2 # 下架
+    # 上架
+    Normal = 1
+
+    # 下架
+    Pending = 2
 
     # 全部
     ALL = get_all_values

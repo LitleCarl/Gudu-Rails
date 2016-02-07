@@ -76,5 +76,24 @@ function ImportControllers(appModule){
                 window.location.href = "/management/statistics?date=" + self.SelectDate;
             }
         };
-    }])
+    }]);
+
+
+    appModule.controller('ProductDetailController',['$scope', '$routeParams', 'HttpService', function($scope, $routeParams, HttpService){
+        $scope.hoverIn = function(e){
+            var product_image_div =  $(e.currentTarget);
+            product_image_div.find('.hover-btn').height('2em');
+        };
+
+        $scope.hoverOut = function(e){
+
+            var product_image_div =  $(e.currentTarget);
+            product_image_div.find('.hover-btn').height(0);
+        };
+
+        $scope.removeImage = function(e){
+            var button =  $(e.currentTarget);
+            button.parent().remove();
+        };
+    }]);
 }

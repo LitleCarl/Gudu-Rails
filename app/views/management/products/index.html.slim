@@ -1,21 +1,27 @@
 = render 'management/common/left_nav'
 .col.s8.m10.card ng-controller='ProductStatisticController'
+  .row
+    .col.s2.push-s10
+      a.waves-effect.waves-light.btn.narrow-btn href="#{new_management_store_product_path}"
+        | 添加商品
+
   = form_tag management_store_products_path(@store), method: :get
     .row
       .input-field.col.s2
-        select
+        select name='category' selected='饮品'
           - @store.products.select(:category).distinct.map(&:category).each do |category|
-            option value="#{category}" =category
+            option[value="#{category}" selected=('selected' if category == params[:category])] =category
         label 分类
       .input-field.col.s2
-        select
+        select name='status'
           - Product::Status::ALL.each do |status|
-            option value="#{status}" = Product::Status.get_desc_by_value(status)
+            option[value="#{status}" selected=('selected' if status == params[:status])]  = Product::Status.get_desc_by_value(status)
         label 状态
       .input-field.col.s3.push-s5
         button.waves-effect.waves-light.btn type='submit'
           i.material-icons.right search
           | 过滤
+
     .row
       table.striped
         thead
@@ -28,8 +34,10 @@
         tbody
           -@products.each do |product|
             tr
-              td = image_tag product.logo_filename
-              td = product.name
+              td
+                = qiniu_img_tag(product.logo_filename, ImageTag::ImgHelper::ImageStyle::Square_LOGO)
+              td
+                =link_to product.name, management_store_product_path(@store, product)
               td = product.category
               td = Product::Status.get_desc_by_value product.status
     .row

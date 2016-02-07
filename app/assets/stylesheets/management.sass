@@ -47,3 +47,35 @@ nav .brand-logo
 .store-logo-img
   width: 8em !important
   height: 8em !important
+
+.product-images-scroller
+  width: 100%
+  min-height: 8em
+  overflow-x: overlay
+  overflow-y: hidden
+  white-space: nowrap
+  padding: 1em
+
+  .product-image-div
+    display: inline-block
+    position: relative
+
+    img
+      width: 8em
+      height: 8em
+
+    .hover-btn
+      //position: absolute !important
+      margin-left: -2em
+      //top: 0
+      margin-bottom: -2em
+      width: 2em
+      height: 0em
+      line-height: 2em
+      vertical-align: top
+
+      .product-image-input
+        display: none
+
+.card-action
+  min-height: 8em !important

@@ -18,7 +18,12 @@ module Api::BaseHelper
         value = ''
       end
 
-      json.__send__(key, value)
+      if obj.__send__(key).is_a?(CarrierWave::Uploader::Base)
+        json.__send__(key, value.url)
+      else
+        json.__send__(key, value)
+      end
+
     end
   end
 end

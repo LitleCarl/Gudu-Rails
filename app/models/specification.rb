@@ -41,6 +41,37 @@ class Specification < ActiveRecord::Base
     end
   end
 
+  # 创建新规格
+  #
+  # @param options [Hash]
+  # @option options [Product] :product 商品
+  # @option options [String] :specification_name 规格名称
+  # @option options [String] :specification_value 规格值
+  # @option options [String/Float] :price 价格
+  # @option options [Integer] :stock 库存
+  #
+  # @return [Array] response, specification
+  #
+  def self.create_with_options(options = {})
+    specification = nil
+
+    catch_proc = proc {specification = nil}
+    response = ResponseStatus.__rescue__(catch_proc) do |res|
+      product, specification_name, specification_value, price, stock = options[:product], options[:specification_name], options[:specification_value], options[:price], options[:stock]
+      res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if product.blank? || specification_name.blank? || specification_value.blank? || price.blank?
+
+      specification = Specification.new
+      specification.name = specification_name
+      specification.value = specification_value
+      specification.price = price
+      specification.stock = stock || 500
+
+      specification.save!
+    end
+
+    return response, specification
+  end
+
   # 确保库存非负
   def ensure_stock_not_negative
 
@@ -60,4 +91,5 @@ class Specification < ActiveRecord::Base
     self.product.save
     end
   end
+
 end

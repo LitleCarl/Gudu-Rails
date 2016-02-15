@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127065547) do
+ActiveRecord::Schema.define(version: 20160215001342) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -21,6 +21,14 @@ ActiveRecord::Schema.define(version: 20160127065547) do
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
     t.boolean  "default_address",             default: false
+  end
+
+  create_table "announcements", force: :cascade do |t|
+    t.text     "content",    limit: 65535,                          comment: "通知内容"
+    t.string   "link",       limit: 255,                            comment: "链接地址"
+    t.integer  "platform",   limit: 4,     default: 0,              comment: "平台"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "authorizations", force: :cascade do |t|

@@ -101,7 +101,7 @@ module Concerns::Management::Api::V1::ProductConcern
     # @option options [Integer] :id 商品id(可选,更新时传)
     # @option options [Hash] :product 商品信息json
     #
-    # @return [Array] response, stores
+    # @return [Array] response, store, product
     #
     def create_or_update_product_for_management(options = {})
       product = nil
@@ -115,9 +115,11 @@ module Concerns::Management::Api::V1::ProductConcern
       response = ResponseStatus.__rescue__(catch_proc) do |res|
 
         transaction do
-          manager, id, store_id, product_json, product_image_ids, new_images = options[:manager], options[:id], options[:store_id], options[:product], options[:product_image_ids], options[:new_images]
+          manager, id, store_id, product_json, product_image_ids, new_images, specification_name, specification_values, specification_prices, specification_ids_to_keep = options[:manager], options[:id], options[:store_id], options[:product], options[:product_image_ids], options[:new_images], options[:specification_name], options[:specification_values], options[:specification_prices], options[:specification_ids_to_keep]
 
-          res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if manager.blank? || store_id.blank? || product_json.blank?
+          res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if manager.blank? || store_id.blank? || product_json.blank? || specification_name.blank? || specification_values.blank? || specification_prices.blank?
+
+          res.__raise__(ResponseStatus::Code::ERROR, '规格value和price数量不一致') if specification_values.count != specification_prices.count
 
           res.__raise__(ResponseStatus::Code::ERROR, '您没有管辖校区') if manager.campus.blank?
 
@@ -125,11 +127,14 @@ module Concerns::Management::Api::V1::ProductConcern
 
           res.__raise__(ResponseStatus::Code::ERROR, '不存在店铺或不再管辖范围内') if store.blank?
 
+          is_create = false
           if id.present?
             product = store.products.where(id: id).first
 
             res.__raise__(ResponseStatus::Code::ERROR, '商品不存在') if product.blank?
           else
+            is_create = true
+
             product = Product.new
             
             product.store = store
@@ -158,6 +163,35 @@ module Concerns::Management::Api::V1::ProductConcern
           end if new_images.present?
 
           product.save!
+
+          # 处理规格
+          # 删掉不需要的的规格
+          product.specifications.not.where(name: specification_name).destroy_all
+
+          # 手动删除的规格
+          if specification_ids_to_keep.blank?
+            product.specifications.destroy_all
+          else
+            product.specifications.where.not(id: specification_ids_to_keep).destroy_all
+          end
+
+          # 添加新的规格
+          if specification_prices.present?
+            specification_prices.each_with_index do |price, index|
+              spe_options = {
+                  specification_name: specification_name,
+                  specification_value: specification_values[index],
+                  product: product,
+                  price: price
+              }
+
+              specification = Specification.create_with_options(spe_options)
+
+              # 保存规格
+              specification.save!
+            end
+          end
+
         end
 
       end

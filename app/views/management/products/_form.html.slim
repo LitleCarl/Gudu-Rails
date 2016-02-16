@@ -44,6 +44,40 @@
               .file-field.input-field#input_bar
                 .btn
                   input type='file' onchange='readProductImagesURL(this);' name='new_images[]' 上传
+
+
+      h5
+        | 规格
+        .row
+          .col.s12
+            .card
+              .card-content style='min-height: 6em;'
+                .row
+                  .input-field.col.s4
+                    input type='text' name='specification_name' id='specification_name' placeholder='颜色' value='#{product.specifications.try(:first).try(:name)}'
+                    label for="specification_name"  规格
+
+
+
+                .row
+                  .col.s4
+                    .btn.waves-effect.waves-light.btn-small ng-click='AddNewSpecificationRow()' 添加
+                .row
+                  #specification-container
+                    - product.specifications.each do |spe|
+                      - random_row_id = "row-#{rand(36 ** 6).to_s(36)}"
+                      - random_id_for_value = "a#{rand(36 ** 6).to_s(36)}"
+                      - random_id_for_price = "b#{rand(36 ** 6).to_s(36)}"
+                      .row id='#{random_row_id}'
+                        .input-field.col.s4
+                          input type='text' name='specification_values[]' placeholder='红' id='#{random_id_for_value}' value='#{spe.value}'
+                          label for='#{random_id_for_value}'  规格
+                        .input-field.col.s4
+                          input type='text' name='specification_prices[]' placeholder='3.5' id='#{random_id_for_price}' value='#{spe.price}'
+                          label for='#{random_id_for_price}'  价格
+                        .col.s4
+                          a.btn-floating.btn-large.waves-effect.waves-light.red.hover-btn ng-click='RemoveSpecification("#{random_row_id}")'
+                            |删
       .row.center-align
         .col.s12
           button.waves-effect.waves-light.btn type='submit'  提交
@@ -75,7 +109,6 @@ javascript:
         };
 
         reader.readAsDataURL(input.files[index]);
-
 
         // 隐藏input 创建新input
         var new_input = $('<div class="btn"> <input multiple="true" name="new_images[]" onchange="readProductImagesURL(this);" type="file">上传 </div>')

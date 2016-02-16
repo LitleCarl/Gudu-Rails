@@ -52,7 +52,7 @@ class Specification < ActiveRecord::Base
   #
   # @return [Array] response, specification
   #
-  def self.create_with_options(options = {})
+  def self.create_with_options(options={})
     specification = nil
 
     catch_proc = proc {specification = nil}
@@ -65,6 +65,7 @@ class Specification < ActiveRecord::Base
       specification.value = specification_value
       specification.price = price
       specification.stock = stock || 500
+      specification.product = product
 
       specification.save!
     end

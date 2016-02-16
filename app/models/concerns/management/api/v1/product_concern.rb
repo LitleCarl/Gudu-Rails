@@ -119,7 +119,13 @@ module Concerns::Management::Api::V1::ProductConcern
 
           res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if manager.blank? || store_id.blank? || product_json.blank? || specification_name.blank? || specification_values.blank? || specification_prices.blank?
 
+          # 剔除空元素
+          specification_values = specification_values.reject(&:blank?)
+          specification_prices = specification_prices.reject(&:blank?)
+
           res.__raise__(ResponseStatus::Code::ERROR, '规格value和price数量不一致') if specification_values.count != specification_prices.count
+
+
 
           res.__raise__(ResponseStatus::Code::ERROR, '您没有管辖校区') if manager.campus.blank?
 
@@ -166,7 +172,7 @@ module Concerns::Management::Api::V1::ProductConcern
 
           # 处理规格
           # 删掉不需要的的规格
-          product.specifications.not.where(name: specification_name).destroy_all
+          product.specifications.where.not(name: specification_name).destroy_all
 
           # 手动删除的规格
           if specification_ids_to_keep.blank?
@@ -185,7 +191,10 @@ module Concerns::Management::Api::V1::ProductConcern
                   price: price
               }
 
-              specification = Specification.create_with_options(spe_options)
+              inner_response, specification = Specification.create_with_options(spe_options)
+
+              # 有必要抛出内部错误
+              res.__raise__response__(inner_response)
 
               # 保存规格
               specification.save!

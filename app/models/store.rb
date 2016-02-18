@@ -81,7 +81,7 @@ class Store < ActiveRecord::Base
     data = nil
     begin
       raise RestError::MissParameterError if params[:store_id].blank?
-      data = Store.where(:id => params[:store_id]).includes(:products).references(:products).where('products.status = ?', Product::Status::Normal).first
+      data = Store.where(:id => params[:store_id]).includes(products: :specifications).references(:products, :specifications).first
       response_status = ResponseStatus.default_success
     rescue Exception => ex
       Rails.logger.error(ex.message)

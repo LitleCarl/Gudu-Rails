@@ -104,9 +104,9 @@ function ImportControllers(appModule){
             var random_row_id = 'row-' + Math.random().toString(36).substring(7);
 
             var html_template = '<div class="row" id="row-id"> <div class="input-field col s4"> <input id="tesat" name="specification_values[]" placeholder="红" type="text" ><label for="tesat" class="active"> 规格</label> </div> <div class="input-field col s4"> <input id="tesst" name="specification_prices[]" placeholder="3.5" type="text"><label for="tesst" class="active"> 价格</label> </div> <div class="col s4"> <a class="btn-floating btn-large waves-effect waves-light red hover-btn" ng-click="RemoveSpecification(\'row-id\')">删</a> </div> </div>';
-            var replace_rule_1 = new RegExp('tesat', 'g')
-            var replace_rule_2 = new RegExp('tesst', 'g')
-            var replace_rule_3 = new RegExp('row-id', 'g')
+            var replace_rule_1 = new RegExp('tesat', 'g');
+            var replace_rule_2 = new RegExp('tesst', 'g');
+            var replace_rule_3 = new RegExp('row-id', 'g');
 
             html_template = html_template.replace(replace_rule_1, random_str_1);
             html_template = html_template.replace(replace_rule_2, random_str_2);

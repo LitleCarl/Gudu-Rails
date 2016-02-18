@@ -91,6 +91,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :announcements, only: [:index]
+
   # 管理者路由部分
   namespace :management do
     # 管理者查看订单API接口

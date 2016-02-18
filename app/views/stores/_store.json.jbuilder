@@ -11,7 +11,7 @@ end
 
 # has_many
 json.products do
-  json.array! store.products, partial: 'products/product', as: :product
+  json.array! store.products.where(status: Product::Status::Normal), partial: 'products/product', as: :product
 end
 
 # has_one

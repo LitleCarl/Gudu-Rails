@@ -171,14 +171,14 @@ module Concerns::Management::Api::V1::ProductConcern
           product.save!
 
           # 处理规格
-          # 删掉不需要的的规格
-          product.specifications.where.not(name: specification_name).destroy_all
+          # 下架不需要的的规格
+          product.specifications.where.not(name: specification_name).update_all(status: Specification::Status::Pending)
 
-          # 手动删除的规格
+          # 下架删除的规格
           if specification_ids_to_keep.blank?
-            product.specifications.destroy_all
+            product.specifications.update_all(status: Specification::Status::Pending)
           else
-            product.specifications.where.not(id: specification_ids_to_keep).destroy_all
+            product.specifications.where.not(id: specification_ids_to_keep).update_all(status: Specification::Status::Pending)
           end
 
           # 添加新的规格

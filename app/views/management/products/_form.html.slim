@@ -64,7 +64,7 @@
                     .btn.waves-effect.waves-light.btn-small ng-click='AddNewSpecificationRow()' 添加
                 .row
                   #specification-container
-                    - product.specifications.each do |spe|
+                    - product.normal_specifications.each do |spe|
                       - random_row_id = "row-#{rand(36 ** 6).to_s(36)}"
                       - random_id_for_value = "a#{rand(36 ** 6).to_s(36)}"
                       - random_id_for_price = "b#{rand(36 ** 6).to_s(36)}"

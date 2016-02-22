@@ -26,7 +26,7 @@ class AppVersion
   #
   def self.check_update(options = {})
     android_versions = %w(2.0.1 2.0.2)
-    iphone_versions = %w(1.0.3 1.0.4)
+    iphone_versions = %w(1.3.1)
 
     android_update_messages = '添加更新通知, 修复微信登录异常(2.0.2)'
     iphone_update_messages = '添加更新通知, 修复微信登录异常,优惠券显示问题(1.0.4)'

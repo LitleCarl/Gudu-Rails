@@ -49,6 +49,11 @@ class Product < ActiveRecord::Base
     ALL = get_all_values
   end
 
+  # 状态为Normal的规格
+  def normal_specifications
+    self.specifications.where(status: Specification::Status::Normal)
+  end
+
   # 根据id获取商品详情
   def self.get_product_detail_by_id(params)
     response_status = ResponseStatus.default

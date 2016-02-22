@@ -56,8 +56,7 @@ class AppVersion
 
       elsif platform == Platform::IPHONE
         index = iphone_versions.index(current_version)
-
-        if index.blank? || index < (android_versions.count - 1)
+        if index.nil? || index < (iphone_versions.count - 1)
           result[:need_update] = true
           result[:update_message] = iphone_update_messages
           result[:download_url] = DownloadURL::IPHONE_URL

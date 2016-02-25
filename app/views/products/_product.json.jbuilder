@@ -16,3 +16,7 @@ if product.nutrition.present?
 else
   json.nutrition nil
 end
+
+if product.logo_filename.blank?
+  json.logo_filename 'http://7xnsaf.com1.z0.glb.clouddn.com/avatar.jpg'
+end

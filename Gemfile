@@ -128,6 +128,8 @@ gem 'carrierwave', '0.10.0'
 # Qiniu Storage support for CarrierWave http://rubygems.org/gems/carrierwave-qiniu
 gem 'carrierwave-qiniu', '0.2.1'
 
+gem 'hirb', '0.7.3'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

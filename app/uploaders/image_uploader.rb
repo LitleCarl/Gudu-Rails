@@ -47,8 +47,8 @@ class ImageUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
-  def filename
-    "#{SecureRandom.base64}.jpg"
-  end
+  # def filename
+  #   "#{SecureRandom.base64}.jpg"
+  # end
 
 end

@@ -259,4 +259,8 @@ class ResponseStatus
       raise StandardError, @message
     end
   end
+
+  def is_successful?
+    @code == Code::SUCCESS
+  end
 end

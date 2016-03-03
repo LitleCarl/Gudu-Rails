@@ -129,7 +129,7 @@ class Store < ActiveRecord::Base
   # 根据关键字模糊搜索指定学校里的店铺
   def self.search_store_by_keyword(campus_id, keyword)
     keyword = "'%#{keyword.downcase}%'"
-    self.includes(:campuses).references(:campuses).where({campuses: {id: campus_id}}).where("stores.name like #{keyword} or stores.pinyin like #{keyword}")
+    self.includes(:campuses).references(:campuses).where({campuses: {id: campus_id}}).where('stores.status = ?', Status::Normal).where("stores.name like #{keyword} or stores.pinyin like #{keyword}")
   end
 
   #

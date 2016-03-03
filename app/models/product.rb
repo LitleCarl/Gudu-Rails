@@ -88,7 +88,7 @@ class Product < ActiveRecord::Base
   # 根据关键字模糊搜索指定学校里的商品
   def self.search_product_by_keyword(campus_id, keyword)
     keyword = "'%#{keyword.downcase}%'"
-    self.includes(:store => :campuses).references(:campuses).where({campuses: {id: campus_id}}).where("products.name like #{keyword} or products.pinyin like #{keyword}")
+    self.includes(:store => :campuses).references(:campuses).where({campuses: {id: campus_id}}).where('products.status = ?', Product::Status::Normal).where("products.name like #{keyword} or products.pinyin like #{keyword}")
   end
 
   # 设置拼音

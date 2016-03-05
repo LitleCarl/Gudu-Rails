@@ -15,6 +15,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  month_sale    :integer          default("23")
+#  category_id   :integer                                 # 关联分类
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

@@ -11,4 +11,11 @@
 #
 
 class Category < ActiveRecord::Base
+
+  # 通用查询方法
+  include Concerns::Query::Methods
+
+  # 关联店铺
+  belongs_to :store
+
 end

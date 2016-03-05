@@ -15,6 +15,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  month_sale    :integer          default("23")
+#  category_id   :integer                                 # 关联分类
 #
 
 class Product < ActiveRecord::Base
@@ -26,6 +27,8 @@ class Product < ActiveRecord::Base
   has_many :specifications
 
   has_many :product_images
+
+  belongs_to :category_model, class_name: Category.name, foreign_key: :category_id
 
   # mixin 管理员查询商品
   include Concerns::Management::Api::V1::ProductConcern

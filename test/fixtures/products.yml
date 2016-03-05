@@ -9,7 +9,6 @@
 #  brief         :string(255)      default("暂无简介")
 #  min_price     :string(255)      default("0.0")
 #  max_price     :string(255)      default("0.0")
-#  category      :string(255)      not null
 #  status        :integer          default("1"), not null
 #  pinyin        :string(255)
 #  created_at    :datetime         not null

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160305055341) do
+ActiveRecord::Schema.define(version: 20160305065631) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -238,7 +238,6 @@ ActiveRecord::Schema.define(version: 20160305055341) do
     t.string   "brief",         limit: 255, default: "暂无简介"
     t.string   "min_price",     limit: 255, default: "0.0"
     t.string   "max_price",     limit: 255, default: "0.0"
-    t.string   "category",      limit: 255,                  null: false
     t.integer  "status",        limit: 4,   default: 1,      null: false
     t.string   "pinyin",        limit: 255
     t.datetime "created_at",                                 null: false

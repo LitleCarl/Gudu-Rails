@@ -8,6 +8,9 @@ else
   json.owner nil
 end
 
+json.categories do
+  json.array! store.categories, partial: 'categories/category', as: :category
+end
 
 # has_many
 json.products do

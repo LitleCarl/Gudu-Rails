@@ -27,11 +27,18 @@
           label for="address"  地址
         .input-field.col.s6
           = f.text_field :brief, placeholder: '简介', type: 'text', id: 'brief'
-          label for="address"  简介
+          label for="brief"  简介
       .row
         .input-field.col.s6
           input#contact_name name="owner[contact_name]" placeholder="联系人" type="text" value="#{store.try(:owner).try(:contact_name)}"
           label for="contact_name"  联系人
+        .input-field.col.s6
+          input#contact_phone name="owner[contact_phone]" placeholder="联系人电话" type="text" value="#{store.try(:owner).try(:contact_phone)}"
+          label for="contact_phone"  联系人电话
+      .row
+        .input-field.col.s6
+          input#category_list name="owner[contact_name]" placeholder="联系人" type="text" value="#{store.try(:owner).try(:contact_name)}"
+          label for="category_list"  分类排序
         .input-field.col.s6
           input#contact_phone name="owner[contact_phone]" placeholder="联系人电话" type="text" value="#{store.try(:owner).try(:contact_phone)}"
           label for="contact_phone"  联系人电话

@@ -115,13 +115,14 @@ module Concerns::Management::Api::V1::ProductConcern
       response = ResponseStatus.__rescue__(catch_proc) do |res|
 
         transaction do
-          manager, id, store_id, product_json, product_image_ids, new_images, specification_name, specification_values, specification_prices, specification_ids_to_keep = options[:manager], options[:id], options[:store_id], options[:product], options[:product_image_ids], options[:new_images], options[:specification_name], options[:specification_values], options[:specification_prices], options[:specification_ids_to_keep]
+          manager, id, store_id, product_json, product_image_ids, new_images, specification_name, specification_values, specification_prices, specification_stocks, specification_ids_to_keep = options[:manager], options[:id], options[:store_id], options[:product], options[:product_image_ids], options[:new_images], options[:specification_name], options[:specification_values], options[:specification_prices], options[:specification_stocks], options[:specification_ids_to_keep]
 
           res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if manager.blank? || store_id.blank? || product_json.blank? || specification_name.blank? || specification_values.blank? || specification_prices.blank?
 
           # 剔除空元素
           specification_values = specification_values.reject(&:blank?)
           specification_prices = specification_prices.reject(&:blank?)
+          specification_stocks = specification_prices.reject(&:blank?)
 
           res.__raise__(ResponseStatus::Code::ERROR, '规格value和price数量不一致') if specification_values.count != specification_prices.count
 
@@ -188,7 +189,8 @@ module Concerns::Management::Api::V1::ProductConcern
                   specification_name: specification_name,
                   specification_value: specification_values[index],
                   product: product,
-                  price: price
+                  price: price,
+                  stock: specification_stocks[index]
               }
 
               inner_response, specification = Specification.create_with_options(spe_options)

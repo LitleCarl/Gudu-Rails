@@ -166,7 +166,7 @@ class Store < ActiveRecord::Base
   # @return [ResponseStatus, Category] response, category
   #
   def upsert_category(category_name)
-    category = self.categories.where(name: category).first
+    category = self.categories.where(name: category_name).first
 
     if category.blank?
 

@@ -122,7 +122,7 @@ module Concerns::Management::Api::V1::ProductConcern
           # 剔除空元素
           specification_values = specification_values.reject(&:blank?)
           specification_prices = specification_prices.reject(&:blank?)
-          specification_stocks = specification_prices.reject(&:blank?)
+          specification_stocks = specification_stocks.reject(&:blank?)
 
           res.__raise__(ResponseStatus::Code::ERROR, '规格value和price数量不一致') if specification_values.count != specification_prices.count
 
@@ -151,7 +151,7 @@ module Concerns::Management::Api::V1::ProductConcern
           product.brief = product_json[:brief] if product_json[:brief].present?
 
           # 未分类的都属于其他
-          product_json[:category] |= '其他'
+          product_json[:category] ||= '其他'
 
           inner_response, category = store.upsert_category(product_json[:category])
 

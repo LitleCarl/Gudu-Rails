@@ -35,6 +35,12 @@ class Product < ActiveRecord::Base
   # 商铺logo挂载
   mount_uploader :logo_filename, ImageUploader
 
+  # 删除后检查所在分类需不需要删除
+  after_destroy :check_category_after_destroy
+
+  # 更新分类
+  after_save :check_category_save
+
   # 拼音
   before_save :set_pinyin, :set_default_brief
 
@@ -49,6 +55,24 @@ class Product < ActiveRecord::Base
 
     # 全部
     ALL = get_all_values
+  end
+
+  # after_destroy
+  def check_category_after_destroy
+    category = self.category
+    if category.present? && category.products.count < 1
+      category.destroy!
+    end
+  end
+
+  # after_save
+  def check_category_save
+    if self.category_id_changed? && self.category_id_was.present?
+      category = Category.query_first_by_id(self.category_id_was)
+      if category.present? && category.products.count < 1
+        category.destroy!
+      end
+    end
   end
 
   # 状态为Normal的规格

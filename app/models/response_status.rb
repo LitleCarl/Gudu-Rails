@@ -214,6 +214,7 @@ class ResponseStatus
     begin
       yield(response)
     rescue Exception => e
+      puts e.backtrace
       # 执行catch块
       catch_proc.call if catch_proc.present?
 

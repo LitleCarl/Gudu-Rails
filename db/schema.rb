@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160215001342) do
+ActiveRecord::Schema.define(version: 20160305051416) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -80,6 +80,14 @@ ActiveRecord::Schema.define(version: 20160215001342) do
     t.integer  "user_id",    limit: 4
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name",       limit: 255,              comment: "分类名称"
+    t.integer  "priority",   limit: 4,                comment: "显示顺序(>=0)"
+    t.integer  "store_id",   limit: 4,                comment: "关联店铺"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "cities", force: :cascade do |t|
@@ -273,6 +281,7 @@ ActiveRecord::Schema.define(version: 20160215001342) do
     t.float    "back_ratio",     limit: 24,    default: 0.0
     t.text     "main_food_list", limit: 65535
     t.integer  "owner_id",       limit: 4
+    t.integer  "boost",          limit: 4,     default: 0,      null: false, comment: "店铺权重"
   end
 
   create_table "stores_campuses", force: :cascade do |t|

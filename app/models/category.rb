@@ -18,4 +18,7 @@ class Category < ActiveRecord::Base
   # 关联店铺
   belongs_to :store
 
+  # 关联商品
+  has_many :products
+
 end

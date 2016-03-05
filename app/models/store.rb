@@ -43,6 +43,9 @@ class Store < ActiveRecord::Base
   # 商城关联商品
   has_many :products
 
+  # 关联商铺菜品分类
+  has_many :categories
+
   # 商铺logo挂载
   mount_uploader :logo_filename, ImageUploader
 

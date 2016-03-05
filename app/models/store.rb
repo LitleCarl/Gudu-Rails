@@ -159,6 +159,32 @@ class Store < ActiveRecord::Base
   #
   ########################################################################
 
+  # 如果店铺菜单没有此分类,则新建一个分类
+  #
+  # @param category_name [String]
+  #
+  # @return [ResponseStatus, Category] response, category
+  #
+  def upsert_category(category_name)
+    category = self.categories.where(name: category).first
+
+    if category.blank?
+
+      catch_proc = proc { category = nil }
+
+      response = ResponseStatus.__rescue__(catch_proc) do |res|
+        category = Category.new
+        category.name = category_name
+        category.priority = 0
+        category.store = self
+        category.save!
+      end
+    else
+      response = ResponseStatus.default_success
+    end
+
+    return response, category
+  end
 
   #
   # 更新店铺回头率,计算方式:

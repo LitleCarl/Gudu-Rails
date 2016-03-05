@@ -28,7 +28,7 @@ class Product < ActiveRecord::Base
 
   has_many :product_images
 
-  belongs_to :category_model, class_name: Category.name, foreign_key: :category_id
+  belongs_to :category
 
   # mixin 管理员查询商品
   include Concerns::Management::Api::V1::ProductConcern
@@ -92,6 +92,11 @@ class Product < ActiveRecord::Base
   def self.search_product_by_keyword(campus_id, keyword)
     keyword = "'%#{keyword.downcase}%'"
     self.includes(:store => :campuses).references(:campuses).where({campuses: {id: campus_id}}).where('products.status = ?', Product::Status::Normal).where("products.name like #{keyword} or products.pinyin like #{keyword}")
+  end
+
+  # 分类名称(快捷方法)
+  def category_name
+    self.category.try(:name)
   end
 
   # 设置拼音

@@ -21,4 +21,24 @@ class Category < ActiveRecord::Base
   # 关联商品
   has_many :products
 
+
+  # def self.import_from_products
+  #   Store.all.each do |store|
+  #     Store.transaction do
+  #       categories = store.products.select(:category).distinct.map(&:category)
+  #       categories.each do |category_name|
+  #         category = Category.new
+  #         category.store = store
+  #         category.name = category_name
+  #         category.priority = 0
+  #         category.save!
+  #         store.products.where('category = ?', category_name).update_all(category_id: category.id)
+  #       end
+  #
+  #       puts "商铺:#{store.name}导入成功"
+  #
+  #     end
+  #   end
+  # end
+
 end

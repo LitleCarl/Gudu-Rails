@@ -8,9 +8,9 @@
   = form_tag management_store_products_path(@store), method: :get
     .row
       .input-field.col.s2
-        select name='category' selected='饮品'
-          - @store.products.select(:category).distinct.map(&:category).each do |category|
-            option[value="#{category}" selected=('selected' if category == params[:category])] =category
+        select name='category_id'
+          - @store.categories.each do |category|
+            option[value="#{category.id}" selected=('selected' if category.name == params[:category_id])] =category.name
         label 分类
       .input-field.col.s2
         select name='status'
@@ -38,7 +38,7 @@
                 = qiniu_img_tag(product.logo_filename, ImageTag::ImgHelper::ImageStyle::Square_LOGO)
               td
                 =link_to product.name, management_store_product_path(@store, product)
-              td = product.category
+              td = product.category_name
               td = Product::Status.get_desc_by_value product.status
     .row
       .col.s12.center-align

@@ -35,13 +35,6 @@
         .input-field.col.s6
           input#contact_phone name="owner[contact_phone]" placeholder="联系人电话" type="text" value="#{store.try(:owner).try(:contact_phone)}"
           label for="contact_phone"  联系人电话
-      .row
-        .input-field.col.s6
-          input#category_list name="owner[contact_name]" placeholder="联系人" type="text" value="#{store.try(:owner).try(:contact_name)}"
-          label for="category_list"  分类排序
-        .input-field.col.s6
-          input#contact_phone name="owner[contact_phone]" placeholder="联系人电话" type="text" value="#{store.try(:owner).try(:contact_phone)}"
-          label for="contact_phone"  联系人电话
       .row.center-align
         .col.s3.push-s1
           = link_to '查看商品', management_store_products_path(store), class: %w(waves-effect waves-light btn) if store.present? && !store.new_record?

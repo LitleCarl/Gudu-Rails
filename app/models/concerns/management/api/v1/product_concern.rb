@@ -72,7 +72,7 @@ module Concerns::Management::Api::V1::ProductConcern
 
       response = ResponseStatus.__rescue__(catch_proc) do |res|
 
-        manager, status, category, store_id = options[:manager], options[:status], options[:category], options[:store_id]
+        manager, status, category_id, store_id = options[:manager], options[:status], options[:category_id], options[:store_id]
 
         res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if manager.blank? || store_id.blank?
 
@@ -85,7 +85,7 @@ module Concerns::Management::Api::V1::ProductConcern
         products = store.products
 
         products = products.where(status: status) if status.present?
-        products = products.where(category: category) if category.present?
+        products = products.where(category_id: category_id) if category_id.present?
 
         products = products.order('id desc').paginate(options)
       end
@@ -149,7 +149,16 @@ module Concerns::Management::Api::V1::ProductConcern
 
           product.name = product_json[:name] if product_json[:name].present?
           product.brief = product_json[:brief] if product_json[:brief].present?
-          product.category = product_json[:category] if product_json[:category].present?
+
+          # 未分类的都属于其他
+          product_json[:category] |= '其他'
+
+          inner_response, category = store.upsert_category(product_json[:category])
+
+          res.__raise__response__(inner_response)
+
+          product.category = category
+
           product.status = product_json[:status] if product_json[:status].present?
           product.logo_filename = product_json[:logo_filename] if product_json[:logo_filename].present?
 

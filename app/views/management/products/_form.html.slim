@@ -24,11 +24,11 @@
           = qiniu_img_tag(product.logo_filename, ImageTag::ImgHelper::ImageStyle::Square_LOGO, class: 'store-logo-img')
       .row
         .input-field.col.s6
-          = f.text_field :category, placeholder: '', type: 'text', id: 'address'
-          label for="address"  分类
+          input type='text' name='category' id='category' placeholder='饮料' value='#{product.category_name}'
+          label for="category"  分类
         .input-field.col.s6
           = f.text_field :brief, placeholder: '简介', type: 'text', id: 'brief'
-          label for="address"  简介
+          label for="brief"  简介
       .row
         .col.s12
           .card

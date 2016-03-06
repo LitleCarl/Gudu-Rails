@@ -2,8 +2,16 @@ module ImageTag::ImgHelper
 
   module ImageStyle
     # 120*120
-    Square_LOGO = 'square.logo'
+    Square_LOGO = 'store.list.logo'
 
+    # APP 商铺logo缩略图
+    STORE_LOGO = 'store.list.logo'
+
+    # app商品缩略图
+    PRODUCT_LOGO = 'store.list.logo'
+
+    # app 产品详细大图
+    PRODUCT_IMAGE_COMPRESS = 'product.image.compr'
   end
 
   #

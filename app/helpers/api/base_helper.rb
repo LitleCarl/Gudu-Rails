@@ -1,4 +1,8 @@
+
 module Api::BaseHelper
+
+  include ImageTag::ImgHelper
+
   #
   # 渲染json返回属性
   #
@@ -19,7 +23,15 @@ module Api::BaseHelper
       end
 
       if obj.__send__(key).is_a?(CarrierWave::Uploader::Base)
-        json.__send__(key, value.url)
+        if obj.is_a?(Store) && key == :logo_filename
+          json.__send__(key, build_img_url(value.url, ImageStyle::STORE_LOGO))
+        elsif obj.is_a?(ProductImage) && key == :image_name
+          json.__send__(key, build_img_url(value.url, ImageStyle::PRODUCT_IMAGE_COMPRESS))
+        elsif obj.is_a?(Product) && key == :logo_filename
+          json.__send__(key, build_img_url(value.url, ImageStyle::STORE_LOGO))
+        else
+          json.__send__(key, value.url)
+        end
       else
         json.__send__(key, value)
       end

@@ -136,6 +136,15 @@ class ResponseStatus
     response_status
   end
 
+  def self.default_access_limit
+    response_status = self.new
+
+    response_status.code = Code::ERROR
+    response_status.message = '稍后再试'
+
+    response_status
+  end
+
   #
   # 向 响应状态 ResponseStatus 追加 message
   #

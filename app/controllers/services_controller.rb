@@ -4,6 +4,22 @@ require "open-uri"
 class ServicesController < ApplicationController
   skip_before_filter :user_about
 
+  before_action :limit_send_sms_request, only: [:send_login_sms_code]
+
+  # 登录短信发送限制
+  def limit_send_sms_request
+    Rack::Attack.throttle('send_login_sms_code_by_ip', limit: 1, period: 30.seconds) do |req|
+      req.ip
+    end
+
+    if params[:phone].present?
+      Rack::Attack.throttle('send_login_sms_code_by_phone', limit: 1, period: 30.seconds) do |req|
+        "sms_phone_#{params[:phone]}"
+      end
+    end
+  end
+
+
   def search_product_and_store_for_campus
     response_status_for_product, @products = Product.search_product_for_api(params)
     response_status_for_store, @stores = Store.search_store_for_api(params)

@@ -3,10 +3,6 @@ require "open-uri"
 
 class ServicesController < ApplicationController
   skip_before_filter :user_about
-
-  layout nil, only: [:download]
-
-
   before_action :limit_send_sms_request, only: [:send_login_sms_code]
 
   # 登录短信发送限制
@@ -122,6 +118,7 @@ class ServicesController < ApplicationController
       Rails.logger.error(ex.message)
       @response_status.message = ex.message
     end
+
   end
 
 
@@ -138,7 +135,8 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if is_iphone_device? &&  weixin_browser?
-        format.html
+
+        format.html{ render layout: false }
       else
         format.html { redirect_to  redirect_to_url}
       end

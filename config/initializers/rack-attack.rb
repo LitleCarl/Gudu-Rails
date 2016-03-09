@@ -31,6 +31,11 @@ class Rack::Attack
     req.ip unless req.path.start_with?('/assets')
   end
 
+  throttle('send_login_sms_code_by_ip', limit: 1, period: 30.seconds) do |req|
+    req.ip if req.path == '/services/send_login_sms_code'
+  end
+
+
   ### Prevent Brute-Force Login Attacks ###
 
   # The most common brute-force login attack is a brute-force password

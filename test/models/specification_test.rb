@@ -12,6 +12,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  stock_per_day :integer          default("10"), not null   # 订单每日更新的库存
+#  cost          :decimal(10, 2)   default("0.00")           # 成本价
 #
 
 require 'test_helper'

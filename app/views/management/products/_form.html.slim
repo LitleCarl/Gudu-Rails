@@ -69,17 +69,21 @@
                       - random_id_for_value = "a#{rand(36 ** 6).to_s(36)}"
                       - random_id_for_price = "b#{rand(36 ** 6).to_s(36)}"
                       - random_id_for_stock = "c#{rand(36 ** 6).to_s(36)}"
+                      - random_id_for_cost = "d#{rand(36 ** 6).to_s(36)}"
                       .row id='#{random_row_id}'
-                        .input-field.col.s3
+                        .input-field.col.s2
                           input type='text' name='specification_values[]' placeholder='红' id='#{random_id_for_value}' value='#{spe.value}'
                           label for='#{random_id_for_value}'  规格
-                        .input-field.col.s3
+                        .input-field.col.s2
                           input type='text' name='specification_prices[]' placeholder='3.5' id='#{random_id_for_price}' value='#{spe.price}'
                           label for='#{random_id_for_price}'  价格
-                        .input-field.col.s3
+                        .input-field.col.s2
+                          input type='text' name='specification_costs[]' placeholder='3.5' id='#{random_id_for_cost}' value='#{spe.cost}'
+                          label for='#{random_id_for_cost}'  成本价
+                        .input-field.col.s2
                           input type='text' name='specification_stocks[]' placeholder='100' id='#{random_id_for_stock}' value='#{spe.stock}'
                           label for='#{random_id_for_stock}'  库存
-                        .col.s3
+                        .col.s4
                           a.btn-floating.btn-large.waves-effect.waves-light.red.hover-btn ng-click='RemoveSpecification("#{random_row_id}")'
                             |删
       .row.center-align

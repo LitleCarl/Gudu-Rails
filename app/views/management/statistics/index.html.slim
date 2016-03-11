@@ -21,44 +21,44 @@
           /  th data-field="price"  数量
 
           tbody
-            - order_items = OrderItem.where(order_id: @orders.ids)
-
-            - specification_and_quantity = order_items.group(:specification_id).sum(:quantity)
-            - specifications = Specification.includes([:product => :store]).where(id: specification_and_quantity.keys)
-
-            - stores = Store.joins(:products => :specifications).where(specifications: {id: specifications.ids}).distinct
-
-            - store_specification_mapping = {}
-            - stores.each do |store|
-              - store_specification_mapping[store.id] = specifications.joins(product: :store).where('stores.id = ?', store.id)
+            - @stores_time_to_order_array.each do |stores_time_to_order|
+              - store = stores_time_to_order[:store]
               tr
                 td =store.name
                 td
-                  button.modal-trigger.waves-effect.waves-light.btn href="#m#{store.id}" ng-click="SetCurrentSpecificationList(#{store.id})" 查看
+                  button.modal-trigger.waves-effect.waves-light.btn href="#kkm-#{store.id}"  查看
 
-    - stores.each do |store|
-      - spes_of_store = store_specification_mapping[store.id]
-      div.modal.modal-fixed-footer id='m#{store.id}'
+    - @stores_time_to_order_array.each do |stores_time_to_order|
+      - store = stores_time_to_order[:store]
+      - deliver_time_to_specification_to_quantity_hash = stores_time_to_order[:data]
+      div.modal.modal-fixed-footer id='kkm-#{store.id}'
         .modal-content
           .row
             .col.s4.card.push-s4.center-align
               h5 =store.name
               h6 联系人: #{store.try(:owner).try(:contact_name)}
               h6 电话: #{store.try(:owner).try(:contact_phone)}
+
           .row
             .col.s12
-              table.striped.centered
-                thead
-                  tr
-                    th data-field="receiver_name"  商品名
-                    th data-field="receiver_phone"  规格
-                    th data-field="price"  数量
-
-                tbody
-                  - spes_of_store.each do |specification|
+              - deliver_time_to_specification_to_quantity_hash.keys.each_with_index do |time, index|
+                - total_cost_by_time = 0
+                - specification_to_quantity = deliver_time_to_specification_to_quantity_hash[time]
+                table.striped.centered
+                  thead
                     tr
-                      td = specification.product.name
-                      td = specification.value
-                      td #{specification_and_quantity[specification.id]}
-
-
+                      th data-field="receiver_name"  收货时间: #{time}
+                      th data-field="receiver_phone"  规格
+                      th data-field="price"  数量
+                      th data-field="cost"  成本价
+                  tbody
+                    - specification_to_quantity.keys.each do |specification|
+                      - total_cost_by_time = total_cost_by_time + specification.cost * specification_to_quantity[specification].to_f
+                      tr
+                        td = specification.product.name
+                        td = specification.value
+                        td #{specification_to_quantity[specification]}
+                        td #{specification.cost == 0 ? '未设置' : specification_to_quantity[specification] * specification.cost}
+                .h2.center-align 成本总计#{total_cost_by_time}元
+                br
+                br

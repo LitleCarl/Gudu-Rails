@@ -69,4 +69,45 @@ class Campus < ActiveRecord::Base
     return response, campuses
   end
 
+  #
+  # 获取学校周围所有的店铺的一天早餐统计
+  #
+  # @param options [Hash]
+  # option options [Date] :date 天
+  #
+  # @return [Response, Array] 状态，stores_time_to_order_array 格式如[{store:xx, data: {'7:30': {'{specification_1}': quantity}}]
+  #
+  def self.statistic_for_date(options)
+    stores_time_to_specification_to_quantity_array = []
+    campus = nil
+
+    response = ResponseStatus.__rescue__ do |res|
+
+      manager, date = options[:manager],options[:date]
+      if date.present?
+        date = Date.parse date
+      else
+        date = Time.now
+      end
+
+      puts "manager.phone#{manager.phone}"
+
+      res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if manager.blank? || date.blank?
+
+      campus = manager.campus
+
+      res.__raise__(ResponseStatus::Code::ERROR, '您没有管辖校区') if campus.blank?
+
+      campus.stores.each do|store|
+        inner_response, deliver_time_to_specification_to_quantity_hash= store.orders_at_date({date: date})
+
+        res.__raise__response__(inner_response)
+
+        stores_time_to_specification_to_quantity_array << {data: deliver_time_to_specification_to_quantity_hash, store: store}
+      end
+    end
+
+    return response, stores_time_to_specification_to_quantity_array, campus
+  end
+
 end

@@ -10,20 +10,22 @@ module Concerns::Management::Api::V1::StoreConcern
   end
 
 
-  # 获取店铺某一日的订单 这一日的订单是第二天派送
+  # 获取店铺某一日的(属于某一校区)订单 这一日的订单是第二天派送
   #
   # @param options [Hash]
   # @option options [Date] :date 天
+  # @option options [Campus] :campus 学校
   #
   # @return [Responnse, Hash] response, orderItem Hash {'7:00': {'{specification_1}': quantity}, '7:30': ...}
   #
   def orders_at_date(options)
     deliver_time_to_specification_to_quantity_hash = {}
     response = ResponseStatus.__rescue__ do |res|
-      date = options[:date]
-      res.__raise__(ResponseStatus::Code::ERROR, '参数错误') if date.blank?
+      date, campus = options[:date], options[:campus]
+      res.__raise__(ResponseStatus::Code::ERROR, '缺少日期参数') if date.blank?
+      res.__raise__(ResponseStatus::Code::ERROR, '缺少学校参数') if campus.blank? || !campus.is_a?(Campus)
 
-      order_items = OrderItem.includes([{order: :payment}, {product: :store}]).references([:orders, :stores, :payments]).where('payments.id > 0 AND orders.created_at > ? AND orders.created_at < ? AND stores.id = ?', date.beginning_of_day, date.end_of_day, self.id)
+      order_items = OrderItem.includes([{order: :payment}, {product: :store}]).references([:orders, :stores, :payments]).where('payments.id > 0 AND orders.created_at > ? AND orders.created_at < ? AND stores.id = ? AND orders.campus_id = ?', date.beginning_of_day, date.end_of_day, self.id, campus.id)
 
       time_keys = order_items.pluck('orders.delivery_time').uniq
 

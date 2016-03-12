@@ -1,0 +1,64 @@
+= render 'management/common/left_nav'
+.col.s8.m10.card ng-controller='ProductStatisticController'
+  div
+    .row
+      .col.s4.section
+        label for='date-picker' 日期
+        input#date-picker.datepicker input-date='' type="text" ng-model='SelectDate' format="dd/mm/yyyy"
+      .col.s4.section
+        button#go-for-date.waves-effect.waves-light.btn ng-click='GoForDate()' 前往
+    .row
+      .col.s12
+        table.striped.centered
+          thead
+            tr
+              th data-field="store" 商铺
+              th data-field="operate" 操作
+          /tr
+          /  th data-field="order_number" 商铺
+          /  th data-field="receiver_name"  商品名
+          /  th data-field="receiver_phone"  规格
+          /  th data-field="price"  数量
+
+          tbody
+            - @stores_time_to_order_array.each do |stores_time_to_order|
+              - store = stores_time_to_order[:store]
+              tr
+                td =store.name
+                td
+                  button.modal-trigger.waves-effect.waves-light.btn href="#kkm-#{store.id}"  查看
+
+    - @stores_time_to_order_array.each do |stores_time_to_order|
+      - store = stores_time_to_order[:store]
+      - deliver_time_to_specification_to_quantity_hash = stores_time_to_order[:data]
+      div.modal.modal-fixed-footer id='kkm-#{store.id}'
+        .modal-content
+          .row
+            .col.s4.card.push-s4.center-align
+              h5 =store.name
+              h6 联系人: #{store.try(:owner).try(:contact_name)}
+              h6 电话: #{store.try(:owner).try(:contact_phone)}
+
+          .row
+            .col.s12
+              - deliver_time_to_specification_to_quantity_hash.keys.each_with_index do |time, index|
+                - total_cost_by_time = 0
+                - specification_to_quantity = deliver_time_to_specification_to_quantity_hash[time]
+                table.striped.centered
+                  thead
+                    tr
+                      th data-field="receiver_name"  收货时间: #{time}
+                      th data-field="receiver_phone"  规格
+                      th data-field="price"  数量
+                      th data-field="cost"  成本价
+                  tbody
+                    - specification_to_quantity.keys.each do |specification|
+                      - total_cost_by_time = total_cost_by_time + specification.cost * specification_to_quantity[specification].to_f
+                      tr
+                        td = specification.product.name
+                        td = specification.value
+                        td #{specification_to_quantity[specification]}
+                        td #{specification.cost == 0 ? '未设置' : specification_to_quantity[specification] * specification.cost}
+                .h2.center-align 成本总计#{total_cost_by_time}元
+                br
+                br

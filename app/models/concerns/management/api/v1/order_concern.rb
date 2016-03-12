@@ -42,7 +42,7 @@ module Concerns::Management::Api::V1::OrderConcern
 
         res.__raise__(ResponseStatus::Code::ERROR, '您没有管辖校区') if manager.campus.blank?
 
-        orders = self.query_by_options.includes(:order_items => {specification: :product}).joins(:payment).where('payments.id > 0').where('orders.created_at >= ? AND orders.created_at <= ?', date.beginning_of_day, date.end_of_day)
+        orders = self.query_by_options.includes(:order_items => {specification: :product}).joins(:payment).where('payments.id > 0 and orders.campus_id = ?', manager.campus.id).where('orders.created_at >= ? AND orders.created_at <= ?', date.beginning_of_day, date.end_of_day)
 
         if status.present?
           orders = orders.where(status: status)

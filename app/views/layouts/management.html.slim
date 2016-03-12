@@ -5,6 +5,8 @@ html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
     meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport" /
     /meta name="viewport" content="width=device-width, initial-scale=1.0"
     = stylesheet_link_tag 'management', media: 'all', 'data-turbolinks-track' => true
+    link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" /
+    = javascript_include_tag 'management', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
     - if flash[:notice].present?
@@ -19,4 +21,3 @@ html ng-app='GlobalAngularModule' ng-controller='GlobalAngularController'
       .row
         = yield
 
-    = javascript_include_tag 'management', 'data-turbolinks-track' => true

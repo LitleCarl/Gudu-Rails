@@ -11,5 +11,10 @@
 #
 
 class ProductImage < ActiveRecord::Base
+
+  # 关联商品
   belongs_to :product
+
+  # 商铺logo挂载
+  mount_uploader :image_name, ImageUploader
 end

@@ -1,0 +1,55 @@
+= render 'management/common/left_nav'
+.col.s8.m10.card
+  .row.padding-horizontal.section
+    - store =  @store || Store.new
+    - url = action_new? ? management_stores_path : management_store_path(store)
+
+    - method = action_new? ? :post : :put
+    = form_for store, url: url, class: %w(col s12), method: method do |f|
+      .row
+        .input-field.col.s6
+          =f.text_field :name, placeholder: '店铺名称', type: 'text', id: 'name'
+          label for="name"  店铺名称
+
+        .input-field.col.s4
+          .input-field.col.s12
+            = select(:store, :status, Store::Status.get_all_values.collect {|status| [ Store::Status.get_desc_by_value(status), status ] })
+
+            label 店铺状态
+        .input-field.col.s2
+          .file-field.input-field
+            .btn.store-logo-btn
+              = f.file_field :logo_filename, id: 'logo_filename', onchange: 'readURL(this);'
+          img.store-logo-img src="#{store.logo_filename}"
+      .row
+        .input-field.col.s6
+          = f.text_field :address, placeholder: '地址', type: 'text', id: 'address'
+          label for="address"  地址
+        .input-field.col.s6
+          = f.text_field :brief, placeholder: '简介', type: 'text', id: 'brief'
+          label for="brief"  简介
+      .row
+        .input-field.col.s6
+          input#contact_name name="owner[contact_name]" placeholder="联系人" type="text" value="#{store.try(:owner).try(:contact_name)}"
+          label for="contact_name"  联系人
+        .input-field.col.s6
+          input#contact_phone name="owner[contact_phone]" placeholder="联系人电话" type="text" value="#{store.try(:owner).try(:contact_phone)}"
+          label for="contact_phone"  联系人电话
+      .row.center-align
+        .col.s3.push-s1
+          = link_to '查看商品', management_store_products_path(store), class: %w(waves-effect waves-light btn) if store.present? && !store.new_record?
+        .col.s3.push-s4
+          button.waves-effect.waves-light.btn type='submit'  提交
+javascript:
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $('.store-logo-img')
+                .attr('src', e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }

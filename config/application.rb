@@ -26,5 +26,15 @@ module GuduRails
     config.active_record.default_timezone = :local
 
     config.autoload_paths << File.join(config.root, 'lib')
+
+    config.cache_store = :redis_store, { host: "localhost",
+                                         port: 6379,
+                                         db: 0,
+                                         password: "Fy958e5mmyb7Ta4H",
+                                         namespace: "cache",
+                                         expires_in: 90.minutes }
+
+    # 启用Rack-Attack
+    config.middleware.use Rack::Attack
   end
 end

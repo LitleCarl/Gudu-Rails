@@ -17,6 +17,7 @@
 #  back_ratio     :float(24)        default("0")
 #  main_food_list :text(65535)
 #  owner_id       :integer
+#  boost          :integer          default("0"), not null    # 店铺权重
 #
 
 require 'test_helper'

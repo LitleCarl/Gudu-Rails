@@ -17,6 +17,7 @@
 #  back_ratio     :float(24)        default("0")
 #  main_food_list :text(65535)
 #  owner_id       :integer
+#  boost          :integer          default("0"), not null    # 店铺权重
 #
 
 class Store < ActiveRecord::Base
@@ -24,18 +25,44 @@ class Store < ActiveRecord::Base
   # 通用查询方法
   include Concerns::Query::Methods
 
+  # mixin 管理者
+  include Concerns::Management::Api::V1::StoreConcern
+
+  # 商城有一个拥有着
   belongs_to :owner
 
+  # 中间表
   has_many :stores_campuses
+
+  # 商城可以关联多个学校
   has_many :campuses, through: :stores_campuses
+
+  # 商城关联合同
   has_one :contract
+
+  # 商城关联商品
   has_many :products
+
+  # 关联商铺菜品分类
+  has_many :categories
+
+  # 商铺logo挂载
+  mount_uploader :logo_filename, ImageUploader
+
+  # 设置拼音
   before_save :set_store_pinyin
 
   module Status
+    include Concerns::Dictionary::Module::I18n
+
     Pending = 1  # 暂停
+
     Normal = 2 # 正常
+
     Suspend = 3 # 停止(合同到期)
+
+    # 全部
+    ALL = get_all_values
   end
 
   def self.get_stores_in_campus(params)
@@ -58,7 +85,7 @@ class Store < ActiveRecord::Base
     data = nil
     begin
       raise RestError::MissParameterError if params[:store_id].blank?
-      data = Store.where(:id => params[:store_id]).includes(:products).references(:products).where('products.status = ?', Product::Status::Normal).first
+      data = Store.where(:id => params[:store_id]).includes(products: :specifications).references(:products, :specifications).first
       response_status = ResponseStatus.default_success
     rescue Exception => ex
       Rails.logger.error(ex.message)
@@ -106,7 +133,7 @@ class Store < ActiveRecord::Base
   # 根据关键字模糊搜索指定学校里的店铺
   def self.search_store_by_keyword(campus_id, keyword)
     keyword = "'%#{keyword.downcase}%'"
-    self.includes(:campuses).references(:campuses).where({campuses: {id: campus_id}}).where("stores.name like #{keyword} or stores.pinyin like #{keyword}")
+    self.includes(:campuses).references(:campuses).where({campuses: {id: campus_id}}).where('stores.status = ?', Status::Normal).where("stores.name like #{keyword} or stores.pinyin like #{keyword}")
   end
 
   #
@@ -132,6 +159,32 @@ class Store < ActiveRecord::Base
   #
   ########################################################################
 
+  # 如果店铺菜单没有此分类,则新建一个分类
+  #
+  # @param category_name [String]
+  #
+  # @return [ResponseStatus, Category] response, category
+  #
+  def upsert_category(category_name)
+    category = self.categories.where(name: category_name).first
+
+    if category.blank?
+
+      catch_proc = proc { category = nil }
+
+      response = ResponseStatus.__rescue__(catch_proc) do |res|
+        category = Category.new
+        category.name = category_name
+        category.priority = 0
+        category.store = self
+        category.save!
+      end
+    else
+      response = ResponseStatus.default_success
+    end
+
+    return response, category
+  end
 
   #
   # 更新店铺回头率,计算方式:

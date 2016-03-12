@@ -83,7 +83,12 @@ class ServicesController < ApplicationController
         # 营业时间至 (小时)
         deadline_hour: 23,
         # 营业时间至 (分钟)
-        deadline_minute: 30
+        deadline_minute: 30,
+        service: {
+            price: 0.6,
+            desc: '同学们,为保障您的用餐安全,我们将这6毛钱用在提高食品安全卫生方面。如果前一天有订餐纪录则第二天再订不再收取服务费, 及连续每天订餐就不会有更多服务费用支出, 谢谢配合。',
+            name: '服务费'
+        }
     }
   end
 
@@ -103,7 +108,9 @@ class ServicesController < ApplicationController
       Rails.logger.error(ex.message)
       @response_status.message = ex.message
     end
+
   end
+
 
   # 下载app
   def download
@@ -118,7 +125,8 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if is_iphone_device? &&  weixin_browser?
-        format.html
+
+        format.html{ render layout: false }
       else
         format.html { redirect_to  redirect_to_url}
       end

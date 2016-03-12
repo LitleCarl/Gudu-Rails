@@ -20,6 +20,7 @@ module Concerns::Dictionary
     #
     def i18n_t(value)
       return {value: '', desc: ''} if value.blank?
+      origin_value = value
 
       value = value.to_s.downcase
       if (value.to_s =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/).present?
@@ -28,7 +29,7 @@ module Concerns::Dictionary
 
       key = "#{get_i18n_prefix}.#{value}"
 
-      ::I18n.exists?(key) ? {value: value, desc: ::I18n.t(key)} || {value: value, desc: ''} : {value: value, desc: ''}
+      ::I18n.exists?(key) ? {value: origin_value, desc: ::I18n.t(key)} || {value: origin_value, desc: ''} : {value: origin_value, desc: ''}
     end
   end
 
@@ -156,7 +157,11 @@ module Concerns::Dictionary
         def get_all_map
           constants = get_all_constants
 
-          constants.map { |constant| i18n_t(constant) }
+          values = constants.map do |constant|
+            self.const_get(constant)
+          end
+
+          values.map { |value| i18n_t(value) }
         end
 
         #

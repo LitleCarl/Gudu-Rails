@@ -1,28 +1,47 @@
 = render 'management/common/left_nav'
-.col.s10.card ng-controller='ProductStatisticController'
+.col.s8.m10.card ng-controller='ProductStatisticController'
   .row
-    .col.s4.section
-      input.datepicker type="date" ng-model='SelectDate'
-    .col.s4.section
-      button#go-for-date.waves-effect.waves-light.btn ng-click='GoForDate()' 前往
-  .row
-    .col.s12
-    table.striped
-      thead
-        tr
-          th data-field="order_number" 商铺
-          th data-field="receiver_name"  商品名
-          th data-field="receiver_phone"  规格
-          th data-field="price"  数量
+    .col.s2.push-s10
+      a.waves-effect.waves-light.btn.narrow-btn href="#{new_management_store_product_path}"
+        | 添加商品
 
-      tbody
-        - order_items = OrderItem.where(order_id: @orders.ids)
-        - specification_and_quantity = order_items.group(:specification_id).sum(:quantity)
-        - specifications = Specification.includes([:product => :store]).where(id: specification_and_quantity.keys)
-        - specifications.each do|specification|
+  = form_tag management_store_products_path(@store), method: :get
+    .row
+      .input-field.col.s2
+        select name='category_id'
+          - @store.categories.each do |category|
+            option[value="#{category.id}" selected=('selected' if category.name == params[:category_id])] =category.name
+        label 分类
+      .input-field.col.s2
+        select name='status'
+          - Product::Status::ALL.each do |status|
+            option[value="#{status}" selected=('selected' if status == params[:status])]  = Product::Status.get_desc_by_value(status)
+        label 状态
+      .input-field.col.s3.push-s5
+        button.waves-effect.waves-light.btn type='submit'
+          i.material-icons.right search
+          | 过滤
+
+    .row
+      table.striped
+        thead
           tr
-            td =specification.product.store.name
-            td =specification.product.name
-            td =specification.value
-            td =specification_and_quantity[specification.id]
+            th data-field="logo_filename"
+            th data-field="name"  名称
+            th data-field="category"  类别
+            th data-field="status"  状态
+
+        tbody
+          -@products.each do |product|
+            tr
+              td
+                = qiniu_img_tag(product.logo_filename, ImageTag::ImgHelper::ImageStyle::Square_LOGO)
+              td
+                =link_to product.name, management_store_product_path(@store, product)
+              td = product.category_name
+              td = Product::Status.get_desc_by_value product.status
+    .row
+      .col.s12.center-align
+        = paginate @products
+
 

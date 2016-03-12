@@ -25,11 +25,11 @@ class AppVersion
   # @return [Response, Array] 状态，学校列表
   #
   def self.check_update(options = {})
-    android_versions = %w(2.0.1 2.0.2)
-    iphone_versions = %w(1.0.3 1.0.4)
+    android_versions = %w(2.0.1 2.0.2 1.4.0 1.5.0)
+    iphone_versions = %w(1.3.1 1.4.0 1.5.0)
 
-    android_update_messages = '添加更新通知, 修复微信登录异常(2.0.2)'
-    iphone_update_messages = '添加更新通知, 修复微信登录异常,优惠券显示问题(1.0.4)'
+    android_update_messages = '添加更新通知, 修复微信登录异常(1.5.0)'
+    iphone_update_messages = '添加更新通知, 修复微信登录异常,优惠券显示问题(1.5.0)'
 
     result = {
         need_update: false,
@@ -56,8 +56,7 @@ class AppVersion
 
       elsif platform == Platform::IPHONE
         index = iphone_versions.index(current_version)
-
-        if index.blank? || index < (android_versions.count - 1)
+        if index.nil? || index < (iphone_versions.count - 1)
           result[:need_update] = true
           result[:update_message] = iphone_update_messages
           result[:download_url] = DownloadURL::IPHONE_URL

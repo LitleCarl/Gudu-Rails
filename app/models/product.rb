@@ -9,12 +9,12 @@
 #  brief         :string(255)      default("暂无简介")
 #  min_price     :string(255)      default("0.0")
 #  max_price     :string(255)      default("0.0")
-#  category      :string(255)      not null
 #  status        :integer          default("1"), not null
 #  pinyin        :string(255)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  month_sale    :integer          default("23")
+#  category_id   :integer                                 # 关联分类
 #
 
 class Product < ActiveRecord::Base
@@ -27,12 +27,57 @@ class Product < ActiveRecord::Base
 
   has_many :product_images
 
+  belongs_to :category
+
+  # mixin 管理员查询商品
+  include Concerns::Management::Api::V1::ProductConcern
+
+  # 商铺logo挂载
+  mount_uploader :logo_filename, ImageUploader
+
+  # 删除后检查所在分类需不需要删除
+  after_destroy :check_category_after_destroy
+
+  # 更新分类
+  after_save :check_category_save
+
   # 拼音
   before_save :set_pinyin, :set_default_brief
 
   module Status
-    Normal = 1  # 上架
-    Pending = 2 # 下架
+    include Concerns::Dictionary::Module::I18n
+
+    # 上架
+    Normal = 1
+
+    # 下架
+    Pending = 2
+
+    # 全部
+    ALL = get_all_values
+  end
+
+  # after_destroy
+  def check_category_after_destroy
+    category = self.category
+    if category.present? && category.products.count < 1
+      category.destroy!
+    end
+  end
+
+  # after_save
+  def check_category_save
+    if self.category_id_changed? && self.category_id_was.present?
+      category = Category.query_first_by_id(self.category_id_was)
+      if category.present? && category.products.count < 1
+        category.destroy!
+      end
+    end
+  end
+
+  # 状态为Normal的规格
+  def normal_specifications
+    self.specifications.where(status: Specification::Status::Normal)
   end
 
   # 根据id获取商品详情
@@ -69,7 +114,12 @@ class Product < ActiveRecord::Base
   # 根据关键字模糊搜索指定学校里的商品
   def self.search_product_by_keyword(campus_id, keyword)
     keyword = "'%#{keyword.downcase}%'"
-    self.includes(:store => :campuses).references(:campuses).where({campuses: {id: campus_id}}).where("products.name like #{keyword} or products.pinyin like #{keyword}")
+    self.includes(:store => :campuses).references(:campuses).where({campuses: {id: campus_id}}).where('products.status = ?', Product::Status::Normal).where("products.name like #{keyword} or products.pinyin like #{keyword}")
+  end
+
+  # 分类名称(快捷方法)
+  def category_name
+    self.category.try(:name)
   end
 
   # 设置拼音

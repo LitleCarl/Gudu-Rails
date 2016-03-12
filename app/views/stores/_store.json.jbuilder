@@ -1,9 +1,4 @@
-json.(store, :id, :name, :brief, :address, :logo_filename, :location, :pinyin, :status, :month_sale, :signature, :back_ratio, :main_food_list)
-if store.logo_filename.present?
-  json.logo_filename wrap_image_path_with_qiniu_site('/stores/'+store.logo_filename)
-else
-  json.logo_filename nil
-end
+render_json_attrs(json, store, [:id, :name, :brief, :address, :logo_filename, :location, :pinyin, :status, :month_sale, :signature, :back_ratio, :main_food_list])
 
 if store.owner.present?
   json.owner do
@@ -13,10 +8,13 @@ else
   json.owner nil
 end
 
+json.categories do
+  json.array! store.categories, partial: 'categories/category', as: :category
+end
 
 # has_many
 json.products do
-  json.array! store.products, partial: 'products/product', as: :product
+  json.array! store.products.where(status: Product::Status::Normal), partial: 'products/product', as: :product
 end
 
 # has_one

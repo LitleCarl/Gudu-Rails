@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127065547) do
+ActiveRecord::Schema.define(version: 20160310042049) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -21,6 +21,14 @@ ActiveRecord::Schema.define(version: 20160127065547) do
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
     t.boolean  "default_address",             default: false
+  end
+
+  create_table "announcements", force: :cascade do |t|
+    t.text     "content",    limit: 65535,                          comment: "通知内容"
+    t.string   "link",       limit: 255,                            comment: "链接地址"
+    t.integer  "platform",   limit: 4,     default: 0,              comment: "平台"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "authorizations", force: :cascade do |t|
@@ -72,6 +80,14 @@ ActiveRecord::Schema.define(version: 20160127065547) do
     t.integer  "user_id",    limit: 4
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name",       limit: 255,              comment: "分类名称"
+    t.integer  "priority",   limit: 4,                comment: "显示顺序(>=0)"
+    t.integer  "store_id",   limit: 4,                comment: "关联店铺"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "cities", force: :cascade do |t|
@@ -222,12 +238,12 @@ ActiveRecord::Schema.define(version: 20160127065547) do
     t.string   "brief",         limit: 255, default: "暂无简介"
     t.string   "min_price",     limit: 255, default: "0.0"
     t.string   "max_price",     limit: 255, default: "0.0"
-    t.string   "category",      limit: 255,                  null: false
     t.integer  "status",        limit: 4,   default: 1,      null: false
     t.string   "pinyin",        limit: 255
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
     t.integer  "month_sale",    limit: 4,   default: 23
+    t.integer  "category_id",   limit: 4,                                 comment: "关联分类"
   end
 
   create_table "red_packs", force: :cascade do |t|
@@ -248,6 +264,7 @@ ActiveRecord::Schema.define(version: 20160127065547) do
     t.datetime "created_at",                                                       null: false
     t.datetime "updated_at",                                                       null: false
     t.integer  "stock_per_day", limit: 4,                            default: 10,  null: false, comment: "订单每日更新的库存"
+    t.decimal  "cost",                      precision: 10, scale: 2, default: 0.0,              comment: "成本价"
   end
 
   create_table "stores", force: :cascade do |t|
@@ -265,6 +282,7 @@ ActiveRecord::Schema.define(version: 20160127065547) do
     t.float    "back_ratio",     limit: 24,    default: 0.0
     t.text     "main_food_list", limit: 65535
     t.integer  "owner_id",       limit: 4
+    t.integer  "boost",          limit: 4,     default: 0,      null: false, comment: "店铺权重"
   end
 
   create_table "stores_campuses", force: :cascade do |t|

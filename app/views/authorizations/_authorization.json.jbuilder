@@ -1,1 +1,1 @@
-json.(authorization, :id, :union_id)
+render_json_attrs(json, authorization, [:id, :union_id])

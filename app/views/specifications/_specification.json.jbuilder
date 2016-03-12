@@ -1,1 +1,1 @@
-json.(specification, :id, :name, :value, :price, :product_id, :status, :stock)
+render_json_attrs(json, specification, [:id, :name, :value, :price, :product_id, :status, :stock])

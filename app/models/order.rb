@@ -80,11 +80,14 @@ class Order < ActiveRecord::Base
   end
 
   module PayMethod
+    include Concerns::Dictionary::Module::I18n
+
     WEIXIN = 'wx'
 
     ALIPAY = 'alipay'
 
-    ALL = [WEIXIN, ALIPAY]
+    # 全部
+    ALL = get_all_values
   end
 
   #

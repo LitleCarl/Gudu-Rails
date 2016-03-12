@@ -1,4 +1,4 @@
-json.(order, :id, :status, :price, :delivery_time, :receiver_name, :receiver_phone, :receiver_address, :pay_method, :order_number, :pay_price)
+render_json_attrs(json, order, [:id, :status, :price, :delivery_time, :receiver_name, :receiver_phone, :receiver_address, :pay_method, :order_number, :pay_price])
 
 json.status_desc Order::Status.get_desc_by_value(order.status)
 

@@ -24,6 +24,6 @@ class Management::Devise::SessionsController < Devise::SessionsController
   # end
 
   def after_sign_in_path_for(resource)
-    management_managers_path(resource)
+    management_manager_path(resource)
   end
 end

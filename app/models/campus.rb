@@ -99,7 +99,7 @@ class Campus < ActiveRecord::Base
       res.__raise__(ResponseStatus::Code::ERROR, '您没有管辖校区') if campus.blank?
 
       campus.stores.each do|store|
-        inner_response, deliver_time_to_specification_to_quantity_hash= store.orders_at_date({date: date})
+        inner_response, deliver_time_to_specification_to_quantity_hash= store.orders_at_date({date: date, campus: campus})
 
         res.__raise__response__(inner_response)
 

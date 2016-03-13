@@ -17,6 +17,7 @@
 #  charge_json      :text(65535)
 #  order_number     :string(255)
 #  pay_price        :decimal(10, 2)   default("0.00")           # 实际支付金额
+#  service_price    :decimal(10, 2)   default("0.00")           # 服务费用
 #
 
 class Order < ActiveRecord::Base
@@ -309,10 +310,18 @@ class Order < ActiveRecord::Base
 
             order = Order.new
 
+            # 服务费用计算
+            service_price = ServicesController.get_config[:service].try(:price) || 0.0
+
             order.pay_method = params[:pay_method]
             order.user = params[:user]
-            order.price = total_price
-            order.pay_price = pay_price
+            # 总价
+            order.price = total_price + service_price
+            # 支付费用
+            order.pay_price = pay_price + service_price
+            # 服务费用
+            order.service_price = service_price
+
             order.coupon = coupon
             order.campus_id = campus
             order.delivery_time = params[:delivery_time]

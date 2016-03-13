@@ -17,6 +17,7 @@
 #  charge_json      :text(65535)
 #  order_number     :string(255)
 #  pay_price        :decimal(10, 2)   default("0.00")           # 实际支付金额
+#  service_price    :decimal(10, 2)   default("0.00")           # 服务费用
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

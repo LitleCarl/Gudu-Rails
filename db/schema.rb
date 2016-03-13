@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160310042049) do
+ActiveRecord::Schema.define(version: 20160313063317) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(version: 20160310042049) do
     t.text     "charge_json",      limit: 65535
     t.string   "order_number",     limit: 255
     t.decimal  "pay_price",                      precision: 10, scale: 2, default: 0.0,              comment: "实际支付金额"
+    t.decimal  "service_price",                  precision: 10, scale: 2, default: 0.0,              comment: "服务费用"
   end
 
   create_table "owners", force: :cascade do |t|

@@ -200,29 +200,38 @@ class Order < ActiveRecord::Base
     response_status = ResponseStatus.default
     charge = nil
     begin
-      raise RestError::MissParameterError if params[:order_id].blank?
-      user = params[:user]
-      if user.present?
-        order = Order.where({user_id: user.id, id: params[:order_id], status: Order::Status::NOT_PAID}).first
-        if order.present? && order.charge_json.blank?
-          charge = Pingpp::Charge.create(
-              :order_no  => order.id,
-              :app       => {id: Rails.application.config.pingpp_app_id},
-              :channel   => order.pay_method,
-              :amount    => (order.pay_price * 100).to_i,
-              :client_ip => '127.0.0.1',
-              :currency  => 'cny',
-              :subject   => '早餐巴士',
-              :body      => '开启全新一天'
-          )
-          order.charge_json = charge
-          order.save!
-          response_status.code = ResponseStatus::Code::SUCCESS
-        elsif order.present? && order.charge_json.present?
-          charge = order.charge_json
-          response_status.code = ResponseStatus::Code::SUCCESS
-        else
-          response_status.message = '订单不存在或已经支付'
+      transaction do
+        raise RestError::MissParameterError if params[:order_id].blank?
+        user = params[:user]
+        if user.present?
+          order = Order.where({user_id: user.id, id: params[:order_id], status: Order::Status::NOT_PAID}).first
+
+          today = Time.now
+
+          if order.created_at < today.beginning_of_day
+            raise StandardError.new '订单已经过期'
+          end
+
+          if order.present? && order.charge_json.blank?
+            charge = Pingpp::Charge.create(
+                :order_no  => order.id,
+                :app       => {id: Rails.application.config.pingpp_app_id},
+                :channel   => order.pay_method,
+                :amount    => (order.pay_price * 100).to_i,
+                :client_ip => '127.0.0.1',
+                :currency  => 'cny',
+                :subject   => '早餐巴士',
+                :body      => '开启全新一天'
+            )
+            order.charge_json = charge
+            order.save!
+            response_status.code = ResponseStatus::Code::SUCCESS
+          elsif order.present? && order.charge_json.present?
+            charge = order.charge_json
+            response_status.code = ResponseStatus::Code::SUCCESS
+          else
+            response_status.message = '订单不存在或已经支付'
+          end
         end
       end
     rescue Exception => ex

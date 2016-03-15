@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160313063317) do
+ActiveRecord::Schema.define(version: 20160315055512) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -300,6 +300,24 @@ ActiveRecord::Schema.define(version: 20160313063317) do
     t.datetime "origin_date",                                                  null: false
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
+  end
+
+  create_table "suit_specifications", force: :cascade do |t|
+    t.integer  "suit_id",          limit: 4,              comment: "关联套餐"
+    t.integer  "specification_id", limit: 4,              comment: "关联规格"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  create_table "suits", force: :cascade do |t|
+    t.integer  "campus_id",  limit: 4,                                                       comment: "关联学校"
+    t.decimal  "price",                  precision: 10, scale: 2, default: 0.0, null: false, comment: "总价"
+    t.decimal  "discount",               precision: 10, scale: 2, default: 0.0, null: false, comment: "折扣(元)"
+    t.integer  "status",     limit: 4,                            default: 0,   null: false, comment: "状态"
+    t.string   "name",       limit: 255,                                                     comment: "名称"
+    t.string   "desc",       limit: 255,                                                     comment: "描述"
+    t.datetime "created_at",                                                    null: false
+    t.datetime "updated_at",                                                    null: false
   end
 
   create_table "users", force: :cascade do |t|

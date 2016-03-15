@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160315055512) do
+ActiveRecord::Schema.define(version: 20160315065852) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -185,6 +185,15 @@ ActiveRecord::Schema.define(version: 20160315055512) do
     t.datetime "updated_at",                                                        null: false
   end
 
+  create_table "order_suits", force: :cascade do |t|
+    t.integer  "quantity",       limit: 4,                                                     comment: "数量"
+    t.decimal  "price_snapshot",           precision: 10, scale: 2, default: 0.0, null: false, comment: "价格快照"
+    t.integer  "order_id",       limit: 4,                                                     comment: "关联订单"
+    t.integer  "suit_id",        limit: 4,                                                     comment: "关联套餐"
+    t.datetime "created_at",                                                      null: false
+    t.datetime "updated_at",                                                      null: false
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer  "status",           limit: 4,                              default: 1,   null: false
     t.decimal  "price",                          precision: 10, scale: 2, default: 0.0, null: false
@@ -310,14 +319,15 @@ ActiveRecord::Schema.define(version: 20160315055512) do
   end
 
   create_table "suits", force: :cascade do |t|
-    t.integer  "campus_id",  limit: 4,                                                       comment: "关联学校"
-    t.decimal  "price",                  precision: 10, scale: 2, default: 0.0, null: false, comment: "总价"
-    t.decimal  "discount",               precision: 10, scale: 2, default: 0.0, null: false, comment: "折扣(元)"
-    t.integer  "status",     limit: 4,                            default: 0,   null: false, comment: "状态"
-    t.string   "name",       limit: 255,                                                     comment: "名称"
-    t.string   "desc",       limit: 255,                                                     comment: "描述"
-    t.datetime "created_at",                                                    null: false
-    t.datetime "updated_at",                                                    null: false
+    t.integer  "campus_id",     limit: 4,                                                       comment: "关联学校"
+    t.decimal  "price",                     precision: 10, scale: 2, default: 0.0, null: false, comment: "总价"
+    t.decimal  "discount",                  precision: 10, scale: 2, default: 0.0, null: false, comment: "折扣(元)"
+    t.integer  "status",        limit: 4,                            default: 0,   null: false, comment: "状态"
+    t.string   "name",          limit: 255,                                                     comment: "名称"
+    t.string   "desc",          limit: 255,                                                     comment: "描述"
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
+    t.string   "logo_filename", limit: 255,                                                     comment: "套餐图片"
   end
 
   create_table "users", force: :cascade do |t|

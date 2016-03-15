@@ -19,5 +19,5 @@ class SuitSpecification < ActiveRecord::Base
 
   # 关联规格
   belongs_to :specification
-  
+
 end

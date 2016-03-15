@@ -52,6 +52,12 @@ class Order < ActiveRecord::Base
   # 关联快递员
   has_one :expresser, through: :express
 
+  # 关联套餐订单中间表
+  has_many :order_suits
+
+  # 订单可能包含了套餐
+  has_many :suits, through: :order_suits
+
   before_create :generate_order_number
   validate :check_order_fields
   after_save :check_order_status
@@ -236,7 +242,7 @@ class Order < ActiveRecord::Base
       end
     rescue Exception => ex
       Rails.logger.error(ex.message)
-      response_status.message = ex.message
+      response_status.o = ex.message
     end
     return response_status, charge
   end

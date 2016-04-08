@@ -326,7 +326,7 @@ class Order < ActiveRecord::Base
             order = Order.new
 
             # 服务费用计算
-            service_price = ServicesController.get_config[:service].try(:price) || 0.0
+            service_price = ServicesController.get_config[:service][:price] || 0.0
 
             order.pay_method = params[:pay_method]
             order.user = params[:user]

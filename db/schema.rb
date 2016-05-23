@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160315065852) do
+ActiveRecord::Schema.define(version: 20160523022339) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -32,13 +32,13 @@ ActiveRecord::Schema.define(version: 20160315065852) do
   end
 
   create_table "authorizations", force: :cascade do |t|
-    t.string   "provider",           limit: 255,                comment: "提供者(wx,weibo)"
+    t.string   "provider",           limit: 255
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
-    t.string   "union_id",           limit: 255,                comment: "用户唯一身份id"
-    t.integer  "user_id",            limit: 4,                  comment: "关联用户"
-    t.string   "nick_name",          limit: 255,                comment: "第三方昵称"
-    t.integer  "owner_id",           limit: 4,                  comment: "关联店铺拥有人"
+    t.string   "union_id",           limit: 255
+    t.integer  "user_id",            limit: 4
+    t.string   "nick_name",          limit: 255
+    t.integer  "owner_id",           limit: 4
     t.text     "avatar",             limit: 65535,              comment: "头像地址"
     t.string   "gzh_token",          limit: 255,                comment: "公众号token"
     t.string   "gzh_refresh_token",  limit: 255,                comment: "公众号refresh_token"
@@ -106,15 +106,15 @@ ActiveRecord::Schema.define(version: 20160315065852) do
   end
 
   create_table "coupons", force: :cascade do |t|
-    t.decimal  "discount",                 precision: 10, scale: 2, default: 0.0, null: false, comment: "抵扣金额"
-    t.datetime "activated_date",                                                  null: false, comment: "生效日期"
-    t.datetime "expired_date",                                                    null: false, comment: "失效日期"
-    t.integer  "user_id",        limit: 4,                                                     comment: "关联用户"
-    t.integer  "status",         limit: 4,                                        null: false, comment: "优惠券状态"
-    t.decimal  "least_price",              precision: 10, scale: 2, default: 0.0, null: false, comment: "最低起用价"
+    t.decimal  "discount",                 precision: 10, scale: 2, default: 0.0, null: false
+    t.datetime "activated_date",                                                  null: false
+    t.datetime "expired_date",                                                    null: false
+    t.integer  "user_id",        limit: 4
+    t.integer  "status",         limit: 4,                                        null: false
+    t.decimal  "least_price",              precision: 10, scale: 2, default: 0.0, null: false
     t.datetime "created_at",                                                      null: false
     t.datetime "updated_at",                                                      null: false
-    t.integer  "order_id",       limit: 4,                                                     comment: "订单关联coupon"
+    t.integer  "order_id",       limit: 4
   end
 
   create_table "expressers", force: :cascade do |t|
@@ -133,15 +133,15 @@ ActiveRecord::Schema.define(version: 20160315065852) do
   end
 
   create_table "frozen_coupons", force: :cascade do |t|
-    t.integer  "authorization_id", limit: 4,                                                     comment: "关联第三方登录(微信)"
-    t.decimal  "discount",                   precision: 10, scale: 2, default: 0.0, null: false, comment: "抵扣金额"
-    t.datetime "activated_date",                                                    null: false, comment: "生效日期"
-    t.datetime "expired_date",                                                      null: false, comment: "失效日期"
-    t.decimal  "least_price",                precision: 10, scale: 2, default: 0.0, null: false, comment: "最低起用价"
-    t.integer  "coupon_id",        limit: 4,                                                     comment: "关联优惠券"
+    t.integer  "authorization_id", limit: 4
+    t.decimal  "discount",                   precision: 10, scale: 2, default: 0.0, null: false
+    t.datetime "activated_date",                                                    null: false
+    t.datetime "expired_date",                                                      null: false
+    t.decimal  "least_price",                precision: 10, scale: 2, default: 0.0, null: false
+    t.integer  "coupon_id",        limit: 4
     t.datetime "created_at",                                                        null: false
     t.datetime "updated_at",                                                        null: false
-    t.integer  "red_pack_id",      limit: 4,                                                     comment: "暂存优惠券属于某个红包"
+    t.integer  "red_pack_id",      limit: 4
   end
 
   create_table "managers", force: :cascade do |t|
@@ -208,8 +208,9 @@ ActiveRecord::Schema.define(version: 20160315065852) do
     t.datetime "updated_at",                                                            null: false
     t.text     "charge_json",      limit: 65535
     t.string   "order_number",     limit: 255
-    t.decimal  "pay_price",                      precision: 10, scale: 2, default: 0.0,              comment: "实际支付金额"
+    t.decimal  "pay_price",                      precision: 10, scale: 2, default: 0.0
     t.decimal  "service_price",                  precision: 10, scale: 2, default: 0.0,              comment: "服务费用"
+    t.integer  "print_count",      limit: 4,                                                         comment: "小票打印次数"
   end
 
   create_table "owners", force: :cascade do |t|
@@ -257,8 +258,8 @@ ActiveRecord::Schema.define(version: 20160315065852) do
   end
 
   create_table "red_packs", force: :cascade do |t|
-    t.datetime "expired_at",           null: false, comment: "过期时间"
-    t.integer  "user_id",    limit: 4, null: false, comment: "关联用户"
+    t.datetime "expired_at",           null: false
+    t.integer  "user_id",    limit: 4, null: false
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "order_id",   limit: 4,              comment: "红包关联订单"
@@ -273,7 +274,7 @@ ActiveRecord::Schema.define(version: 20160315065852) do
     t.integer  "stock",         limit: 4,                            default: 0
     t.datetime "created_at",                                                       null: false
     t.datetime "updated_at",                                                       null: false
-    t.integer  "stock_per_day", limit: 4,                            default: 10,  null: false, comment: "订单每日更新的库存"
+    t.integer  "stock_per_day", limit: 4,                            default: 10,  null: false
     t.decimal  "cost",                      precision: 10, scale: 2, default: 0.0,              comment: "成本价"
   end
 

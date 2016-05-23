@@ -247,7 +247,6 @@ class Order < ActiveRecord::Base
     return response_status, charge
   end
 
-
   def self.create_new_order(params)
     response_status = ResponseStatus.default
     data = nil

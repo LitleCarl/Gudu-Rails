@@ -238,6 +238,26 @@ class ResponseStatus
   end
 
   #
+  # 抛出 #Code::MISS_REQUEST_PARAMS 异常
+  #
+  # @example
+  #   Response.new.__raise__miss_request_params('some error message')
+  #
+  def __raise__miss_request_params(message = '参数缺失')
+    __raise__(400, message)
+  end
+
+  #
+  # 抛出 #Code::DATA_PROCESS_ERROR 异常
+  #
+  # @example
+  #   Response.new.__raise__data_process_error('some error message')
+  #
+  def __raise__data_process_error(message = '数据异常')
+    __raise__(400, message)
+  end
+
+  #
   # 抛出异常
   #
   # @example

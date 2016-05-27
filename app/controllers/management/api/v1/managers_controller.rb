@@ -13,4 +13,10 @@ class Management::Api::V1::ManagersController < Management::Api::ApplicationCont
     @response_status, @token = Manager.send_sign_in_code(params)
   end
 
+  # 自动登录
+  def index
+    @response_status = ResponseStatus.default_success
+    @manager = params[:manager]
+  end
+
 end

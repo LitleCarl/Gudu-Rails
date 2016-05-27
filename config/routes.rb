@@ -100,8 +100,10 @@ Rails.application.routes.draw do
       namespace :v1 do
 
         # 管理者
-        resources :managers, except: ALL_REST_ACTION do
+        resources :managers, only: [:index] do
           collection do
+
+
             # 发送验证码
             get :send_login_code
 

@@ -113,7 +113,7 @@ Rails.application.routes.draw do
         end
 
         # 订单查询
-        resources :orders, only: [:index]
+        resources :orders, only: [:index, :update]
 
       end
     end

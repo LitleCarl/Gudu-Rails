@@ -16,8 +16,9 @@
 #  updated_at       :datetime         not null
 #  charge_json      :text(65535)
 #  order_number     :string(255)
-#  pay_price        :decimal(10, 2)   default("0.00")           # 实际支付金额
+#  pay_price        :decimal(10, 2)   default("0.00")
 #  service_price    :decimal(10, 2)   default("0.00")           # 服务费用
+#  print_count      :integer                                    # 小票打印次数
 #
 
 class Order < ActiveRecord::Base

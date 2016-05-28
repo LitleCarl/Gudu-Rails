@@ -3,13 +3,13 @@
 # Table name: authorizations
 #
 #  id                 :integer          not null, primary key
-#  provider           :string(255)                            # 提供者(wx,weibo)
+#  provider           :string(255)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  union_id           :string(255)                            # 用户唯一身份id
-#  user_id            :integer                                # 关联用户
-#  nick_name          :string(255)                            # 第三方昵称
-#  owner_id           :integer                                # 关联店铺拥有人
+#  union_id           :string(255)
+#  user_id            :integer
+#  nick_name          :string(255)
+#  owner_id           :integer
 #  avatar             :text(65535)                            # 头像地址
 #  gzh_token          :string(255)                            # 公众号token
 #  gzh_refresh_token  :string(255)                            # 公众号refresh_token

@@ -3,15 +3,15 @@
 # Table name: coupons
 #
 #  id             :integer          not null, primary key
-#  discount       :decimal(10, 2)   default("0.00"), not null # 抵扣金额
-#  activated_date :datetime         not null                  # 生效日期
-#  expired_date   :datetime         not null                  # 失效日期
-#  user_id        :integer                                    # 关联用户
-#  status         :integer          not null                  # 优惠券状态
-#  least_price    :decimal(10, 2)   default("0.00"), not null # 最低起用价
+#  discount       :decimal(10, 2)   default("0.00"), not null
+#  activated_date :datetime         not null
+#  expired_date   :datetime         not null
+#  user_id        :integer
+#  status         :integer          not null
+#  least_price    :decimal(10, 2)   default("0.00"), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  order_id       :integer                                    # 订单关联coupon
+#  order_id       :integer
 #
 
 class Coupon < ActiveRecord::Base

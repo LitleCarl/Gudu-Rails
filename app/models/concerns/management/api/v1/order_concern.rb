@@ -15,6 +15,29 @@ module Concerns::Management::Api::V1::OrderConcern
     #
     # @param options [Hash]
     # @option options [Manager] :manager 关联管理者
+    # @option options [Integer] :id 状态(可选)
+    #
+    # @return [Array] response, coupon
+    #
+    def add_print_count_by_one(options = {})
+      response = ResponseStatus.__rescue__ do |res|
+        manager, order_id, status = options[:manager], options[:id]
+
+        order = Order.query_first_by_id(order_id)
+
+        res.__raise__(ResponseStatus::Code::ERROR, '订单不存在') if order.blank?
+
+        order.print_count = (order.print_count || 0) + 1
+        order.save!
+      end
+
+      return response
+    end
+
+    # 管理者查询该学校的订单
+    #
+    # @param options [Hash]
+    # @option options [Manager] :manager 关联管理者
     # @option options [Date] :date 日期(可选)
     # @option options [Status] :status 状态(可选)
     # @option options [Integer] :page 状态(可选)

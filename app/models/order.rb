@@ -261,6 +261,11 @@ class Order < ActiveRecord::Base
       return response_status, data
     end
 
+    if (Time.now.hour + Time.now.min / 60.0) < 8.5
+      response_status.message = "抱歉,晚上23:30至上午8:30停止接单,请过后再试"
+      return response_status, data
+    end
+
     begin
       self.transaction do
         raise StandardError.new '购物车是空的' if params[:cart_items].blank?

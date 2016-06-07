@@ -15,6 +15,9 @@ class Sms
 
     # 阿里大鱼订单派送通知
     ALI_ORDER_DELIVERED = 'SMS_4745998'
+
+    # 阿里大鱼红包赠送短信
+    ALI_COUPON_AWARD = 'SMS_10310674'
   end
 
   # 返回支付时间, 订单价格, 预计送达时间

@@ -74,7 +74,7 @@ module Concerns::Management::Api::V1::OrderConcern
         end
 
         # 分页
-        orders = orders.page(options[:page]).per(options[:limit])
+        #orders = orders.page(options[:page]).per(options[:limit])
 
         # 排序
         orders = orders.order('orders.created_at desc')

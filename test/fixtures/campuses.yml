@@ -3,11 +3,11 @@
 # Table name: campuses
 #
 #  id            :integer          not null, primary key
-#  name          :string(255)      not null
-#  address       :string(255)      not null
-#  logo_filename :string(255)
-#  city_id       :integer
-#  location      :string(255)
+#  name          :string(255)      not null              # 校名
+#  address       :string(255)      not null              # 学校地址
+#  logo_filename :string(255)                            # 学校logo
+#  city_id       :integer                                # 地址城市
+#  location      :string(255)                            # 地址坐标
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  first_letter  :string(255)                            # 学校名称拼音首字母

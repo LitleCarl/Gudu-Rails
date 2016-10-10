@@ -252,9 +252,9 @@ class Order < ActiveRecord::Base
     response_status = ResponseStatus.default
     data = nil
 
-    # #TODO 暂停内测
-    response_status.message = "考试周暂停营业啦~"
-    return response_status, data
+    # # #TODO 暂停内测
+    # response_status.message = "考试周暂停营业啦~"
+    # return response_status, data
 
     if (Time.now.hour + Time.now.min / 60.0) > (ServicesController.get_config[:deadline_hour] + ServicesController.get_config[:deadline_minute] / 60.0)
       response_status.message = "太迟啦,明天记得在#{ServicesController.get_config[:deadline_hour]}点#{ServicesController.get_config[:deadline_hour]}之前来哦"
